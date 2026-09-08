@@ -294,261 +294,1995 @@ body.menuOpen .sidebarMask{opacity:1;pointer-events:auto}
 
 <script>
 const $ = id => document.getElementById(id);
-const storageKey = 'im-a-rich-girl-v2';
 
-const expenseCategories = ['饮食','购物','水费','电费','电话费','车油费','Grocery','妈妈','儿子','生活用品','其他支出'];
-const incomeCategories = ['薪水','Bonus','老公给','副业收入','红包','退款','其他收入'];
-const saveCategories = ['每日存钱','定期存钱','额外存钱'];
+const storageKey = 'im-a-rich-girl-v3';
+
+/* =========================
+   分类
+========================= */
+
+const expenseCategories = [
+  '饮食',
+  '购物',
+  '水费',
+  '电费',
+  '电话费',
+  '车油费',
+  'Grocery',
+  '妈妈',
+  '儿子'
+];
+
+const incomeCategories = [
+  '薪水',
+  'bonus',
+  '老公给'
+];
+
+
+/* =========================
+   数据
+========================= */
 
 let state = {
-  records:[],
-  goals:[],
-  wallets:['现金钱包'],
-  dailyNotes:{},
-  monthlyNotes:{}
+  records: [],
+  goals: [],
+  wallets: ['现金钱包'],
+  dailyNotes: {},
+  monthlyNotes: {}
 };
 
-function loadState(){
-  try{
+
+/* =========================
+   初始化
+========================= */
+
+function loadState() {
+  try {
     const saved = localStorage.getItem(storageKey);
-    if(saved) state = {...state,...JSON.parse(saved)};
-  }catch(e){}
-  if(!Array.isArray(state.wallets) || !state.wallets.length) state.wallets=['现金钱包'];
-}
-function saveState(){localStorage.setItem(storageKey,JSON.stringify(state))}
-function money(n){return `RM ${Number(n||0).toFixed(2)}`}
-function dateKey(d=new Date()){return d.toISOString().slice(0,10)}
-function monthKey(d=new Date()){return dateKey(d).slice(0,7)}
 
-function toggleMenu(force){
-  const open = typeof force === 'boolean' ? force : !document.body.classList.contains('menuOpen');
-  document.body.classList.toggle('menuOpen',open);
+    if (saved) {
+      const data = JSON.parse(saved);
+
+      state = {
+        records: data.records || [],
+        goals: data.goals || [],
+        wallets: data.wallets || ['现金钱包'],
+        dailyNotes: data.dailyNotes || {},
+        monthlyNotes: data.monthlyNotes || {}
+      };
+    }
+  } catch (error) {
+    console.log('读取数据失败');
+  }
+
+  if (!Array.isArray(state.wallets) || !state.wallets.length) {
+    state.wallets = ['现金钱包'];
+  }
 }
 
-document.querySelectorAll('.navitem').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.navitem').forEach(x=>x.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-    $(btn.dataset.page).classList.add('active');
-    toggleMenu(false);
-    renderAll();
+
+function saveState() {
+  localStorage.setItem(
+    storageKey,
+    JSON.stringify(state)
+  );
+}
+
+
+/* =========================
+   工具
+========================= */
+
+function money(number) {
+  return `RM ${Number(number || 0).toFixed(2)}`;
+}
+
+
+function dateKey(date = new Date()) {
+  return new Date(
+    date.getTime() -
+    date.getTimezoneOffset() * 60000
+  ).toISOString().slice(0, 10);
+}
+
+
+function monthKey(date = new Date()) {
+  return dateKey(date).slice(0, 7);
+}
+
+
+function randomId() {
+  return crypto.randomUUID
+    ? crypto.randomUUID()
+    : Date.now().toString() +
+      Math.random().toString(16).slice(2);
+}
+
+
+function formatDate(date) {
+  if (!date) return '';
+
+  const d = new Date(date + 'T00:00:00');
+
+  return d.toLocaleDateString(
+    'zh-CN',
+    {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short'
+    }
+  );
+}
+
+
+/* =========================
+   Sidebar
+========================= */
+
+function toggleMenu(force) {
+
+  const isOpen =
+    typeof force === 'boolean'
+      ? force
+      : !document.body.classList.contains('menuOpen');
+
+  document.body.classList.toggle(
+    'menuOpen',
+    isOpen
+  );
+}
+
+
+document
+  .querySelectorAll('.navitem')
+  .forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      document
+        .querySelectorAll('.navitem')
+        .forEach(item =>
+          item.classList.remove('active')
+        );
+
+      button.classList.add('active');
+
+      document
+        .querySelectorAll('.page')
+        .forEach(page =>
+          page.classList.remove('active')
+        );
+
+      const page = $(button.dataset.page);
+
+      if (page) {
+        page.classList.add('active');
+      }
+
+      toggleMenu(false);
+
+      renderAll();
+    });
+
   });
-});
 
-function openRecord(force='income'){
+
+/* =========================
+   Modal - 记一笔
+========================= */
+
+function openRecord(force = 'income') {
+
   $('modal').classList.add('show');
-  $('amountInput').value='';
-  $('note').value='';
-  setRecordType(force);
+
+  $('amountInput').value = '';
+  $('note').value = '';
+
   renderWalletOptions();
   renderGoalOptions();
-}
-function closeModal(){$('modal').classList.remove('show')}
 
-function setRecordType(type){
-  $('type').value=type;
-  document.querySelectorAll('.typePill').forEach(b=>b.classList.toggle('active',b.dataset.type===type));
+  setRecordType(force);
+}
+
+
+function closeModal() {
+  $('modal').classList.remove('show');
+}
+
+
+function setRecordType(type) {
+
+  $('type').value = type;
+
+  document
+    .querySelectorAll('.typePill')
+    .forEach(button => {
+
+      button.classList.toggle(
+        'active',
+        button.dataset.type === type
+      );
+
+    });
+
   updateCategoryOptions();
 }
-document.querySelectorAll('.typePill').forEach(btn=>btn.addEventListener('click',()=>setRecordType(btn.dataset.type)));
-$('type').addEventListener('change',updateCategoryOptions);
 
-function updateCategoryOptions(){
-  const type=$('type').value;
-  let categories=incomeCategories;
-  let label='收入分类';
-  if(type==='expense'){categories=expenseCategories;label='消费分类'}
-  if(type==='save'){categories=saveCategories;label='存钱分类'}
-  $('categoryLabel').textContent=label;
-  $('category').innerHTML=categories.map(c=>`<option value="${c}">${c}</option>`).join('');
-  $('goalField').style.display=type==='save'?'block':'none';
+
+document
+  .querySelectorAll('.typePill')
+  .forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      setRecordType(
+        button.dataset.type
+      );
+
+    });
+
+  });
+
+
+$('type').addEventListener(
+  'change',
+  updateCategoryOptions
+);
+
+
+/* =========================
+   更新分类
+========================= */
+
+function updateCategoryOptions() {
+
+  const type = $('type').value;
+
+  let categories = [];
+  let label = '';
+
+  if (type === 'income') {
+    categories = incomeCategories;
+    label = '收入分类';
+  }
+
+  if (type === 'expense') {
+    categories = expenseCategories;
+    label = '消费分类';
+  }
+
+  if (type === 'save') {
+    categories = ['存入存钱目标'];
+    label = '存钱分类';
+  }
+
+  $('categoryLabel').textContent = label;
+
+  $('category').innerHTML =
+    categories
+      .map(category => `
+        <option value="${category}">
+          ${category}
+        </option>
+      `)
+      .join('');
+
+  $('goalField').style.display =
+    type === 'save'
+      ? 'block'
+      : 'none';
 }
 
-function renderGoalOptions(){
-  $('goalSelect').innerHTML = state.goals.length
-    ? state.goals.map(g=>`<option value="${g.id}">${g.name}</option>`).join('')
-    : '<option value="">暂无目标</option>';
-}
-function renderWalletOptions(){
-  $('walletSelect').innerHTML=state.wallets.map(w=>`<option value="${w}">${w}</option>`).join('');
+
+/* =========================
+   账本选择
+========================= */
+
+function renderWalletOptions() {
+
+  $('walletSelect').innerHTML =
+    state.wallets
+      .map(wallet => `
+        <option value="${wallet}">
+          ${wallet}
+        </option>
+      `)
+      .join('');
 }
 
-function saveRecord(){
-  const amount=Number($('amountInput').value);
-  if(!amount || amount<=0){alert('请输入金额');return}
-  const type=$('type').value;
-  const goalId=type==='save' ? $('goalSelect').value : '';
-  if(type==='save' && !goalId){alert('请先新增一个存钱目标');return}
-  const record={
-    id:crypto.randomUUID(),
-    date:dateKey(),
+
+/* =========================
+   存钱目标选择
+========================= */
+
+function renderGoalOptions() {
+
+  if (!state.goals.length) {
+
+    $('goalSelect').innerHTML =
+      '<option value="">暂无存钱目标</option>';
+
+    return;
+  }
+
+  $('goalSelect').innerHTML =
+    state.goals
+      .map(goal => `
+        <option value="${goal.id}">
+          ${goal.name}
+        </option>
+      `)
+      .join('');
+}
+
+
+/* =========================
+   保存记录
+========================= */
+
+function saveRecord() {
+
+  const amount =
+    Number($('amountInput').value);
+
+  if (!amount || amount <= 0) {
+    alert('请输入正确的金额');
+    return;
+  }
+
+  const type =
+    $('type').value;
+
+  const wallet =
+    $('walletSelect').value;
+
+  const goalId =
+    type === 'save'
+      ? $('goalSelect').value
+      : '';
+
+  if (type === 'save' && !goalId) {
+    alert('请先新增一个存钱目标');
+    return;
+  }
+
+  const record = {
+
+    id: randomId(),
+
+    date: dateKey(),
+
     type,
+
     amount,
-    category:$('category').value,
-    note:$('note').value.trim(),
-    wallet:$('walletSelect').value,
-    goalId
+
+    category:
+      $('category').value,
+
+    note:
+      $('note').value.trim(),
+
+    wallet,
+
+    goalId,
+
+    createdAt:
+      new Date().toISOString()
+
   };
+
   state.records.unshift(record);
+
   saveState();
+
   closeModal();
+
   renderAll();
 }
 
-function deleteRecord(id){
-  if(!confirm('确定删除这笔记录吗？'))return;
-  state.records=state.records.filter(r=>r.id!==id);
-  saveState();renderAll();
+
+/* =========================
+   删除记录
+========================= */
+
+function deleteRecord(id) {
+
+  if (!confirm('确定删除这笔记录吗？')) {
+    return;
+  }
+
+  state.records =
+    state.records.filter(
+      record => record.id !== id
+    );
+
+  saveState();
+
+  renderAll();
 }
 
-function recordsForMonth(month=monthKey()){
-  return state.records.filter(r=>r.date.startsWith(month));
-}
-function totals(month=monthKey()){
-  const rs=recordsForMonth(month);
-  const income=rs.filter(r=>r.type==='income').reduce((s,r)=>s+r.amount,0);
-  const expense=rs.filter(r=>r.type==='expense').reduce((s,r)=>s+r.amount,0);
-  const save=rs.filter(r=>r.type==='save').reduce((s,r)=>s+r.amount,0);
-  return {income,expense,save,balance:income-expense-save};
-}
 
-function recordIcon(type){
-  return type==='income'?'💰':type==='expense'?'💸':'🎯';
-}
-function typeName(type){return type==='income'?'收入':type==='expense'?'支出':'存钱'}
+/* =========================
+   转账
+========================= */
 
-function renderOverview(){
-  const t=totals();
-  $('incomeStat').textContent=money(t.income);
-  $('expenseStat').textContent=money(t.expense);
-  $('saveStat').textContent=money(t.save);
-  $('balanceStat').textContent=money(t.balance);
-  $('monthLabel').textContent=monthKey();
-  $('todayText').textContent=`今天 ${new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric'})} · 每天存一点，未来富一点`;
-  const total=t.income+t.expense+t.save;
-  $('chartText').textContent=total
-    ? `本月共记录 ${money(total)}，收入 ${money(t.income)} · 支出 ${money(t.expense)} · 存钱 ${money(t.save)}`
-    : '开始记下第一笔账吧，你的富婆之路从今天开始 💕';
-  renderRecordList('recentRecords',state.records.slice(0,6),true);
-}
+function openTransfer() {
 
-function renderRecordList(id,records,compact=false){
-  const el=$(id);
-  if(!records.length){el.innerHTML='<div class="empty">还没有记录，快去记第一笔吧 💕</div>';return}
-  el.innerHTML=records.map(r=>`
-    <div class="recordItem">
-      <div class="recordLeft">
-        <div class="recordIcon">${recordIcon(r.type)}</div>
-        <div>
-          <div class="recordName">${r.category}</div>
-          <div class="muted">${r.date} · ${r.wallet}${r.note?' · '+r.note:''}</div>
+  closeModal();
+
+  let transferModal =
+    document.getElementById('transferModal');
+
+  if (!transferModal) {
+
+    transferModal =
+      document.createElement('div');
+
+    transferModal.id =
+      'transferModal';
+
+    transferModal.className =
+      'overlay';
+
+    transferModal.innerHTML = `
+
+      <div class="sheet">
+
+        <div class="sheetTop">
+
+          <h2 style="margin:0">
+            🔄 转账
+          </h2>
+
+          <button
+            class="closeBtn"
+            onclick="closeTransfer()"
+          >
+            关闭
+          </button>
+
         </div>
+
+
+        <div class="field">
+
+          <label>
+            从哪个账本转出
+          </label>
+
+          <select id="transferFrom"></select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            转账去哪里
+          </label>
+
+          <select
+            id="transferDestinationType"
+            onchange="updateTransferDestination()"
+          >
+
+            <option value="wallet">
+              转去其它账本
+            </option>
+
+            <option value="goal">
+              转去存钱目标
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label id="transferDestinationLabel">
+            转入账本
+          </label>
+
+          <select
+            id="transferDestination"
+          ></select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            转账金额
+          </label>
+
+          <input
+            id="transferAmount"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="RM 0.00"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            备注
+          </label>
+
+          <textarea
+            id="transferNote"
+            placeholder="例如：转去旅行基金"
+          ></textarea>
+
+        </div>
+
+
+        <button
+          class="bigbtn"
+          onclick="saveTransfer()"
+        >
+
+          确认转账
+
+        </button>
+
       </div>
-      <div style="text-align:right">
-        <div class="amount ${r.type==='income'?'blue':r.type==='expense'?'pink':'green'}">${r.type==='expense'?'-':'+'}${money(r.amount)}</div>
-        ${compact?'':`<button class="deleteBtn" onclick="deleteRecord('${r.id}')">删除</button>`}
-      </div>
-    </div>`).join('');
+
+    `;
+
+    document.body.appendChild(
+      transferModal
+    );
+  }
+
+  $('transferAmount').value = '';
+  $('transferNote').value = '';
+
+  $('transferFrom').innerHTML =
+    state.wallets
+      .map(wallet => `
+        <option value="${wallet}">
+          ${wallet}
+        </option>
+      `)
+      .join('');
+
+  updateTransferDestination();
+
+  transferModal.classList.add('show');
 }
 
-function renderDaily(){
-  const key=dateKey();
-  $('dailyNote').value=state.dailyNotes[key]||'';
-  renderRecordList('todayRecords',state.records.filter(r=>r.date===key),false);
-}
-function saveDailyNote(){
-  state.dailyNotes[dateKey()]=$('dailyNote').value.trim();
-  saveState();alert('今日复盘已保存 💕');
+
+function closeTransfer() {
+
+  const modal =
+    $('transferModal');
+
+  if (modal) {
+    modal.classList.remove('show');
+  }
 }
 
-function setupMonthPicker(){
-  const now=new Date();
-  const months=[];
-  for(let i=0;i<12;i++){
-    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
-    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+
+function updateTransferDestination() {
+
+  const type =
+    $('transferDestinationType').value;
+
+  const destination =
+    $('transferDestination');
+
+  if (type === 'wallet') {
+
+    $('transferDestinationLabel').textContent =
+      '转入账本';
+
+    destination.innerHTML =
+      state.wallets
+        .map(wallet => `
+          <option value="${wallet}">
+            ${wallet}
+          </option>
+        `)
+        .join('');
+
+  } else {
+
+    $('transferDestinationLabel').textContent =
+      '存钱目标';
+
+    destination.innerHTML =
+      state.goals.length
+        ? state.goals
+            .map(goal => `
+              <option value="${goal.id}">
+                ${goal.name}
+              </option>
+            `)
+            .join('')
+        : `
+          <option value="">
+            暂无存钱目标
+          </option>
+        `;
+  }
+}
+
+
+function saveTransfer() {
+
+  const from =
+    $('transferFrom').value;
+
+  const destinationType =
+    $('transferDestinationType').value;
+
+  const destination =
+    $('transferDestination').value;
+
+  const amount =
+    Number(
+      $('transferAmount').value
+    );
+
+  const note =
+    $('transferNote').value.trim();
+
+  if (!amount || amount <= 0) {
+    alert('请输入转账金额');
+    return;
+  }
+
+  if (!destination) {
+    alert('请选择转账目标');
+    return;
+  }
+
+  if (
+    destinationType === 'wallet' &&
+    from === destination
+  ) {
+    alert('不能转到同一个账本');
+    return;
+  }
+
+  const record = {
+
+    id: randomId(),
+
+    date: dateKey(),
+
+    type: 'transfer',
+
+    amount,
+
+    category:
+      destinationType === 'goal'
+        ? '转入存钱目标'
+        : '账本转账',
+
+    note,
+
+    fromWallet: from,
+
+    toWallet:
+      destinationType === 'wallet'
+        ? destination
+        : '',
+
+    goalId:
+      destinationType === 'goal'
+        ? destination
+        : '',
+
+    wallet: from,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+  state.records.unshift(record);
+
+  saveState();
+
+  closeTransfer();
+
+  renderAll();
+
+  alert('转账成功 💕');
+}
+
+
+/* =========================
+   本月记录
+========================= */
+
+function recordsForMonth(
+  month = monthKey()
+) {
+
+  return state.records.filter(
+    record =>
+      record.date &&
+      record.date.startsWith(month)
+  );
+}
+
+
+/* =========================
+   月度统计
+========================= */
+
+function totals(
+  month = monthKey()
+) {
+
+  const records =
+    recordsForMonth(month);
+
+  const income =
+    records
+      .filter(
+        record =>
+          record.type === 'income'
+      )
+      .reduce(
+        (sum, record) =>
+          sum + record.amount,
+        0
+      );
+
+  const expense =
+    records
+      .filter(
+        record =>
+          record.type === 'expense'
+      )
+      .reduce(
+        (sum, record) =>
+          sum + record.amount,
+        0
+      );
+
+  const save =
+    records
+      .filter(
+        record =>
+          record.type === 'save' ||
+          (
+            record.type === 'transfer' &&
+            record.goalId
+          )
+      )
+      .reduce(
+        (sum, record) =>
+          sum + record.amount,
+        0
+      );
+
+  return {
+
+    income,
+
+    expense,
+
+    save,
+
+    balance:
+      income -
+      expense -
+      save
+
+  };
+}
+
+
+/* =========================
+   记录图标
+========================= */
+
+function recordIcon(type) {
+
+  if (type === 'income') {
+    return '💰';
+  }
+
+  if (type === 'expense') {
+    return '💸';
+  }
+
+  if (type === 'save') {
+    return '🎯';
+  }
+
+  if (type === 'transfer') {
+    return '🔄';
+  }
+
+  return '📝';
+}
+
+
+function recordTypeName(type) {
+
+  if (type === 'income') {
+    return '收入';
+  }
+
+  if (type === 'expense') {
+    return '支出';
+  }
+
+  if (type === 'save') {
+    return '存钱';
+  }
+
+  if (type === 'transfer') {
+    return '转账';
+  }
+
+  return '';
+}
+
+
+/* =========================
+   获取目标名称
+========================= */
+
+function getGoalName(id) {
+
+  const goal =
+    state.goals.find(
+      item => item.id === id
+    );
+
+  return goal
+    ? goal.name
+    : '已删除目标';
+}
+
+
+/* =========================
+   获取记录名称
+========================= */
+
+function getRecordTitle(record) {
+
+  if (
+    record.type === 'transfer' &&
+    record.goalId
+  ) {
+
+    return `转入 🎯 ${getGoalName(record.goalId)}`;
+
+  }
+
+  if (
+    record.type === 'transfer' &&
+    record.toWallet
+  ) {
+
+    return `${record.fromWallet} → ${record.toWallet}`;
+
+  }
+
+  return record.category;
+}
+
+
+/* =========================
+   渲染记录列表
+========================= */
+
+function renderRecordList(
+  id,
+  records,
+  compact = false
+) {
+
+  const element = $(id);
+
+  if (!element) return;
+
+  if (!records.length) {
+
+    element.innerHTML = `
+      <div class="empty">
+        还没有记录，
+        快去记第一笔吧 💕
+      </div>
+    `;
+
+    return;
+  }
+
+  element.innerHTML =
+    records
+      .map(record => {
+
+        let amountClass = 'blue';
+        let sign = '+';
+
+        if (
+          record.type === 'expense'
+        ) {
+          amountClass = 'pink';
+          sign = '-';
+        }
+
+        if (
+          record.type === 'save'
+        ) {
+          amountClass = 'green';
+          sign = '-';
+        }
+
+        if (
+          record.type === 'transfer'
+        ) {
+          amountClass = 'blue';
+          sign = '↔';
+        }
+
+        return `
+
+          <div class="recordItem">
+
+            <div class="recordLeft">
+
+              <div class="recordIcon">
+                ${recordIcon(record.type)}
+              </div>
+
+              <div>
+
+                <div class="recordName">
+                  ${getRecordTitle(record)}
+                </div>
+
+                <div class="muted">
+
+                  ${record.date}
+
+                  ${
+                    record.note
+                      ? ' · ' + record.note
+                      : ''
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div style="text-align:right">
+
+              <div
+                class="amount ${amountClass}"
+              >
+
+                ${sign}
+                ${money(record.amount)}
+
+              </div>
+
+              ${
+                compact
+                  ? ''
+                  : `
+                    <button
+                      class="deleteBtn"
+                      onclick="deleteRecord('${record.id}')"
+                    >
+                      删除
+                    </button>
+                  `
+              }
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join('');
+}
+
+
+/* =========================
+   首页
+========================= */
+
+function renderOverview() {
+
+  const total =
+    totals();
+
+  $('incomeStat').textContent =
+    money(total.income);
+
+  $('expenseStat').textContent =
+    money(total.expense);
+
+  $('saveStat').textContent =
+    money(total.save);
+
+  $('balanceStat').textContent =
+    money(total.balance);
+
+  $('monthLabel').textContent =
+    monthKey();
+
+  $('todayText').textContent =
+    `今天 ${formatDate(dateKey())} · 每天存一点，未来富一点`;
+
+  const all =
+    total.income +
+    total.expense +
+    total.save;
+
+  $('chartText').textContent =
+    all
+      ? `
+        本月共记录 ${money(all)}
+        · 收入 ${money(total.income)}
+        · 支出 ${money(total.expense)}
+        · 存钱 ${money(total.save)}
+      `
+      : `
+        开始记下第一笔账吧，
+        你的富婆之路从今天开始 💕
+      `;
+
+  renderRecordList(
+    'recentRecords',
+    state.records.slice(0, 6),
+    true
+  );
+}
+
+
+/* =========================
+   每日复盘
+========================= */
+
+function renderDaily() {
+
+  const page =
+    $('daily');
+
+  if (!page) return;
+
+  const today =
+    dateKey();
+
+  const monthRecords =
+    recordsForMonth();
+
+  page.innerHTML = `
+
+    <div class="hero">
+
+      <h1>
+        每日复盘 ✍️
+      </h1>
+
+      <p>
+        ${formatDate(today)}
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="row">
+
+        <div>
+
+          <h3 style="margin:0">
+            今天的日期
+          </h3>
+
+          <div
+            class="muted"
+            style="margin-top:8px"
+          >
+
+            ${formatDate(today)}
+
+          </div>
+
+        </div>
+
+        <div class="recordIcon">
+          📅
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="grid2"
+      style="margin-top:14px"
+    >
+
+      <button
+        class="card"
+        style="text-align:left"
+        onclick="openRecord('expense')"
+      >
+
+        <div style="font-size:28px">
+          📝
+        </div>
+
+        <h3 style="margin-top:10px">
+          记一笔
+        </h3>
+
+        <div class="muted">
+          收入 · 支出 · 存钱
+        </div>
+
+      </button>
+
+
+      <button
+        class="card"
+        style="text-align:left"
+        onclick="openTransfer()"
+      >
+
+        <div style="font-size:28px">
+          🔄
+        </div>
+
+        <h3 style="margin-top:10px">
+          转账
+        </h3>
+
+        <div class="muted">
+          账本之间转账
+        </div>
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="grid2"
+      style="margin-top:14px"
+    >
+
+      <button
+        class="card"
+        style="text-align:left"
+        onclick="openRecord('expense')"
+      >
+
+        <div style="font-size:26px">
+          💸
+        </div>
+
+        <h3 style="margin-top:10px">
+          消费分类
+        </h3>
+
+        <div class="muted">
+          选择消费类别
+        </div>
+
+      </button>
+
+
+      <button
+        class="card"
+        style="text-align:left"
+        onclick="openRecord('income')"
+      >
+
+        <div style="font-size:26px">
+          💰
+        </div>
+
+        <h3 style="margin-top:10px">
+          收入分类
+        </h3>
+
+        <div class="muted">
+          选择收入类别
+        </div>
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="card"
+      style="margin-top:14px"
+    >
+
+      <div class="row">
+
+        <h3 style="margin:0">
+          本月记录
+        </h3>
+
+        <span class="monthBox">
+          ${monthKey()}
+        </span>
+
+      </div>
+
+
+      <div
+        id="monthRecordList"
+        style="margin-top:10px"
+      >
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="card"
+      style="margin-top:14px"
+    >
+
+      <div class="field">
+
+        <label>
+          今日复盘
+        </label>
+
+        <textarea
+          id="dailyNote"
+          class="noteBox"
+          placeholder="写下今天发生的事情、消费感受或存钱心得…"
+        ></textarea>
+
+      </div>
+
+
+      <button
+        class="bigbtn"
+        onclick="saveDailyNote()"
+      >
+
+        保存今日复盘
+
+      </button>
+
+    </div>
+
+  `;
+
+  $('dailyNote').value =
+    state.dailyNotes[today] || '';
+
+  renderMonthlyRecordList(
+    'monthRecordList',
+    monthRecords
+  );
+}
+
+
+/* =========================
+   本月记录专用列表
+========================= */
+
+function renderMonthlyRecordList(
+  id,
+  records
+) {
+
+  const element =
+    $(id);
+
+  if (!element) return;
+
+  if (!records.length) {
+
+    element.innerHTML = `
+      <div class="empty">
+        这个月还没有记账 💕
+      </div>
+    `;
+
+    return;
+  }
+
+  element.innerHTML =
+    records
+      .map(record => {
+
+        let color =
+          record.type === 'income'
+            ? 'blue'
+            : record.type === 'expense'
+              ? 'pink'
+              : 'green';
+
+        let sign =
+          record.type === 'income'
+            ? '+'
+            : '-';
+
+        if (
+          record.type === 'transfer'
+        ) {
+          sign = '↔';
+          color = 'blue';
+        }
+
+        return `
+
+          <div class="recordItem">
+
+            <div class="recordLeft">
+
+              <div class="recordIcon">
+                ${recordIcon(record.type)}
+              </div>
+
+              <div>
+
+                <div class="recordName">
+
+                  ${getRecordTitle(record)}
+
+                </div>
+
+                <div class="muted">
+
+                  ${record.date}
+
+                  ${
+                    record.note
+                      ? ' · ' + record.note
+                      : ''
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="amount ${color}"
+            >
+
+              ${sign}
+              ${money(record.amount)}
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join('');
+}
+
+
+/* =========================
+   保存每日复盘
+========================= */
+
+function saveDailyNote() {
+
+  const today =
+    dateKey();
+
+  const textarea =
+    $('dailyNote');
+
+  if (!textarea) return;
+
+  state.dailyNotes[today] =
+    textarea.value.trim();
+
+  saveState();
+
+  alert('今日复盘已保存 💕');
+}
+
+
+/* =========================
+   月度选择
+========================= */
+
+function setupMonthPicker() {
+
+  const picker =
+    $('monthlyPicker');
+
+  if (!picker) return;
+
+  const now =
+    new Date();
+
+  const months = [];
+
+  for (
+    let i = 0;
+    i < 12;
+    i++
+  ) {
+
+    const date =
+      new Date(
+        now.getFullYear(),
+        now.getMonth() - i,
+        1
+      );
+
+    const key =
+      `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, '0')}`;
+
     months.push(key);
   }
-  $('monthlyPicker').innerHTML=months.map(m=>`<option value="${m}">${m}</option>`).join('');
-  $('monthlyPicker').value=monthKey();
-  $('monthlyPicker').onchange=renderMonthly;
-}
-function renderMonthly(){
-  const m=$('monthlyPicker').value;
-  const t=totals(m);
-  $('monthlyIncome').textContent=money(t.income);
-  $('monthlyExpense').textContent=money(t.expense);
-  $('monthlySave').textContent=money(t.save);
-  $('monthlyBalance').textContent=money(t.balance);
-  $('monthlyNote').value=state.monthlyNotes[m]||'';
-}
-function saveMonthlyNote(){
-  state.monthlyNotes[$('monthlyPicker').value]=$('monthlyNote').value.trim();
-  saveState();alert('月度复盘已保存 💕');
+
+  picker.innerHTML =
+    months
+      .map(month => `
+        <option value="${month}">
+          ${month}
+        </option>
+      `)
+      .join('');
+
+  picker.value =
+    monthKey();
+
+  picker.onchange =
+    renderMonthly;
 }
 
-function renderHistory(){
-  const grouped={};
-  state.records.forEach(r=>(grouped[r.date]??=[]).push(r));
-  const dates=Object.keys(grouped).sort((a,b)=>b.localeCompare(a));
-  $('historyList').innerHTML=dates.length?dates.map(d=>`
-    <div class="historyItem">
-      <div><strong>${d}</strong><div class="muted">${grouped[d].length} 笔记录</div></div>
-      <div class="goalMoney">${money(grouped[d].reduce((s,r)=>s+(r.type==='expense'?-r.amount:r.amount),0))}</div>
-    </div>`).join(''):'<div class="empty">还没有打卡历史</div>';
+
+/* =========================
+   月度复盘
+========================= */
+
+function renderMonthly() {
+
+  const picker =
+    $('monthlyPicker');
+
+  if (!picker) return;
+
+  const month =
+    picker.value;
+
+  const total =
+    totals(month);
+
+  $('monthlyIncome').textContent =
+    money(total.income);
+
+  $('monthlyExpense').textContent =
+    money(total.expense);
+
+  $('monthlySave').textContent =
+    money(total.save);
+
+  $('monthlyBalance').textContent =
+    money(total.balance);
+
+  $('monthlyNote').value =
+    state.monthlyNotes[month] || '';
 }
 
-function addGoal(){
-  const name=$('goalName').value.trim();
-  const target=Number($('goalAmount').value);
-  if(!name || !target || target<=0){alert('请填写目标名称和金额');return}
-  state.goals.push({id:crypto.randomUUID(),name,target});
-  $('goalName').value='';$('goalAmount').value='';
-  saveState();renderGoals();
-}
-function goalSaved(g){
-  return state.records.filter(r=>r.type==='save'&&r.goalId===g.id).reduce((s,r)=>s+r.amount,0);
-}
-function renderGoals(){
-  const el=$('goalList');
-  if(!state.goals.length){el.innerHTML='<div class="empty">还没有存钱目标，先新增一个梦想吧 🎯</div>';return}
-  el.innerHTML=state.goals.map(g=>{
-    const saved=goalSaved(g), pct=Math.min(100,(saved/g.target)*100);
-    return `<div class="goalItem" style="display:block">
-      <div class="row"><strong>${g.name}</strong><span class="goalMoney">${money(saved)} / ${money(g.target)}</span></div>
-      <div class="progressWrap"><div class="progressBar"><div class="progressFill" style="width:${pct}%"></div></div></div>
-      <div class="row" style="margin-top:8px"><span class="muted">${pct.toFixed(0)}% 完成</span><button class="deleteBtn" onclick="deleteGoal('${g.id}')">删除</button></div>
-    </div>`;
-  }).join('');
-}
-function deleteGoal(id){
-  if(!confirm('确定删除这个存钱目标吗？'))return;
-  state.goals=state.goals.filter(g=>g.id!==id);saveState();renderGoals();
+
+function saveMonthlyNote() {
+
+  const picker =
+    $('monthlyPicker');
+
+  if (!picker) return;
+
+  state.monthlyNotes[
+    picker.value
+  ] =
+    $('monthlyNote').value.trim();
+
+  saveState();
+
+  alert('月度复盘已保存 💕');
 }
 
-function addWallet(){
-  const name=$('walletName').value.trim();
-  if(!name){alert('请输入账本名称');return}
-  if(state.wallets.includes(name)){alert('这个账本已经存在');return}
-  state.wallets.push(name);$('walletName').value='';saveState();renderWallets();
-}
-function renderWallets(){
-  $('walletList').innerHTML=state.wallets.map(w=>{
-    const balance=state.records.filter(r=>r.wallet===w).reduce((s,r)=>s+(r.type==='expense'?-r.amount:r.amount),0);
-    return `<div class="recordItem">
-      <div class="recordLeft"><div class="recordIcon">💳</div><div><div class="recordName">${w}</div><div class="muted">当前账本余额</div></div></div>
-      <div class="amount blue">${money(balance)}</div>
-    </div>`;
-  }).join('');
+
+/* =========================
+   历史
+========================= */
+
+function renderHistory() {
+
+  const grouped = {};
+
+  state.records.forEach(record => {
+
+    if (!grouped[record.date]) {
+      grouped[record.date] = [];
+    }
+
+    grouped[record.date].push(record);
+
+  });
+
+  const dates =
+    Object.keys(grouped)
+      .sort(
+        (a, b) =>
+          b.localeCompare(a)
+      );
+
+  const history =
+    $('historyList');
+
+  if (!history) return;
+
+  if (!dates.length) {
+
+    history.innerHTML = `
+      <div class="empty">
+        还没有打卡历史
+      </div>
+    `;
+
+    return;
+  }
+
+  history.innerHTML =
+    dates
+      .map(date => {
+
+        const records =
+          grouped[date];
+
+        return `
+
+          <div class="historyItem">
+
+            <div>
+
+              <strong>
+                ${formatDate(date)}
+              </strong>
+
+              <div class="muted">
+
+                ${records.length} 笔记录
+
+              </div>
+
+            </div>
+
+
+            <div class="goalMoney">
+
+              ${records.length} 笔
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join('');
 }
 
-function renderAll(){
-  renderOverview();renderDaily();renderMonthly();renderHistory();renderGoals();renderWallets();
+
+/* =========================
+   存钱目标
+========================= */
+
+function addGoal() {
+
+  const name =
+    $('goalName').value.trim();
+
+  const target =
+    Number(
+      $('goalAmount').value
+    );
+
+  if (
+    !name ||
+    !target ||
+    target <= 0
+  ) {
+
+    alert('请填写目标名称和金额');
+
+    return;
+  }
+
+  state.goals.push({
+
+    id: randomId(),
+
+    name,
+
+    target
+
+  });
+
+  $('goalName').value = '';
+
+  $('goalAmount').value = '';
+
+  saveState();
+
+  renderGoals();
 }
+
+
+function goalSaved(goal) {
+
+  return state.records
+    .filter(record =>
+
+      (
+        record.type === 'save' &&
+        record.goalId === goal.id
+      )
+
+      ||
+
+      (
+        record.type === 'transfer' &&
+        record.goalId === goal.id
+      )
+
+    )
+    .reduce(
+      (sum, record) =>
+        sum + record.amount,
+      0
+    );
+}
+
+
+function renderGoals() {
+
+  const element =
+    $('goalList');
+
+  if (!element) return;
+
+  if (!state.goals.length) {
+
+    element.innerHTML = `
+      <div class="empty">
+        还没有存钱目标，
+        先新增一个梦想吧 🎯
+      </div>
+    `;
+
+    return;
+  }
+
+  element.innerHTML =
+    state.goals
+      .map(goal => {
+
+        const saved =
+          goalSaved(goal);
+
+        const percent =
+          Math.min(
+            100,
+            saved / goal.target * 100
+          );
+
+        return `
+
+          <div
+            class="goalItem"
+            style="display:block"
+          >
+
+            <div class="row">
+
+              <strong>
+                ${goal.name}
+              </strong>
+
+              <span class="goalMoney">
+
+                ${money(saved)}
+                /
+                ${money(goal.target)}
+
+              </span>
+
+            </div>
+
+
+            <div class="progressWrap">
+
+              <div class="progressBar">
+
+                <div
+                  class="progressFill"
+                  style="width:${percent}%"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="row"
+              style="margin-top:8px"
+            >
+
+              <span class="muted">
+
+                ${percent.toFixed(0)}%
+                完成
+
+              </span>
+
+
+              <button
+                class="deleteBtn"
+                onclick="deleteGoal('${goal.id}')"
+              >
+
+                删除
+
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join('');
+}
+
+
+function deleteGoal(id) {
+
+  if (
+    !confirm(
+      '确定删除这个存钱目标吗？'
+    )
+  ) {
+    return;
+  }
+
+  state.goals =
+    state.goals.filter(
+      goal => goal.id !== id
+    );
+
+  saveState();
+
+  renderGoals();
+}
+
+
+/* =========================
+   账本
+========================= */
+
+function addWallet() {
+
+  const name =
+    $('walletName').value.trim();
+
+  if (!name) {
+
+    alert('请输入账本名称');
+
+    return;
+  }
+
+  if (
+    state.wallets.includes(name)
+  ) {
+
+    alert('这个账本已经存在');
+
+    return;
+  }
+
+  state.wallets.push(name);
+
+  $('walletName').value = '';
+
+  saveState();
+
+  renderWallets();
+}
+
+
+/* =========================
+   计算账本余额
+========================= */
+
+function walletBalance(wallet) {
+
+  return state.records.reduce(
+    (balance, record) => {
+
+      if (
+        record.type === 'income' &&
+        record.wallet === wallet
+      ) {
+
+        return balance +
+          record.amount;
+      }
+
+
+      if (
+        record.type === 'expense' &&
+        record.wallet === wallet
+      ) {
+
+        return balance -
+          record.amount;
+      }
+
+
+      if (
+        record.type === 'save' &&
+        record.wallet === wallet
+      ) {
+
+        return balance -
+          record.amount;
+      }
+
+
+      if (
+        record.type === 'transfer'
+      ) {
+
+        if (
+          record.fromWallet === wallet
+        ) {
+
+          balance -=
+            record.amount;
+        }
+
+        if (
+          record.toWallet === wallet
+        ) {
+
+          balance +=
+            record.amount;
+        }
+
+        return balance;
+      }
+
+      return balance;
+
+    },
+    0
+  );
+}
+
+
+function renderWallets() {
+
+  const element =
+    $('walletList');
+
+  if (!element) return;
+
+  element.innerHTML =
+    state.wallets
+      .map(wallet => {
+
+        const balance =
+          walletBalance(wallet);
+
+        return `
+
+          <div class="recordItem">
+
+            <div class="recordLeft">
+
+              <div class="recordIcon">
+                💳
+              </div>
+
+              <div>
+
+                <div class="recordName">
+
+                  ${wallet}
+
+                </div>
+
+                <div class="muted">
+
+                  当前账本余额
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="amount blue">
+
+              ${money(balance)}
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join('');
+}
+
+
+/* =========================
+   渲染全部
+========================= */
+
+function renderAll() {
+
+  renderOverview();
+
+  renderDaily();
+
+  renderMonthly();
+
+  renderHistory();
+
+  renderGoals();
+
+  renderWallets();
+}
+
+
+/* =========================
+   启动
+========================= */
 
 loadState();
+
 setupMonthPicker();
+
 renderAll();
 </script>
 </body>
