@@ -6,8 +6,26 @@
 <title>我要成为富婆！</title>
 <style>
 :root{--blue:#4ba7ca;--pink:#ffb6c1;--ink:#24424d;--muted:#6f8790;--line:#d9edf4;--green:#36a487;--shadow:0 12px 30px rgba(52,109,130,.12)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;font-family:"仓耳今楷","CangEr JinKai","TsangerJinKai","LXGW WenKai","PingFang SC","Microsoft YaHei",serif;color:var(--ink);background:linear-gradient(145deg,#f8fdff,#fff8fb 48%,#f4fbfe)}
-button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.app{width:100%;max-width:760px;margin:auto;min-height:100vh;background:rgba(255,255,255,.45)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;font-family:"仓耳今楷","CangEr JinKai","TsangerJinKai","LXGW WenKai","PingFang SC","Microsoft YaHei",serif;color:var(--ink);background-image:
+linear-gradient(
+rgba(255,255,255,.38),
+rgba(255,255,255,.38)
+),
+url("./IMG_7362.jpeg");
+
+background-size:cover;
+background-position:center;
+background-attachment:fixed;}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.app{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  min-height:100vh;
+
+  background:rgba(255,255,255,.18);
+
+  backdrop-filter:blur(2px);
+}
 header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.88);backdrop-filter:blur(14px)}
 .brand{font-size:24px;font-weight:900}.iconBtn{width:48px;height:48px;border-radius:16px;background:#eef8fc;color:var(--ink);font-size:25px;display:grid;place-items:center}.page{display:none;padding:20px 18px 36px}.page.active{display:block}
 .hero{border-radius:28px;padding:22px 20px;margin-bottom:18px;background:linear-gradient(120deg,rgba(75,167,202,.22),rgba(255,182,193,.25));box-shadow:var(--shadow)}.hero h1{margin:0 0 8px;font-size:28px}.hero p{margin:0;color:var(--muted);font-weight:600}
