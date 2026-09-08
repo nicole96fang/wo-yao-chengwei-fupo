@@ -1817,15 +1817,9 @@ onclick="saveRecord()"
 
 
 <script>
-
-/* =========================
-   基础设置
-========================= */
-
 const $ = id => document.getElementById(id);
 
 const storageKey = 'im-a-rich-girl-v3';
-
 
 const expenseCategories = [
   '饮食',
@@ -1839,366 +1833,159 @@ const expenseCategories = [
   '儿子'
 ];
 
-
 const incomeCategories = [
   '薪水',
-  'Bonus',
+  'bonus',
   '老公给'
 ];
 
-
-const saveCategories = [
-  '存钱目标'
-];
-
-
-let currentGoalId = null;
-
-
 let state = {
-
-  records:[],
-
-  goals:[],
-
-  wallets:['现金钱包'],
-
-  dailyNotes:{},
-
-  monthlyNotes:{}
-
+  records: [],
+  goals: [],
+  wallets: ['现金钱包'],
+  dailyNotes: {},
+  monthlyNotes: {}
 };
 
 
 /* =========================
-   数据保存
+   基础功能
 ========================= */
 
-function loadState(){
-
-  try{
-
+function loadState() {
+  try {
     const saved = localStorage.getItem(storageKey);
 
-    if(saved){
+    if (saved) {
+      const oldState = JSON.parse(saved);
 
       state = {
-        ...state,
-        ...JSON.parse(saved)
+        records: oldState.records || [],
+        goals: oldState.goals || [],
+        wallets: oldState.wallets || ['现金钱包'],
+        dailyNotes: oldState.dailyNotes || {},
+        monthlyNotes: oldState.monthlyNotes || {}
       };
-
     }
-
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 
-
-  if(
-    !Array.isArray(state.wallets)
-    ||
-    !state.wallets.length
-  ){
-
+  if (!Array.isArray(state.wallets) || !state.wallets.length) {
     state.wallets = ['现金钱包'];
-
   }
-
-
-  if(!Array.isArray(state.goals)){
-    state.goals = [];
-  }
-
-
-  if(!Array.isArray(state.records)){
-    state.records = [];
-  }
-
-
-  state.goals = state.goals.map(goal => ({
-
-    ...goal,
-
-    startDate:
-      goal.startDate || dateKey(),
-
-    days:
-      Number(goal.days || 0),
-
-    checkins:
-      Array.isArray(goal.checkins)
-        ? goal.checkins
-        : []
-
-  }));
-
 }
 
 
-function saveState(){
-
-  localStorage.setItem(
-    storageKey,
-    JSON.stringify(state)
-  );
-
+function saveState() {
+  localStorage.setItem(storageKey, JSON.stringify(state));
 }
 
 
-
-/* =========================
-   日期与金额
-========================= */
-
-function money(n){
-
+function money(n) {
   return `RM ${Number(n || 0).toFixed(2)}`;
-
 }
 
 
-function dateKey(d = new Date()){
-
+function dateKey(d = new Date()) {
   const year = d.getFullYear();
-
-  const month = String(
-    d.getMonth() + 1
-  ).padStart(2,'0');
-
-  const day = String(
-    d.getDate()
-  ).padStart(2,'0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
-
 }
 
 
-function monthKey(d = new Date()){
-
-  return dateKey(d).slice(0,7);
-
+function monthKey(d = new Date()) {
+  return dateKey(d).slice(0, 7);
 }
 
 
-function dateFromKey(key){
-
-  const [year,month,day] =
-    key.split('-').map(Number);
-
-  return new Date(
-    year,
-    month - 1,
-    day
-  );
-
-}
-
-
-function addDays(date,days){
-
-  const result = new Date(date);
-
-  result.setDate(
-    result.getDate() + days
-  );
-
-  return result;
-
-}
-
-
-function formatDate(key){
-
-  if(!key) return '';
-
-  const d = dateFromKey(key);
-
-  return d.toLocaleDateString(
-    'zh-CN',
-    {
-      year:'numeric',
-      month:'long',
-      day:'numeric'
-    }
-  );
-
-}
-
-
-function daysBetween(start,end){
-
-  const a = dateFromKey(
-    dateKey(start)
-  );
-
-  const b = dateFromKey(
-    dateKey(end)
-  );
-
-  return Math.round(
-    (b - a) /
-    (1000 * 60 * 60 * 24)
-  );
-
-}
-
-
-
-/* =========================
-   页面切换
-========================= */
-
-function showPage(pageId){
-
-  document
-    .querySelectorAll('.page')
-    .forEach(page => {
-
-      page.classList.remove('active');
-
-    });
-
-
-  $(pageId).classList.add('active');
-
-
-  if(pageId !== 'goalDetail'){
-
-    currentGoalId = null;
-
-  }
-
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-
-}
-
-
-function toggleMenu(force){
-
+function toggleMenu(force) {
   const open =
     typeof force === 'boolean'
       ? force
-      : !document.body.classList.contains(
-          'menuOpen'
-        );
+      : !document.body.classList.contains('menuOpen');
 
-
-  document.body.classList.toggle(
-    'menuOpen',
-    open
-  );
-
+  document.body.classList.toggle('menuOpen', open);
 }
 
 
-document
-  .querySelectorAll('.navitem')
-  .forEach(btn => {
+/* =========================
+   页面导航
+========================= */
 
-    btn.addEventListener(
-      'click',
-      () => {
+document.querySelectorAll('.navitem').forEach(btn => {
 
-        document
-          .querySelectorAll('.navitem')
-          .forEach(x => {
+  btn.addEventListener('click', () => {
 
-            x.classList.remove('active');
+    document
+      .querySelectorAll('.navitem')
+      .forEach(x => x.classList.remove('active'));
 
-          });
+    btn.classList.add('active');
 
+    document
+      .querySelectorAll('.page')
+      .forEach(x => x.classList.remove('active'));
 
-        btn.classList.add('active');
+    $(btn.dataset.page).classList.add('active');
 
+    toggleMenu(false);
 
-        showPage(
-          btn.dataset.page
-        );
-
-
-        toggleMenu(false);
-
-
-        renderAll();
-
-      }
-    );
-
+    renderAll();
   });
 
+});
 
 
 /* =========================
    记一笔
 ========================= */
 
-function openRecord(force = 'income'){
+function openRecord(force = 'income') {
 
   $('modal').classList.add('show');
 
   $('amountInput').value = '';
-
   $('note').value = '';
 
   setRecordType(force);
 
   renderWalletOptions();
-
   renderGoalOptions();
-
 }
 
 
-function closeModal(){
-
+function closeModal() {
   $('modal').classList.remove('show');
-
 }
 
 
-function setRecordType(type){
+function setRecordType(type) {
 
   $('type').value = type;
 
+  document.querySelectorAll('.typePill').forEach(btn => {
 
-  document
-    .querySelectorAll('.typePill')
-    .forEach(button => {
-
-      button.classList.toggle(
-        'active',
-        button.dataset.type === type
-      );
-
-    });
-
-
-  updateCategoryOptions();
-
-}
-
-
-document
-  .querySelectorAll('.typePill')
-  .forEach(button => {
-
-    button.addEventListener(
-      'click',
-      () => {
-
-        setRecordType(
-          button.dataset.type
-        );
-
-      }
+    btn.classList.toggle(
+      'active',
+      btn.dataset.type === type
     );
 
   });
+
+  updateCategoryOptions();
+}
+
+
+document.querySelectorAll('.typePill').forEach(btn => {
+
+  btn.addEventListener('click', () => {
+    setRecordType(btn.dataset.type);
+  });
+
+});
 
 
 $('type').addEventListener(
@@ -2207,400 +1994,271 @@ $('type').addEventListener(
 );
 
 
-function updateCategoryOptions(){
+function updateCategoryOptions() {
 
   const type = $('type').value;
 
+  let categories = incomeCategories;
+  let label = '收入分类';
 
-  let categories =
-    incomeCategories;
-
-  let label =
-    '收入分类';
-
-
-  if(type === 'expense'){
-
-    categories =
-      expenseCategories;
-
-    label =
-      '消费分类';
-
+  if (type === 'expense') {
+    categories = expenseCategories;
+    label = '消费分类';
   }
 
-
-  if(type === 'save'){
-
-    categories =
-      saveCategories;
-
-    label =
-      '存钱分类';
-
+  if (type === 'save') {
+    categories = ['存入目标'];
+    label = '存钱分类';
   }
 
-
-  $('categoryLabel').textContent =
-    label;
-
+  $('categoryLabel').textContent = label;
 
   $('category').innerHTML =
     categories
-      .map(category => `
-
-        <option value="${category}">
-          ${category}
-        </option>
-
-      `)
+      .map(c =>
+        `<option value="${c}">${c}</option>`
+      )
       .join('');
-
 
   $('goalField').style.display =
     type === 'save'
       ? 'block'
       : 'none';
-
 }
 
 
-function renderGoalOptions(){
+function renderGoalOptions() {
+
+  if (!state.goals.length) {
+
+    $('goalSelect').innerHTML =
+      '<option value="">暂无存钱目标</option>';
+
+    return;
+  }
 
   $('goalSelect').innerHTML =
-    state.goals.length
-
-      ? state.goals
-          .map(goal => `
-
-            <option value="${goal.id}">
-              ${goal.name}
-            </option>
-
-          `)
-          .join('')
-
-      : `
-          <option value="">
-            暂无目标
-          </option>
-        `;
-
+    state.goals
+      .map(g =>
+        `<option value="${g.id}">
+          ${g.name}
+        </option>`
+      )
+      .join('');
 }
 
 
-function renderWalletOptions(){
+function renderWalletOptions() {
 
   $('walletSelect').innerHTML =
     state.wallets
-      .map(wallet => `
-
-        <option value="${wallet}">
-          ${wallet}
-        </option>
-
-      `)
+      .map(w =>
+        `<option value="${w}">
+          ${w}
+        </option>`
+      )
       .join('');
-
 }
 
 
-function saveRecord(){
+function saveRecord() {
 
-  const amount =
-    Number(
-      $('amountInput').value
-    );
+  const amount = Number(
+    $('amountInput').value
+  );
 
-
-  if(
-    !amount ||
-    amount <= 0
-  ){
-
+  if (!amount || amount <= 0) {
     alert('请输入金额');
-
     return;
-
   }
 
-
-  const type =
-    $('type').value;
-
+  const type = $('type').value;
 
   const goalId =
     type === 'save'
       ? $('goalSelect').value
       : '';
 
-
-  if(
-    type === 'save'
-    &&
+  if (
+    type === 'save' &&
     !goalId
-  ){
-
-    alert(
-      '请先新增一个存钱目标'
-    );
-
+  ) {
+    alert('请先新增一个存钱目标');
     return;
-
   }
 
-
   const record = {
-
     id: crypto.randomUUID(),
-
     date: dateKey(),
-
     type,
-
     amount,
-
-    category:
-      $('category').value,
-
-    note:
-      $('note').value.trim(),
-
-    wallet:
-      $('walletSelect').value,
-
-    goalId,
-
-    source:'manual'
-
+    category: $('category').value,
+    note: $('note').value.trim(),
+    wallet: $('walletSelect').value,
+    goalId
   };
-
 
   state.records.unshift(record);
 
-
   saveState();
-
 
   closeModal();
 
-
   renderAll();
-
 }
-
-
-function deleteRecord(id){
-
-  if(
-    !confirm(
-      '确定删除这笔记录吗？'
-    )
-  ){
-    return;
-  }
-
-
-  state.records =
-    state.records.filter(
-      record =>
-        record.id !== id
-    );
-
-
-  saveState();
-
-
-  renderAll();
-
-}
-
 
 
 /* =========================
-   统计
+   删除记录
+========================= */
+
+function deleteRecord(id) {
+
+  if (!confirm('确定删除这笔记录吗？')) {
+    return;
+  }
+
+  state.records =
+    state.records.filter(
+      r => r.id !== id
+    );
+
+  saveState();
+
+  renderAll();
+}
+
+
+/* =========================
+   数据统计
 ========================= */
 
 function recordsForMonth(
   month = monthKey()
-){
+) {
 
   return state.records.filter(
-    record =>
-      record.date.startsWith(month)
+    r => r.date.startsWith(month)
   );
-
 }
 
 
 function totals(
   month = monthKey()
-){
+) {
 
-  const records =
-    recordsForMonth(month);
-
+  const rs = recordsForMonth(month);
 
   const income =
-    records
-      .filter(
-        record =>
-          record.type === 'income'
-      )
+    rs
+      .filter(r => r.type === 'income')
       .reduce(
-        (sum,record) =>
-          sum + record.amount,
+        (s, r) => s + Number(r.amount),
         0
       );
-
 
   const expense =
-    records
-      .filter(
-        record =>
-          record.type === 'expense'
-      )
+    rs
+      .filter(r => r.type === 'expense')
       .reduce(
-        (sum,record) =>
-          sum + record.amount,
+        (s, r) => s + Number(r.amount),
         0
       );
-
 
   const save =
-    records
-      .filter(
-        record =>
-          record.type === 'save'
-      )
+    rs
+      .filter(r => r.type === 'save')
       .reduce(
-        (sum,record) =>
-          sum + record.amount,
+        (s, r) => s + Number(r.amount),
         0
       );
 
-
   return {
-
     income,
-
     expense,
-
     save,
-
     balance:
       income -
       expense -
       save
-
   };
-
 }
 
 
-function recordIcon(type){
+function recordIcon(type) {
 
-  if(type === 'income'){
-    return '💰';
-  }
+  if (type === 'income') return '💰';
 
-  if(type === 'expense'){
-    return '💸';
-  }
+  if (type === 'expense') return '💸';
 
-  return '🎯';
+  if (type === 'save') return '🎯';
 
+  return '💳';
 }
 
 
-function typeName(type){
+function typeName(type) {
 
-  if(type === 'income'){
-    return '收入';
-  }
+  if (type === 'income') return '收入';
 
-  if(type === 'expense'){
-    return '支出';
-  }
+  if (type === 'expense') return '支出';
 
-  return '存钱';
+  if (type === 'save') return '存钱';
 
+  return '转账';
 }
-
 
 
 /* =========================
    我的总览
 ========================= */
 
-function renderOverview(){
+function renderOverview() {
 
-  const total =
-    totals();
-
+  const t = totals();
 
   $('incomeStat').textContent =
-    money(total.income);
-
+    money(t.income);
 
   $('expenseStat').textContent =
-    money(total.expense);
-
+    money(t.expense);
 
   $('saveStat').textContent =
-    money(total.save);
-
+    money(t.save);
 
   $('balanceStat').textContent =
-    money(total.balance);
-
+    money(t.balance);
 
   $('monthLabel').textContent =
     monthKey();
 
+  const today = new Date();
 
   $('todayText').textContent =
-    `今天 ${
-      new Date().toLocaleDateString(
-        'zh-CN',
-        {
-          month:'long',
-          day:'numeric'
-        }
-      )
-    } · 每天存一点，未来富一点`;
+    `今天 ${today.toLocaleDateString(
+      'zh-CN',
+      {
+        month: 'long',
+        day: 'numeric'
+      }
+    )} · 每天存一点，未来富一点`;
 
-
-  const all =
-    total.income +
-    total.expense +
-    total.save;
-
+  const total =
+    t.income +
+    t.expense +
+    t.save;
 
   $('chartText').textContent =
-    all
-
-      ? `
-        本月共记录 ${money(all)}，
-        收入 ${money(total.income)}
-        · 支出 ${money(total.expense)}
-        · 存钱 ${money(total.save)}
-      `
-
-      : `
-        开始记下第一笔账吧，
-        你的富婆之路从今天开始 💕
-      `;
-
+    total
+      ? `本月收入 ${money(t.income)} · 支出 ${money(t.expense)} · 存钱 ${money(t.save)}`
+      : '开始记下第一笔账吧，你的富婆之路从今天开始 💕';
 
   renderRecordList(
     'recentRecords',
-    state.records.slice(0,6),
+    state.records.slice(0, 6),
     true
   );
-
 }
-
 
 
 /* =========================
@@ -2611,1516 +2269,1052 @@ function renderRecordList(
   id,
   records,
   compact = false
-){
+) {
 
-  const element =
-    $(id);
+  const el = $(id);
 
+  if (!el) return;
 
-  if(!records.length){
+  if (!records.length) {
 
-    element.innerHTML = `
-      <div class="empty">
-        还没有记录，
-        快去记第一笔吧 💕
-      </div>
-    `;
+    el.innerHTML =
+      '<div class="empty">还没有记录，快去记第一笔吧 💕</div>';
 
     return;
-
   }
 
-
-  element.innerHTML =
+  el.innerHTML =
     records
-      .map(record => `
+      .map(r => `
 
-        <div class="recordItem">
+      <div class="recordItem">
 
-          <div class="recordLeft">
+        <div class="recordLeft">
 
-            <div class="recordIcon">
-              ${recordIcon(record.type)}
-            </div>
-
-
-            <div>
-
-              <div class="recordName">
-                ${record.category}
-              </div>
-
-
-              <div class="muted">
-
-                ${record.date}
-
-                ·
-
-                ${record.wallet}
-
-                ${
-                  record.note
-                    ? ' · ' + record.note
-                    : ''
-                }
-
-              </div>
-
-            </div>
-
+          <div class="recordIcon">
+            ${recordIcon(r.type)}
           </div>
 
+          <div>
 
-          <div style="text-align:right">
-
-            <div
-              class="
-                amount
-                ${
-                  record.type === 'income'
-                    ? 'blue'
-                    : record.type === 'expense'
-                      ? 'pink'
-                      : 'green'
-                }
-              "
-            >
-
-              ${
-                record.type === 'expense'
-                  ? '-'
-                  : '+'
-              }
-
-              ${money(record.amount)}
-
+            <div class="recordName">
+              ${r.category}
             </div>
 
+            <div class="muted">
 
-            ${
-              compact
+              ${r.date}
 
-                ? ''
+              ${r.note
+                ? ' · ' + r.note
+                : ''
+              }
 
-                : `
-                    <button
-                      class="deleteBtn"
-                      onclick="deleteRecord('${record.id}')"
-                    >
-                      删除
-                    </button>
-                  `
-            }
+            </div>
 
           </div>
 
         </div>
 
-      `)
+        <div style="text-align:right">
+
+          <div class="amount ${
+            r.type === 'income'
+              ? 'blue'
+              : r.type === 'expense'
+                ? 'pink'
+                : 'green'
+          }">
+
+            ${
+              r.type === 'expense'
+                ? '-'
+                : '+'
+            }
+
+            ${money(r.amount)}
+
+          </div>
+
+          ${
+            compact
+              ? ''
+              : `
+              <button
+                class="deleteBtn"
+                onclick="deleteRecord('${r.id}')"
+              >
+                删除
+              </button>
+              `
+          }
+
+        </div>
+
+      </div>
+
+    `)
       .join('');
-
 }
-
 
 
 /* =========================
    每日复盘
 ========================= */
 
-function renderDaily(){
+function renderDaily() {
 
-  const key =
-    dateKey();
+  const page = $('daily');
+
+  const today = new Date();
+
+  const todayString =
+    today.toLocaleDateString(
+      'zh-CN',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      }
+    );
+
+  const monthlyRecords =
+    recordsForMonth()
+      .sort((a, b) =>
+        b.date.localeCompare(a.date)
+      );
+
+  page.innerHTML = `
+
+    <div class="hero">
+
+      <h1>
+        每日复盘 ✍️
+      </h1>
+
+      <p>
+        ${todayString}
+      </p>
+
+    </div>
 
 
-  $('dailyNote').value =
-    state.dailyNotes[key] || '';
+    <div class="card">
+
+      <div class="row">
+
+        <div>
+
+          <h3 style="margin:0">
+            记一笔 📝
+          </h3>
+
+          <div class="muted">
+            记录今天的收入、支出或存钱
+          </div>
+
+        </div>
+
+        <button
+          class="softbtn"
+          style="
+            width:auto;
+            margin:0;
+            padding:12px 16px
+          "
+          onclick="openRecord()"
+        >
+          ＋ 记一笔
+        </button>
+
+      </div>
+
+    </div>
 
 
-  renderRecordList(
-    'todayRecords',
-    state.records.filter(
-      record =>
-        record.date === key
-    ),
-    false
-  );
+    <div
+      class="actions"
+      style="margin-top:14px"
+    >
 
+      <button
+        class="softbtn"
+        onclick="openRecord('expense')"
+      >
+        💸 消费分类
+      </button>
+
+
+      <button
+        class="softbtn"
+        onclick="openRecord('income')"
+      >
+        💰 收入分类
+      </button>
+
+    </div>
+
+
+    <button
+      class="bigbtn"
+      onclick="openTransfer()"
+    >
+      🔄 转账
+    </button>
+
+
+    <div
+      class="card"
+      style="margin-top:14px"
+    >
+
+      <div class="row">
+
+        <h3 style="margin:0">
+          📅 本月记录
+        </h3>
+
+        <span class="muted">
+          ${monthKey()}
+        </span>
+
+      </div>
+
+
+      <div id="dailyMonthRecords">
+
+        ${
+          monthlyRecords.length
+            ? monthlyRecords.map(r => `
+
+              <div class="recordItem">
+
+                <div class="recordLeft">
+
+                  <div class="recordIcon">
+                    ${recordIcon(r.type)}
+                  </div>
+
+                  <div>
+
+                    <div class="recordName">
+
+                      ${r.category}
+
+                    </div>
+
+                    <div class="muted">
+
+                      ${r.date}
+
+                      ${
+                        r.note
+                          ? ' · ' + r.note
+                          : ''
+                      }
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <div
+                  class="amount ${
+                    r.type === 'income'
+                      ? 'blue'
+                      : r.type === 'expense'
+                        ? 'pink'
+                        : 'green'
+                  }"
+                >
+
+                  ${
+                    r.type === 'expense'
+                      ? '-'
+                      : '+'
+                  }
+
+                  ${money(r.amount)}
+
+                </div>
+
+              </div>
+
+            `).join('')
+
+            : `
+              <div class="empty">
+                这个月还没有记录，
+                快去记第一笔吧 💕
+              </div>
+            `
+        }
+
+      </div>
+
+    </div>
+
+  `;
 }
 
 
-function saveDailyNote(){
+/* =========================
+   转账
+========================= */
 
-  state.dailyNotes[
-    dateKey()
-  ] =
-    $('dailyNote').value.trim();
+function openTransfer() {
 
+  if (state.wallets.length < 1) {
+    alert('请先新增账本');
+    return;
+  }
+
+  const from =
+    prompt(
+      `请输入转出的账本名称：\n${state.wallets.join('、')}`
+    );
+
+  if (!from) return;
+
+  if (!state.wallets.includes(from)) {
+    alert('没有找到这个账本');
+    return;
+  }
+
+  const destination =
+    prompt(
+      '请输入转入的账本名称，或输入存钱目标名称'
+    );
+
+  if (!destination) return;
+
+  const amount =
+    Number(
+      prompt('请输入转账金额')
+    );
+
+  if (!amount || amount <= 0) {
+    alert('请输入正确金额');
+    return;
+  }
+
+  const goal =
+    state.goals.find(
+      g => g.name === destination
+    );
+
+  if (goal) {
+
+    state.records.unshift({
+
+      id: crypto.randomUUID(),
+
+      date: dateKey(),
+
+      type: 'save',
+
+      amount,
+
+      category: '转入存钱目标',
+
+      note:
+        `从 ${from} 转入`,
+
+      wallet: from,
+
+      goalId: goal.id
+
+    });
+
+  } else {
+
+    if (
+      !state.wallets.includes(destination)
+    ) {
+
+      alert(
+        '没有找到目标账本或存钱目标'
+      );
+
+      return;
+    }
+
+    state.records.unshift({
+
+      id: crypto.randomUUID(),
+
+      date: dateKey(),
+
+      type: 'expense',
+
+      amount,
+
+      category: '转账',
+
+      note:
+        `转入 ${destination}`,
+
+      wallet: from,
+
+      goalId: ''
+
+    });
+
+    state.records.unshift({
+
+      id: crypto.randomUUID(),
+
+      date: dateKey(),
+
+      type: 'income',
+
+      amount,
+
+      category: '转账',
+
+      note:
+        `来自 ${from}`,
+
+      wallet: destination,
+
+      goalId: ''
+
+    });
+
+  }
 
   saveState();
 
+  renderAll();
 
-  alert(
-    '今日复盘已保存 💕'
-  );
-
+  alert('转账成功 💕');
 }
-
 
 
 /* =========================
    月度复盘
 ========================= */
 
-function setupMonthPicker(){
+function setupMonthPicker() {
 
-  const now =
-    new Date();
-
+  const now = new Date();
 
   const months = [];
 
+  for (let i = 0; i < 12; i++) {
 
-  for(
-    let i = 0;
-    i < 12;
-    i++
-  ){
-
-    const date =
+    const d =
       new Date(
         now.getFullYear(),
         now.getMonth() - i,
         1
       );
 
-
     const key =
-      `${date.getFullYear()}-${
-        String(
-          date.getMonth() + 1
-        ).padStart(2,'0')
-      }`;
-
+      `${d.getFullYear()}-${String(
+        d.getMonth() + 1
+      ).padStart(2, '0')}`;
 
     months.push(key);
-
   }
-
 
   $('monthlyPicker').innerHTML =
     months
-      .map(month => `
-
-        <option value="${month}">
-          ${month}
-        </option>
-
-      `)
+      .map(
+        m =>
+          `<option value="${m}">
+            ${m}
+          </option>`
+      )
       .join('');
-
 
   $('monthlyPicker').value =
     monthKey();
 
-
   $('monthlyPicker').onchange =
     renderMonthly;
-
 }
 
 
-function renderMonthly(){
+function renderMonthly() {
 
-  const month =
+  const m =
     $('monthlyPicker').value;
 
-
-  const total =
-    totals(month);
-
+  const t =
+    totals(m);
 
   $('monthlyIncome').textContent =
-    money(total.income);
-
+    money(t.income);
 
   $('monthlyExpense').textContent =
-    money(total.expense);
-
+    money(t.expense);
 
   $('monthlySave').textContent =
-    money(total.save);
-
+    money(t.save);
 
   $('monthlyBalance').textContent =
-    money(total.balance);
-
+    money(t.balance);
 
   $('monthlyNote').value =
-    state.monthlyNotes[month] || '';
-
+    state.monthlyNotes[m] || '';
 }
 
 
-function saveMonthlyNote(){
+function saveMonthlyNote() {
 
   state.monthlyNotes[
     $('monthlyPicker').value
   ] =
     $('monthlyNote').value.trim();
 
-
   saveState();
 
-
-  alert(
-    '月度复盘已保存 💕'
-  );
-
+  alert('月度复盘已保存 💕');
 }
-
 
 
 /* =========================
    打卡历史
 ========================= */
 
-function renderHistory(){
+function renderHistory() {
 
   const grouped = {};
 
+  state.records.forEach(r => {
 
-  state.records.forEach(record => {
-
-    if(!grouped[record.date]){
-
-      grouped[record.date] = [];
-
+    if (!grouped[r.date]) {
+      grouped[r.date] = [];
     }
 
-
-    grouped[record.date].push(record);
+    grouped[r.date].push(r);
 
   });
 
-
   const dates =
-    Object
-      .keys(grouped)
+    Object.keys(grouped)
       .sort(
-        (a,b) =>
+        (a, b) =>
           b.localeCompare(a)
       );
 
-
   $('historyList').innerHTML =
     dates.length
+      ? dates.map(d => `
 
-      ? dates
-          .map(date => `
+        <div class="historyItem">
 
-            <div class="historyItem">
+          <div>
 
-              <div>
+            <strong>
+              ${d}
+            </strong>
 
-                <strong>
-                  ${date}
-                </strong>
+            <div class="muted">
 
-                <div class="muted">
-
-                  ${
-                    grouped[date].length
-                  } 笔记录
-
-                </div>
-
-              </div>
-
-
-              <div class="goalMoney">
-
-                ${money(
-
-                  grouped[date]
-                    .reduce(
-                      (sum,record) =>
-
-                        sum +
-
-                        (
-                          record.type === 'expense'
-                            ? -record.amount
-                            : record.amount
-                        ),
-
-                      0
-                    )
-
-                )}
-
-              </div>
+              ${grouped[d].length}
+              笔记录
 
             </div>
 
-          `)
-          .join('')
+          </div>
+
+          <div class="goalMoney">
+
+            ${money(
+              grouped[d].reduce(
+                (s, r) =>
+                  s +
+                  (
+                    r.type === 'expense'
+                      ? -r.amount
+                      : r.amount
+                  ),
+                0
+              )
+            )}
+
+          </div>
+
+        </div>
+
+      `).join('')
 
       : `
-          <div class="empty">
-            还没有打卡历史
-          </div>
-        `;
-
+        <div class="empty">
+          还没有打卡历史
+        </div>
+      `;
 }
-
 
 
 /* =========================
    存钱目标
 ========================= */
 
-function addGoal(){
+function addGoal() {
 
   const name =
-    $('goalName')
-      .value
-      .trim();
-
+    $('goalName').value.trim();
 
   const target =
     Number(
       $('goalAmount').value
     );
 
+  let days = 0;
 
-  const days =
-    Number(
-      $('goalDays').value
-    ) || 0;
+  const goalDays =
+    $('goalDays');
 
+  if (goalDays) {
+    days =
+      Number(goalDays.value) || 0;
+  }
 
-  if(
+  if (
     !name ||
     !target ||
     target <= 0
-  ){
+  ) {
 
     alert(
-      '请填写目标名称和金额'
+      '请填写目标名称和目标金额'
     );
 
     return;
-
   }
 
+  const newGoal = {
 
-  const goal = {
-
-    id:
-      crypto.randomUUID(),
+    id: crypto.randomUUID(),
 
     name,
 
     target,
 
-    startDate:
-      dateKey(),
-
     days,
 
-    checkins:[]
+    createdAt: dateKey(),
+
+    checkins: []
 
   };
 
-
-  state.goals.push(goal);
-
+  state.goals.push(newGoal);
 
   $('goalName').value = '';
-
   $('goalAmount').value = '';
 
-  $('goalDays').value = '';
-
+  if (goalDays) {
+    goalDays.value = '';
+  }
 
   saveState();
 
-
   renderGoals();
 
+  alert(
+    '存钱目标新增成功 🎯'
+  );
 }
 
 
-function goalSaved(goal){
+function goalSaved(goal) {
 
   return state.records
-
     .filter(
-      record =>
-        record.type === 'save'
-        &&
-        record.goalId === goal.id
+      r =>
+        r.type === 'save' &&
+        r.goalId === goal.id
     )
-
     .reduce(
-      (sum,record) =>
-        sum + record.amount,
+      (s, r) =>
+        s + Number(r.amount),
       0
     );
-
 }
 
 
-function getGoalById(id){
-
-  return state.goals.find(
-    goal =>
-      goal.id === id
-  );
-
-}
-
-
-function goalEndDate(goal){
-
-  if(
-    !goal.days ||
-    goal.days <= 0
-  ){
-    return null;
-  }
-
-
-  const start =
-    dateFromKey(
-      goal.startDate
-    );
-
-
-  const end =
-    addDays(
-      start,
-      goal.days - 1
-    );
-
-
-  return dateKey(end);
-
-}
-
-
-function remainingGoalDays(goal){
-
-  if(
-    !goal.days ||
-    goal.days <= 0
-  ){
-    return null;
-  }
-
-
-  const today =
-    dateKey();
-
-
-  const end =
-    goalEndDate(goal);
-
-
-  const remaining =
-    daysBetween(
-      today,
-      end
-    ) + 1;
-
-
-  return Math.max(
-    0,
-    remaining
-  );
-
-}
-
-
-function goalDailyAmount(goal){
+function getGoalDailyAmount(goal) {
 
   const saved =
     goalSaved(goal);
 
-
-  const remainingMoney =
+  const remaining =
     Math.max(
       0,
       goal.target - saved
     );
 
-
-  const days =
-    remainingGoalDays(goal);
-
-
-  if(days === null){
-
-    if(goal.days > 0){
-
-      return remainingMoney /
-        goal.days;
-
-    }
-
+  if (
+    !goal.days ||
+    goal.days <= 0
+  ) {
     return 0;
-
   }
 
+  const passedDays =
+    Math.max(
+      0,
+      Math.floor(
+        (
+          new Date() -
+          new Date(goal.createdAt)
+        ) /
+        86400000
+      )
+    );
 
-  if(days <= 0){
+  const remainingDays =
+    Math.max(
+      1,
+      goal.days - passedDays
+    );
 
-    return remainingMoney;
-
-  }
-
-
-  return remainingMoney / days;
-
+  return remaining /
+    remainingDays;
 }
 
 
-function renderGoals(){
+function renderGoals() {
 
-  const element =
+  const el =
     $('goalList');
 
+  if (!el) return;
 
-  if(!state.goals.length){
+  if (!state.goals.length) {
 
-    element.innerHTML = `
+    el.innerHTML =
+      `
       <div class="empty">
         还没有存钱目标，
         先新增一个梦想吧 🎯
       </div>
-    `;
+      `;
 
     return;
-
   }
 
+  el.innerHTML =
+    state.goals.map(goal => {
 
-  element.innerHTML =
-    state.goals
-      .map(goal => {
+      const saved =
+        goalSaved(goal);
 
-        const saved =
-          goalSaved(goal);
+      const remaining =
+        Math.max(
+          0,
+          goal.target - saved
+        );
 
+      const pct =
+        Math.min(
+          100,
+          saved / goal.target * 100
+        );
 
-        const percentage =
-          Math.min(
-            100,
-            (saved / goal.target) * 100
-          );
+      const daily =
+        getGoalDailyAmount(goal);
 
+      return `
 
-        const remaining =
-          Math.max(
-            0,
-            goal.target - saved
-          );
+        <div
+          class="goalItem"
+          style="
+            display:block;
+            cursor:pointer;
+            padding:18px 0
+          "
+          onclick="openGoalDetail('${goal.id}')"
+        >
 
+          <div class="row">
 
-        const days =
-          remainingGoalDays(goal);
+            <strong>
+              ${goal.name}
+            </strong>
 
+            <span class="goalMoney">
 
-        return `
+              ${money(saved)}
+              /
+              ${money(goal.target)}
 
-          <div
-            class="goalItem goalClickArea"
-            onclick="openGoalDetail('${goal.id}')"
-            style="display:block"
-          >
+            </span>
 
-            <div class="row">
-
-              <strong>
-                ${goal.name}
-              </strong>
-
-
-              <span class="goalMoney">
-
-                ${money(saved)}
-
-                /
-
-                ${money(goal.target)}
-
-              </span>
-
-            </div>
+          </div>
 
 
-            <div class="progressWrap">
+          <div class="progressWrap">
 
-              <div class="progressBar">
+            <div class="progressBar">
 
-                <div
-                  class="progressFill"
-                  style="width:${percentage}%"
-                ></div>
-
-              </div>
-
-            </div>
-
-
-            <div
-              class="row"
-              style="margin-top:10px"
-            >
-
-              <span class="muted">
-
-                ${percentage.toFixed(0)}% 完成
-
-                ·
-
-                还差 ${money(remaining)}
-
-              </span>
-
-
-              <span
-                class="muted"
-                style="color:var(--blue);font-weight:900"
-              >
-
-                ${
-                  days === null
-                    ? '点击查看 →'
-                    : `还剩 ${days} 天 →`
-                }
-
-              </span>
+              <div
+                class="progressFill"
+                style="width:${pct}%"
+              ></div>
 
             </div>
 
           </div>
 
-        `;
 
-      })
-      .join('');
+          <div
+            class="row"
+            style="margin-top:10px"
+          >
 
+            <span class="muted">
+
+              ${
+                goal.days
+                  ? `每天建议存 ${money(daily)}`
+                  : '点击查看存钱计划'
+              }
+
+            </span>
+
+            <span class="muted">
+
+              ${pct.toFixed(0)}% 完成 →
+
+            </span>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join('');
 }
-
 
 
 /* =========================
-   打开目标详情
+   存钱目标详情
 ========================= */
 
-function openGoalDetail(id){
+function openGoalDetail(goalId) {
 
   const goal =
-    getGoalById(id);
-
-
-  if(!goal) return;
-
-
-  currentGoalId =
-    id;
-
-
-  showPage(
-    'goalDetail'
-  );
-
-
-  renderGoalDetail();
-
-}
-
-
-function goBackToGoals(){
-
-  showPage(
-    'goals'
-  );
-
-
-  renderGoals();
-
-}
-
-
-function renderGoalDetail(){
-
-  const goal =
-    getGoalById(
-      currentGoalId
+    state.goals.find(
+      g => g.id === goalId
     );
 
-
-  if(!goal){
-
-    goBackToGoals();
-
-    return;
-
-  }
-
+  if (!goal) return;
 
   const saved =
     goalSaved(goal);
 
-
-  const remainingMoney =
+  const remaining =
     Math.max(
       0,
       goal.target - saved
     );
 
+  const daily =
+    getGoalDailyAmount(goal);
 
-  const percentage =
-    Math.min(
-      100,
-      (saved / goal.target) * 100
-    );
-
-
-  const endDate =
-    goalEndDate(goal);
-
-
-  const remainingDays =
-    remainingGoalDays(goal);
-
-
-  const dailyAmount =
-    goalDailyAmount(goal);
-
-
-  $('detailGoalName').textContent =
-    goal.name;
-
-
-  $('detailGoalMoney').textContent =
-    `${money(saved)} / ${money(goal.target)}`;
-
-
-  $('detailGoalProgress').style.width =
-    `${percentage}%`;
-
-
-  $('detailGoalPercent').textContent =
-    `${percentage.toFixed(1)}% 完成`;
-
-
-  $('detailRemainingMoney').textContent =
-    money(remainingMoney);
-
-
-  $('detailRemainingDays').textContent =
-    remainingDays === null
-      ? '未设置'
-      : `${remainingDays} 天`;
-
-
-  $('detailDailyAmount').textContent =
-    dailyAmount > 0
-      ? money(dailyAmount)
-      : 'RM 0.00';
-
-
-  $('detailCheckinCount').textContent =
-    `${goal.checkins.length} 天`;
-
-
-  $('detailGoalDate').textContent =
-    endDate
-
-      ? `
-          开始：${formatDate(goal.startDate)}
-          ·
-          截止：${formatDate(endDate)}
-        `
-
-      : `
-          还没有设置存钱期限
-        `;
-
-
-  $('detailGoalDays').value =
-    goal.days || '';
-
-
-  $('todayCheckinAmount').textContent =
-    dailyAmount > 0
-      ? money(dailyAmount)
-      : '请先设置期限';
-
+  const checkins =
+    goal.checkins || [];
 
   const today =
     dateKey();
 
-
-  const checkedToday =
-    goal.checkins.includes(today);
-
-
-  $('todayCheckinText').textContent =
-    checkedToday
-
-      ? '今天已经成功完成存钱打卡 🎉'
-
-      : '点击今天的圆圈，代表今天成功存入';
-
-
-  $('todayCheckinButton').textContent =
-    checkedToday
-
-      ? '✓ 今天已经完成打卡'
-
-      : '✓ 今天成功存钱';
-
-
-  renderCheckinCalendar(goal);
-
-
-  const goalRecords =
-    state.records.filter(
-      record =>
-        record.type === 'save'
-        &&
-        record.goalId === goal.id
-    );
-
-
-  renderRecordList(
-    'goalRecordList',
-    goalRecords,
-    false
-  );
-
-}
-
-
-
-/* =========================
-   保存目标期限
-========================= */
-
-function saveGoalDays(){
-
-  const goal =
-    getGoalById(
-      currentGoalId
-    );
-
-
-  if(!goal) return;
-
-
-  const days =
-    Number(
-      $('detailGoalDays').value
-    );
-
-
-  if(
-    !days ||
-    days <= 0
-  ){
-
-    alert(
-      '请输入正确的期限天数'
-    );
-
-    return;
-
-  }
-
-
-  goal.days =
-    Math.floor(days);
-
-
-  goal.startDate =
-    dateKey();
-
-
-  goal.checkins = [];
-
-
-  saveState();
-
-
-  renderGoals();
-
-  renderGoalDetail();
-
-
-  alert(
-    '存钱期限已经设置成功 💕'
-  );
-
-}
-
-
-
-/* =========================
-   每日圆圈打卡表
-========================= */
-
-function renderCheckinCalendar(goal){
-
-  const calendar =
-    $('checkinCalendar');
-
-
-  if(
-    !goal.days ||
-    goal.days <= 0
-  ){
-
-    calendar.innerHTML = `
-      <div
-        class="empty"
-        style="
-          grid-column:1/-1;
-          padding:20px
-        "
-      >
-        请先设置完成目标的期限，
-        就会出现每日打卡圆表 ⭕
-      </div>
-    `;
-
-    return;
-
-  }
-
-
-  const start =
-    dateFromKey(
-      goal.startDate
-    );
-
-
-  const today =
-    dateKey();
-
-
-  let html = '';
-
-
-  for(
-    let i = 0;
-    i < goal.days;
-    i++
-  ){
-
-    const date =
-      addDays(
-        start,
-        i
-      );
-
-
-    const key =
-      dateKey(date);
-
-
-    const checked =
-      goal.checkins.includes(key);
-
-
-    const isToday =
-      key === today;
-
-
-    const isFuture =
-      key > today;
-
-
-    let classes =
-      'checkinDay';
-
-
-    if(checked){
-      classes += ' checked';
-    }
-
-
-    if(isToday){
-      classes += ' today';
-    }
-
-
-    if(isFuture){
-      classes += ' future';
-    }
-
-
-    const label =
-      checked
-        ? '✓'
-        : i + 1;
-
-
-    html += `
-
-      <button
-        class="${classes}"
-        ${
-          isFuture
-            ? 'disabled'
-            : ''
-        }
-        onclick="
-          ${
-            isFuture
-
-              ? ''
-
-              : `toggleGoalCheckin(
-                  '${goal.id}',
-                  '${key}'
-                )`
-          }
-        "
-        title="${formatDate(key)}"
-      >
-
-        ${label}
-
-      </button>
-
-    `;
-
-  }
-
-
-  calendar.innerHTML =
-    html;
-
-}
-
-
-
-/* =========================
-   存钱打卡
-========================= */
-
-function toggleTodayCheckin(){
-
-  const goal =
-    getGoalById(
-      currentGoalId
-    );
-
-
-  if(!goal) return;
-
-
-  if(
-    !goal.days ||
-    goal.days <= 0
-  ){
-
-    alert(
-      '请先设置这个目标的期限天数'
-    );
-
-    return;
-
-  }
-
-
-  toggleGoalCheckin(
-    goal.id,
-    dateKey()
-  );
-
-}
-
-
-function toggleGoalCheckin(
-  goalId,
-  checkDate
-){
-
-  const goal =
-    getGoalById(goalId);
-
-
-  if(!goal) return;
-
-
-  const today =
-    dateKey();
-
-
-  if(checkDate > today){
-
-    return;
-
-  }
-
-
-  const alreadyChecked =
-    goal.checkins.includes(
-      checkDate
-    );
-
-
-  if(alreadyChecked){
-
-    goal.checkins =
-      goal.checkins.filter(
-        date =>
-          date !== checkDate
-      );
-
-
-    state.records =
-      state.records.filter(
-        record =>
-          !(
-            record.source === 'goal-checkin'
-            &&
-            record.goalId === goalId
-            &&
-            record.date === checkDate
-          )
-      );
-
-
-  }else{
-
-    const dailyAmount =
-      goalDailyAmount(goal);
-
-
-    if(dailyAmount <= 0){
-
-      alert(
-        '目标已经完成，太棒了 🎉'
-      );
-
-      return;
-
-    }
-
-
-    goal.checkins.push(
-      checkDate
-    );
-
-
-    state.records.unshift({
-
-      id:
-        crypto.randomUUID(),
-
-      date:
-        checkDate,
-
-      type:
-        'save',
-
-      amount:
-        Number(
-          dailyAmount.toFixed(2)
-        ),
-
-      category:
-        '每日存钱打卡',
-
-      note:
-        `完成 ${goal.name} 每日存钱打卡`,
-
-      wallet:
-        state.wallets[0] ||
-        '现金钱包',
-
-      goalId,
-
-      source:
-        'goal-checkin'
-
-    });
-
-  }
-
-
-  saveState();
-
-
-  renderGoals();
-
-  renderGoalDetail();
-
-  renderOverview();
-
-}
-
-
-
-/* =========================
-   删除当前目标
-========================= */
-
-function deleteCurrentGoal(){
-
-  const goal =
-    getGoalById(
-      currentGoalId
-    );
-
-
-  if(!goal) return;
-
-
-  if(
-    !confirm(
-      `确定删除「${goal.name}」吗？`
-    )
-  ){
-    return;
-  }
-
-
-  state.goals =
-    state.goals.filter(
-      item =>
-        item.id !== currentGoalId
-    );
-
-
-  state.records =
-    state.records.map(record => {
-
-      if(
-        record.goalId === currentGoalId
-      ){
-
-        return {
-          ...record,
-          goalId:''
-        };
-
-      }
-
-      return record;
-
-    });
-
-
-  saveState();
-
-
-  currentGoalId =
-    null;
-
-
-  goBackToGoals();
-
-
-  renderAll();
-
-}
-
-
-
-/* =========================
-   账本
-========================= */
-
-function addWallet(){
-
-  const name =
-    $('walletName')
-      .value
-      .trim();
-
-
-  if(!name){
-
-    alert(
-      '请输入账本名称'
-    );
-
-    return;
-
-  }
-
-
-  if(
-    state.wallets.includes(name)
-  ){
-
-    alert(
-      '这个账本已经存在'
-    );
-
-    return;
-
-  }
-
-
-  state.wallets.push(name);
-
-
-  $('walletName').value = '';
-
-
-  saveState();
-
-
-  renderWallets();
-
-}
-
-
-function renderWallets(){
-
-  $('walletList').innerHTML =
-    state.wallets
-      .map(wallet => {
-
-        const balance =
-          state.records
-
-            .filter(
-              record =>
-                record.wallet === wallet
-            )
-
-            .reduce(
-              (sum,record) => {
-
-                if(
-                  record.type === 'expense'
-                ){
-
-                  return (
-                    sum -
-                    record.amount
-                  );
-
-                }
-
-
-                if(
-                  record.type === 'save'
-                ){
-
-                  return (
-                    sum -
-                    record.amount
-                  );
-
-                }
-
-
-                return (
-                  sum +
-                  record.amount
-                );
-
-              },
-
-              0
+  const totalDays =
+    goal.days || 0;
+
+  const circles =
+    totalDays
+      ? Array.from(
+          { length: totalDays },
+          (_, i) => {
+
+            const d =
+              new Date(
+                goal.createdAt
+              );
+
+            d.setDate(
+              d.getDate() + i
             );
 
+            const key =
+              dateKey(d);
 
-        return `
+            const active =
+              checkins.includes(key);
 
-          <div class="recordItem">
+            return `
+              <button
+                onclick="
+                  event.stopPropagation();
+                  toggleGoalCheckin(
+                    '${goal.id}',
+                    '${key}'
+                  )
+                "
+                style="
+                  width:30px;
+                  height:30px;
+                  border-radius:50%;
+                  border:2px solid #4ba7ca;
+                  background:${
+                    active
+                      ? '#4ba7ca'
+                      : 'white'
+                  };
+                  color:${
+                    active
+                      ? 'white'
+                      : '#4ba7ca'
+                  };
+                  font-size:12px
+                "
+              >
+                ${active ? '✓' : i + 1}
+              </button>
+            `;
 
-            <div class="recordLeft">
+          }
+        ).join('')
 
-              <div class="recordIcon">
-                💳
-              </div>
+      : `
+        <div class="muted">
+          你还没有设置期限天数
+        </div>
+      `;
+
+  $('modal').classList.add('show');
+
+  document.querySelector(
+    '#modal .sheet'
+  ).innerHTML = `
+
+    <div class="sheetTop">
+
+      <h2 style="margin:0">
+        🎯 ${goal.name}
+      </h2>
+
+      <button
+        class="closeBtn"
+        onclick="closeModal(); restoreRecordModal();"
+      >
+        关闭
+      </button>
+
+    </div>
 
 
-              <div>
+    <div class="card">
 
-                <div class="recordName">
-                  ${wallet}
-                </div>
+      <div class="row">
 
-                <div class="muted">
-                  当前账本余额
-                </div>
+        <span class="muted">
+          目标金额
+        </span>
 
-              </div>
+        <strong>
+          ${money(goal.target)}
+        </strong>
 
-            </div>
+      </div>
 
 
-            <div class="amount blue">
+      <div
+        class="row"
+        style="margin-top:12px"
+      >
 
-              ${money(balance)}
+        <span class="muted">
+          已存金额
+        </span>
 
-            </div>
+        <strong class="green">
+          ${money(saved)}
+        </strong>
+
+      </div>
+
+
+      <div
+        class="row"
+        style="margin-top:12px"
+      >
+
+        <span class="muted">
+          还差多少
+        </span>
+
+        <strong class="pink">
+          ${money(remaining)}
+        </strong>
+
+      </div>
+
+
+      ${
+        goal.days
+          ? `
+          <div
+            class="row"
+            style="margin-top:12px"
+          >
+
+            <span class="muted">
+              计划天数
+            </span>
+
+            <strong>
+              ${goal.days} 天
+            </strong>
 
           </div>
 
-        `;
+          <div
+            class="row"
+            style="margin-top:12px"
+          >
 
-      })
-      .join('');
+            <span class="muted">
+              每天建议存
+            </span>
 
-}
+            <strong class="blue">
+              ${money(daily)}
+            </strong>
 
+          </div>
+          `
+          : ''
+      }
 
-
-/* =========================
-   总渲染
-========================= */
-
-function renderAll(){
-
-  renderOverview();
-
-  renderDaily();
-
-  renderMonthly();
-
-  renderHistory();
-
-  renderGoals();
-
-  renderWallets();
+    </div>
 
 
-  if(currentGoalId){
+    <div
+      class="card"
+      style="margin-top:14px"
+    >
 
-    renderGoalDetail();
+      <h3>
+        📅 每日存钱打卡
+      </h3>
 
-  }
-
-}
-
-
-
-/* =========================
-   初始化
-========================= */
-
-loadState();
-
-setupMonthPicker();
-
-renderAll();
-
-</script>
+      <div
+        style="
+          display:flex;
+          flex-wrap:wrap;
+          gap:10px
+        "
+     
 
 </body>
 </html>
