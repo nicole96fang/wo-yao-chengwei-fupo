@@ -29,7 +29,21 @@ button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.app{
 header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.88);backdrop-filter:blur(14px)}
 .brand{font-size:24px;font-weight:900}.iconBtn{width:48px;height:48px;border-radius:16px;background:#eef8fc;color:var(--ink);font-size:25px;display:grid;place-items:center}.page{display:none;padding:20px 18px 36px}.page.active{display:block}
 .hero{border-radius:28px;padding:22px 20px;margin-bottom:18px;background:linear-gradient(120deg,rgba(75,167,202,.22),rgba(255,182,193,.25));box-shadow:var(--shadow)}.hero h1{margin:0 0 8px;font-size:28px}.hero p{margin:0;color:var(--muted);font-weight:600}
-.grid2,.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 8px 22px rgba(65,116,135,.07)}.card h3{margin:0 0 14px;font-size:17px}
+.grid2,.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{
+background:rgba(255,255,255,.72);
+
+border:1px solid rgba(255,255,255,.75);
+
+border-radius:24px;
+
+padding:18px;
+
+box-shadow:
+0 8px 22px rgba(65,116,135,.08);
+
+backdrop-filter:blur(8px);
+-webkit-backdrop-filter:blur(8px);
+}.card h3{margin:0 0 14px;font-size:17px}
 .stat .label,.muted{color:var(--muted);font-size:13px;font-weight:700}.stat .value{margin-top:8px;font-size:22px;font-weight:900}.blue{color:var(--blue)}.pink{color:#dc7184}.green{color:var(--green)}
 .bigbtn,.softbtn{width:100%;border-radius:20px;padding:16px 18px;font-weight:900;margin-top:12px}.bigbtn{background:linear-gradient(90deg,var(--blue),#76b7d2);color:#fff}.softbtn{background:#eff8fc;color:#397994;border:1px solid #d8edf5}.dangerBtn{background:#fff0f2;color:#c45d70}
 .progressWrap{margin-top:12px}.progressBar{height:13px;background:#edf5f8;border-radius:99px;overflow:hidden}.progressFill{height:100%;background:linear-gradient(90deg,var(--blue),var(--pink));border-radius:99px;transition:.4s}
