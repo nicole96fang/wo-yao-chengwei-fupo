@@ -6,7 +6,7 @@
 <title>我要成为富婆！</title>
 <style>
 :root{--blue:#4ba7ca;--pink:#ffb6c1;--ink:#24424d;--muted:#6f8790;--line:#d9edf4;--green:#36a487;--shadow:0 12px 30px rgba(52,109,130,.12)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:linear-gradient(145deg,#f8fdff,#fff8fb 48%,#f4fbfe)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;font-family:"仓耳今楷","CangEr JinKai","TsangerJinKai","LXGW WenKai","PingFang SC","Microsoft YaHei",serif;color:var(--ink);background:linear-gradient(145deg,#f8fdff,#fff8fb 48%,#f4fbfe)}
 button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.app{width:100%;max-width:760px;margin:auto;min-height:100vh;background:rgba(255,255,255,.45)}
 header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.88);backdrop-filter:blur(14px)}
 .brand{font-size:24px;font-weight:900}.iconBtn{width:48px;height:48px;border-radius:16px;background:#eef8fc;color:var(--ink);font-size:25px;display:grid;place-items:center}.page{display:none;padding:20px 18px 36px}.page.active{display:block}
@@ -34,6 +34,15 @@ header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:cen
 .transferTargetHint{font-size:12px;color:var(--muted);margin-top:6px;font-weight:700}
 
 @media(max-width:420px){.brand{font-size:22px}.card{padding:15px}.hero h1{font-size:26px}.checkinCalendar{gap:7px}.checkinDay{font-size:10px}}
+
+/* 仓耳今楷字体主题 */
+.brand, h1, h2, h3, .sideTitle, .navitem, .bigbtn, .softbtn, .backBtn, .closeBtn, .field label {
+  font-family:"仓耳今楷","CangEr JinKai","TsangerJinKai","LXGW WenKai","PingFang SC","Microsoft YaHei",serif;
+}
+
+.amount, .value, .goalMoney, .goalNumbers, .number {
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+}
 </style>
 </head>
 <body>
