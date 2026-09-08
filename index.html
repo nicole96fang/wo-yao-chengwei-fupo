@@ -143,8 +143,13 @@ header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:cen
 </section>
 
 <section class="page" id="wallets">
-<div class="hero"><h1>账本 💳</h1><p>管理不同的钱包和账户</p></div>
-<div class="card"><div class="field"><label>账本名称</label><input id="walletName" placeholder="例如：现金钱包"></div><button class="bigbtn" onclick="addWallet()">新增账本</button></div>
+<div class="hero"><h1>账本 💳</h1><p>管理不同的钱包和账户，清楚查看每个账本的余额</p></div>
+<div class="card">
+  <div class="field"><label>账本名称</label><input id="walletName" placeholder="例如：现金钱包、ewallet"></div>
+  <div class="field"><label>初始金额</label><input id="walletOpeningBalance" type="number" min="0" step="0.01" placeholder="RM 0.00"></div>
+  <div class="muted">初始金额是你开始使用这个账本时，里面原本拥有的钱。之后的收入、支出、存钱和转账都会自动计算余额。</div>
+  <button class="bigbtn" onclick="addWallet()">新增账本</button>
+</div>
 <div class="card" style="margin-top:14px"><div id="walletList"></div></div>
 </section>
 </main>
@@ -208,7 +213,7 @@ const $=id=>document.getElementById(id);
 const storageKey='im-a-rich-girl-v3';
 const expenseCategories=['饮食','购物','水费','电费','电话费','车油费','Grocery','妈妈','儿子'];
 const incomeCategories=['薪水','bonus','老公给'];
-let state={records:[],goals:[],wallets:['现金钱包'],dailyNotes:{},monthlyNotes:{}};
+let state={records:[],goals:[],wallets:[{name:'现金钱包',openingBalance:0}],dailyNotes:{},monthlyNotes:{}};
 let currentGoalId=null;
 
 function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random()}
@@ -219,22 +224,41 @@ function localDate(key){const [y,m,d]=String(key).split('-').map(Number);return 
 function dayDiff(a,b){return Math.floor((localDate(b)-localDate(a))/86400000)}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
+function normalizeWallets(wallets){
+ const list=Array.isArray(wallets)&&wallets.length?wallets:[{name:'现金钱包',openingBalance:0}];
+ return list.map(w=>{
+   if(typeof w==='string')return {name:w,openingBalance:0};
+   return {name:String(w?.name||'现金钱包'),openingBalance:Number(w?.openingBalance||0)};
+ }).filter(w=>w.name.trim());
+}
+function walletNames(){return state.wallets.map(w=>w.name)}
+function getWallet(name){return state.wallets.find(w=>w.name===name)}
+function walletStats(name){
+ const rs=state.records.filter(r=>r.wallet===name);
+ const opening=Number(getWallet(name)?.openingBalance||0);
+ const income=rs.filter(r=>r.type==='income').reduce((s,r)=>s+Number(r.amount||0),0);
+ const expense=rs.filter(r=>r.type==='expense').reduce((s,r)=>s+Number(r.amount||0),0);
+ const save=rs.filter(r=>r.type==='save').reduce((s,r)=>s+Number(r.amount||0),0);
+ return {opening,income,expense,save,balance:opening+income-expense-save,count:rs.length};
+}
 function loadState(){
  try{
   const saved=localStorage.getItem(storageKey);
   if(saved){
    const old=JSON.parse(saved);
-   state={records:Array.isArray(old.records)?old.records:[],goals:Array.isArray(old.goals)?old.goals:[],wallets:Array.isArray(old.wallets)&&old.wallets.length?old.wallets:['现金钱包'],dailyNotes:old.dailyNotes||{},monthlyNotes:old.monthlyNotes||{}};
+   state={records:Array.isArray(old.records)?old.records:[],goals:Array.isArray(old.goals)?old.goals:[],wallets:normalizeWallets(old.wallets),dailyNotes:old.dailyNotes||{},monthlyNotes:old.monthlyNotes||{}};
    state.goals.forEach(g=>{if(!Array.isArray(g.checkins))g.checkins=[];if(!g.createdAt)g.createdAt=dateKey()})
+  }else{
+   state.wallets=normalizeWallets(state.wallets);
   }
- }catch(e){console.log(e)}
+ }catch(e){console.log(e);state.wallets=normalizeWallets(state.wallets)}
 }
 function saveState(){localStorage.setItem(storageKey,JSON.stringify(state))}
 function toggleMenu(force){const open=typeof force==='boolean'?force:!document.body.classList.contains('menuOpen');document.body.classList.toggle('menuOpen',open)}
 function showPage(id,nav=true){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');if(nav)document.querySelectorAll('.navitem').forEach(x=>x.classList.toggle('active',x.dataset.page===id));toggleMenu(false);window.scrollTo({top:0,behavior:'smooth'})}
 document.querySelectorAll('.navitem').forEach(btn=>btn.addEventListener('click',()=>{showPage(btn.dataset.page);renderAll()}));
 
-function renderWalletOptions(){$('walletSelect').innerHTML=state.wallets.map(w=>`<option value="${esc(w)}">${esc(w)}</option>`).join('')}
+function renderWalletOptions(){$('walletSelect').innerHTML=state.wallets.map(w=>`<option value="${esc(w.name)}">${esc(w.name)}</option>`).join('')}
 function renderGoalOptions(){$('goalSelect').innerHTML=state.goals.length?state.goals.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join(''):'<option value="">暂无存钱目标</option>'}
 function updateCategoryOptions(){
  const type=$('type').value;let cats=incomeCategories,label='收入分类';
@@ -251,7 +275,7 @@ function openTransfer(){
  if(!state.wallets.length){alert('请先新增至少一个账本');return}
  $('transferModal').classList.add('show');
  $('transferAmount').value='';$('transferNote').value='';
- $('transferFrom').innerHTML=state.wallets.map(w=>`<option value="${esc(w)}">${esc(w)}</option>`).join('');
+ $('transferFrom').innerHTML=state.wallets.map(w=>`<option value="${esc(w.name)}">${esc(w.name)}</option>`).join('');
  $('transferToType').value='wallet';
  updateTransferDestination();
 }
@@ -267,7 +291,7 @@ function updateTransferDestination(){
    if(hint)hint.textContent='转入存钱目标后，会自动新增存钱记录并同步目标进度。';
  }else{
    label.textContent='转入账本';
-   dest.innerHTML=state.wallets.map(w=>`<option value="${esc(w)}">${esc(w)}</option>`).join('');
+   dest.innerHTML=state.wallets.map(w=>`<option value="${esc(w.name)}">${esc(w.name)}</option>`).join('');
    if(hint)hint.textContent='账本之间转账会同时记录转出和转入。';
  }
 }
@@ -370,7 +394,7 @@ function toggleGoalCheckin(id,key){
  if(ex>=0){const item=g.checkins[ex];if(typeof item==='object'&&item.recordId)state.records=state.records.filter(r=>r.id!==item.recordId);g.checkins.splice(ex,1)}
  else{
   const amount=dailyAmount(g),recordId=uid();
-  state.records.unshift({id:recordId,date:key,type:'save',amount,category:'每日存钱打卡',note:`${g.name} · 第 ${index+1} 天`,wallet:state.wallets[0]||'现金钱包',goalId:g.id});
+  state.records.unshift({id:recordId,date:key,type:'save',amount,category:'每日存钱打卡',note:`${g.name} · 第 ${index+1} 天`,wallet:state.wallets[0]?.name||'现金钱包',goalId:g.id});
   g.checkins.push({date:key,recordId});
  }
  saveState();renderGoalDetail();renderGoals();renderOverview();
@@ -389,9 +413,46 @@ function renderGoalDetail(){
 }
 function deleteCurrentGoal(){const g=currentGoal();if(!g)return;if(!confirm(`确定删除「${g.name}」吗？已有的存钱记录不会自动删除。`))return;state.goals=state.goals.filter(x=>x.id!==g.id);saveState();currentGoalId=null;showPage('goals',true);renderAll()}
 
-function addWallet(){const name=$('walletName').value.trim();if(!name){alert('请输入账本名称');return}if(state.wallets.includes(name)){alert('这个账本已经存在');return}state.wallets.push(name);$('walletName').value='';saveState();renderWallets()}
-function deleteWallet(name){if(state.wallets.length<=1){alert('至少保留一个账本');return}if(!confirm(`确定删除账本「${name}」吗？`))return;state.wallets=state.wallets.filter(w=>w!==name);saveState();renderWallets()}
-function renderWallets(){const el=$('walletList');el.innerHTML=state.wallets.map(w=>`<div class="recordItem"><div class="recordLeft"><div class="recordIcon">💳</div><div><div class="recordName">${esc(w)}</div><div class="muted">用于记录收入、支出和存钱</div></div></div><button class="deleteBtn" onclick='deleteWallet(${JSON.stringify(w)})'>删除</button></div>`).join('')}
+function addWallet(){
+ const name=$('walletName').value.trim();
+ const opening=Number($('walletOpeningBalance').value)||0;
+ if(!name){alert('请输入账本名称');return}
+ if(walletNames().includes(name)){alert('这个账本已经存在');return}
+ if(opening<0){alert('初始金额不能小于 0');return}
+ state.wallets.push({name,openingBalance:opening});
+ $('walletName').value='';$('walletOpeningBalance').value='';saveState();renderWallets();
+}
+function deleteWallet(name){
+ if(state.wallets.length<=1){alert('至少保留一个账本');return}
+ const stats=walletStats(name);
+ const extra=stats.count?`
+这个账本目前有 ${stats.count} 笔历史记录，删除账本不会删除这些历史记录。`:'';
+ if(!confirm(`确定删除账本「${name}」吗？${extra}`))return;
+ state.wallets=state.wallets.filter(w=>w.name!==name);saveState();renderWallets();
+}
+function renderWallets(){
+ const el=$('walletList');
+ if(!state.wallets.length){el.innerHTML='<div class="empty">还没有账本，先新增一个吧 💳</div>';return}
+ el.innerHTML=state.wallets.map(w=>{
+   const st=walletStats(w.name);
+   return `<div class="card" style="margin:12px 0;padding:16px;background:rgba(255,255,255,.92)">
+     <div class="row">
+       <div class="recordLeft"><div class="recordIcon">💳</div><div><div class="recordName">${esc(w.name)}</div><div class="muted">初始金额 ${money(st.opening)}</div></div></div>
+       <button class="deleteBtn" onclick='deleteWallet(${JSON.stringify(w.name)})'>删除</button>
+     </div>
+     <div style="margin-top:16px;padding:16px;border-radius:18px;background:linear-gradient(90deg,rgba(75,167,202,.12),rgba(255,182,193,.14))">
+       <div class="muted">当前余额</div>
+       <div class="value ${st.balance>=0?'green':'pink'}" style="margin-top:6px">${money(st.balance)}</div>
+     </div>
+     <div class="goalDetailGrid" style="margin-top:12px">
+       <div class="goalDetailStat"><div class="small">收入</div><div class="number blue">+${money(st.income)}</div></div>
+       <div class="goalDetailStat"><div class="small">支出</div><div class="number pink">-${money(st.expense)}</div></div>
+       <div class="goalDetailStat"><div class="small">存入目标</div><div class="number green">-${money(st.save)}</div></div>
+       <div class="goalDetailStat"><div class="small">记录数量</div><div class="number">${st.count} 笔</div></div>
+     </div>
+   </div>`;
+ }).join('');
+}
 
 function renderAll(){renderOverview();renderDaily();setupMonthPicker();renderMonthly();renderHistory();renderGoals();renderWallets();if(currentGoalId&&$('goalDetail').classList.contains('active'))renderGoalDetail()}
 loadState();renderAll();
