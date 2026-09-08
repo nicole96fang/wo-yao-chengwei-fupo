@@ -36,14 +36,42 @@ header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:cen
 @media(max-width:420px){.brand{font-size:22px}.card{padding:15px}.hero h1{font-size:26px}.checkinCalendar{gap:7px}.checkinDay{font-size:10px}}
 
 /* 仓耳今楷字体主题 */
-.brand, h1, h2, h3, .sideTitle, .navitem, .bigbtn, .softbtn, .backBtn, .closeBtn, .field label {
-  font-family:"仓耳今楷","CangEr JinKai","TsangerJinKai","LXGW WenKai","PingFang SC","Microsoft YaHei",serif;
-}
+/* 全部文字、金额和数字统一使用仓耳今楷 */
 
-.amount, .value, .goalMoney, .goalNumbers, .number {
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+body,
+button,
+input,
+select,
+textarea,
+.brand,
+h1,
+h2,
+h3,
+.sideTitle,
+.navitem,
+.bigbtn,
+.softbtn,
+.backBtn,
+.closeBtn,
+.field label,
+.amount,
+.value,
+.goalMoney,
+.goalNumbers,
+.number,
+.stat .value,
+.label,
+.muted,
+.small {
+  font-family:
+    "仓耳今楷",
+    "CangEr JinKai",
+    "TsangerJinKai",
+    "LXGW WenKai",
+    "PingFang SC",
+    "Microsoft YaHei",
+    serif !important;
 }
-</style>
 </head>
 <body>
 <div class="app">
