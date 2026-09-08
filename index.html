@@ -24,7 +24,15 @@ header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:cen
 .overlay{position:fixed;inset:0;background:rgba(36,66,77,.28);z-index:800;display:none;align-items:flex-end}.overlay.show{display:flex}.sheet{width:100%;max-width:760px;margin:auto;max-height:91vh;overflow:auto;background:#fff;border-radius:30px 30px 0 0;padding:22px 20px calc(30px + env(safe-area-inset-bottom));box-shadow:0 -12px 40px rgba(0,0,0,.15)}.sheetTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.closeBtn,.backBtn{background:#edf6fa;color:var(--blue);border-radius:15px;padding:10px 14px;font-weight:900}.typePills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}.typePill{padding:13px 8px;border-radius:16px;background:#f4f8fa;color:var(--muted);font-weight:900}.typePill.active{background:linear-gradient(90deg,var(--blue),#79bdd8);color:white}
 .goalHero{text-align:center;padding:24px 18px}.goalHeroIcon{width:72px;height:72px;border-radius:24px;background:linear-gradient(135deg,rgba(75,167,202,.2),rgba(255,182,193,.3));display:grid;place-items:center;font-size:35px;margin:0 auto 12px}.goalHero h2{margin:0 0 8px;font-size:26px}.goalNumbers{font-size:24px;font-weight:950;margin-top:10px}
 .goalDetailGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.goalDetailStat{padding:15px;background:#f7fcfe;border-radius:18px}.small{font-size:12px;color:var(--muted);font-weight:700}.number{font-size:19px;font-weight:900;margin-top:6px}.goalClickArea{cursor:pointer}
-.checkinInfo{text-align:center;padding:16px;border-radius:20px;background:linear-gradient(120deg,rgba(75,167,202,.12),rgba(255,182,193,.16));margin-bottom:16px}.checkinInfo strong{display:block;font-size:20px;margin:8px 0}.checkinCalendar{display:grid;grid-template-columns:repeat(7,1fr);gap:9px;margin-top:16px}.checkinDay{aspect-ratio:1;border-radius:50%;border:2px solid #d7eaf1;background:#fff;color:var(--muted);font-size:12px;font-weight:900;display:grid;place-items:center}.checkinDay.checked{border-color:var(--green);background:var(--green);color:#fff}.checkinDay.today{box-shadow:0 0 0 4px rgba(75,167,202,.14);border-color:var(--blue)}.checkinDay.future{opacity:.4}.checkinLegend{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:16px}.legendItem{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}.legendDot{width:12px;height:12px;border-radius:50%;border:1px solid #d7eaf1}.legendDot.checked{background:var(--green);border-color:var(--green)}.legendDot.today{border:2px solid var(--blue)}.checkinButton{background:linear-gradient(90deg,#36a487,#63bea4)}
+.checkinInfo{text-align:center;padding:16px;border-radius:20px;background:linear-gradient(120deg,rgba(75,167,202,.12),rgba(255,182,193,.16));margin-bottom:16px}.checkinInfo strong{display:block;font-size:20px;margin:8px 0}.checkinCalendar{display:grid;grid-template-columns:repeat(7,1fr);gap:9px;margin-top:16px}.checkinDay{aspect-ratio:1;border-radius:50%;border:2px solid #d7eaf1;background:#fff;color:var(--muted);font-size:12px;font-weight:900;display:grid;place-items:center}.checkinDay.checked{border-color:var(--green);background:var(--green);color:#fff}.checkinDay.today{box-shadow:0 0 0 4px rgba(75,167,202,.14);border-color:var(--blue)}.checkinDay.future{opacity:.4}.checkinLegend{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:16px}.legendItem{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}.legendDot{width:12px;height:12px;border-radius:50%;border:1px solid #d7eaf1}.legendDot.checked{background:var(--green);border-color:var(--green)}.legendDot.today{border:2px solid var(--blue)}
+.checkinButton{background:linear-gradient(90deg,#36a487,#63bea4)}
+.dailyDate{font-size:14px;color:var(--muted);font-weight:800;margin-top:4px}
+.quickRecordCard{display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;transition:.2s}
+.quickRecordCard:active{transform:scale(.99)}
+.quickRecordIcon{width:54px;height:54px;border-radius:18px;background:linear-gradient(135deg,rgba(75,167,202,.18),rgba(255,182,193,.22));display:grid;place-items:center;font-size:26px;flex:0 0 auto}
+.quickRecordTitle{font-size:18px;font-weight:950}.quickRecordText{margin-top:5px;color:var(--muted);font-size:13px;font-weight:700}.arrowMark{font-size:24px;color:var(--blue);font-weight:900}
+.transferTargetHint{font-size:12px;color:var(--muted);margin-top:6px;font-weight:700}
+
 @media(max-width:420px){.brand{font-size:22px}.card{padding:15px}.hero h1{font-size:26px}.checkinCalendar{gap:7px}.checkinDay{font-size:10px}}
 </style>
 </head>
@@ -63,9 +71,36 @@ header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:cen
 </section>
 
 <section class="page" id="daily">
-<div class="hero"><h1>每日复盘 ✍️</h1><p>记录今天的花费、收获与心情</p></div>
-<div class="card"><div class="field"><label>今天的复盘</label><textarea id="dailyNote" class="noteBox" placeholder="写下今天发生的事情、消费感受或存钱心得…"></textarea></div><button class="bigbtn" onclick="saveDailyNote()">保存今日复盘</button></div>
-<div class="card" style="margin-top:14px"><h3>今日账单</h3><div id="todayRecords"></div></div>
+<div class="hero">
+  <h1>每日复盘 ✍️</h1>
+  <p id="dailyDateText">今天</p>
+</div>
+
+<div class="card quickRecordCard" onclick="openRecord()">
+  <div class="recordLeft">
+    <div class="quickRecordIcon">📝</div>
+    <div>
+      <div class="quickRecordTitle">记一笔</div>
+      <div class="quickRecordText">记录收入、支出或存钱目标</div>
+    </div>
+  </div>
+  <div class="arrowMark">›</div>
+</div>
+
+<div class="actions" style="margin-top:14px">
+  <button class="softbtn" onclick="openRecord('expense')">💸 消费分类</button>
+  <button class="softbtn" onclick="openRecord('income')">💰 收入分类</button>
+</div>
+
+<button class="bigbtn" onclick="openTransfer()">🔄 转账</button>
+
+<div class="card" style="margin-top:14px">
+  <div class="row">
+    <h3 style="margin:0">📅 本月记录</h3>
+    <span class="muted" id="dailyMonthLabel"></span>
+  </div>
+  <div id="dailyMonthRecords"></div>
+</div>
 </section>
 
 <section class="page" id="monthly">
@@ -127,6 +162,47 @@ header{position:sticky;top:0;z-index:30;height:76px;display:flex;align-items:cen
 <button class="bigbtn" onclick="saveRecord()">保存记录</button>
 </div></div>
 
+<!-- 转账 -->
+<div class="overlay" id="transferModal">
+  <div class="sheet">
+    <div class="sheetTop">
+      <h2 style="margin:0">🔄 转账</h2>
+      <button class="closeBtn" onclick="closeTransfer()">关闭</button>
+    </div>
+
+    <div class="field">
+      <label>从哪个账本转出</label>
+      <select id="transferFrom"></select>
+    </div>
+
+    <div class="field">
+      <label>转入哪里</label>
+      <select id="transferToType" onchange="updateTransferDestination()">
+        <option value="wallet">其它账本</option>
+        <option value="goal">存钱目标</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label id="transferDestinationLabel">转入账本</label>
+      <select id="transferDestination"></select>
+      <div class="transferTargetHint">转入存钱目标后，会自动同步目标进度。</div>
+    </div>
+
+    <div class="field">
+      <label>转账金额</label>
+      <input id="transferAmount" type="number" min="0" step="0.01" placeholder="RM 0.00">
+    </div>
+
+    <div class="field">
+      <label>备注（可选）</label>
+      <textarea id="transferNote" placeholder="例如：本周旅行基金"></textarea>
+    </div>
+
+    <button class="bigbtn" onclick="saveTransfer()">确认转账</button>
+  </div>
+</div>
+
 <script>
 const $=id=>document.getElementById(id);
 const storageKey='im-a-rich-girl-v3';
@@ -170,6 +246,50 @@ document.querySelectorAll('.typePill').forEach(btn=>btn.onclick=()=>setRecordTyp
 $('type').onchange=updateCategoryOptions;
 function openRecord(type='income'){$('modal').classList.add('show');$('amountInput').value='';$('note').value='';renderWalletOptions();renderGoalOptions();setRecordType(type)}
 function closeModal(){$('modal').classList.remove('show')}
+
+function openTransfer(){
+ if(!state.wallets.length){alert('请先新增至少一个账本');return}
+ $('transferModal').classList.add('show');
+ $('transferAmount').value='';$('transferNote').value='';
+ $('transferFrom').innerHTML=state.wallets.map(w=>`<option value="${esc(w)}">${esc(w)}</option>`).join('');
+ $('transferToType').value='wallet';
+ updateTransferDestination();
+}
+function closeTransfer(){$('transferModal').classList.remove('show')}
+function updateTransferDestination(){
+ const type=$('transferToType').value;
+ const dest=$('transferDestination');
+ const label=$('transferDestinationLabel');
+ const hint=document.querySelector('#transferModal .transferTargetHint');
+ if(type==='goal'){
+   label.textContent='选择存钱目标';
+   dest.innerHTML=state.goals.length?state.goals.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join(''):'<option value="">暂无存钱目标</option>';
+   if(hint)hint.textContent='转入存钱目标后，会自动新增存钱记录并同步目标进度。';
+ }else{
+   label.textContent='转入账本';
+   dest.innerHTML=state.wallets.map(w=>`<option value="${esc(w)}">${esc(w)}</option>`).join('');
+   if(hint)hint.textContent='账本之间转账会同时记录转出和转入。';
+ }
+}
+function saveTransfer(){
+ const from=$('transferFrom').value;
+ const type=$('transferToType').value;
+ const destination=$('transferDestination').value;
+ const amount=Number($('transferAmount').value);
+ const note=$('transferNote').value.trim();
+ if(!amount||amount<=0){alert('请输入正确的转账金额');return}
+ if(!destination){alert(type==='goal'?'请先新增并选择存钱目标':'请选择转入账本');return}
+ if(type==='wallet'){
+   if(from===destination){alert('转出和转入账本不能相同');return}
+   state.records.unshift({id:uid(),date:dateKey(),type:'expense',amount,category:'转账',note:`转入 ${destination}${note?' · '+note:''}`,wallet:from,goalId:''});
+   state.records.unshift({id:uid(),date:dateKey(),type:'income',amount,category:'转账',note:`来自 ${from}${note?' · '+note:''}`,wallet:destination,goalId:''});
+ }else{
+   const goal=state.goals.find(g=>g.id===destination);
+   if(!goal){alert('没有找到这个存钱目标');return}
+   state.records.unshift({id:uid(),date:dateKey(),type:'save',amount,category:'转入存钱目标',note:`从 ${from} 转入${note?' · '+note:''}`,wallet:from,goalId:goal.id});
+ }
+ saveState();closeTransfer();renderAll();alert('转账成功 💕');
+}
 function saveRecord(){
  const amount=Number($('amountInput').value),type=$('type').value,goalId=type==='save'?$('goalSelect').value:'';
  if(!amount||amount<=0){alert('请输入金额');return}if(type==='save'&&!goalId){alert('请先新增一个存钱目标');return}
@@ -196,9 +316,15 @@ function renderOverview(){
  renderRecordList('recentRecords',state.records.slice(0,6),true);
 }
 
-/* 每日复盘：就是你截图中原本的文字复盘 + 今日账单 */
-function renderDaily(){$('dailyNote').value=state.dailyNotes[dateKey()]||'';renderRecordList('todayRecords',state.records.filter(r=>r.date===dateKey()),false)}
-function saveDailyNote(){state.dailyNotes[dateKey()]=$('dailyNote').value.trim();saveState();alert('今日复盘已保存 💕')}
+/* 每日复盘：当天日期 + 记一笔 + 分类入口 + 转账 + 本月全部记录 */
+function renderDaily(){
+ const today=new Date();
+ const dateText=today.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+ if($('dailyDateText'))$('dailyDateText').textContent=dateText;
+ if($('dailyMonthLabel'))$('dailyMonthLabel').textContent=monthKey();
+ const rs=recordsForMonth().slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ renderRecordList('dailyMonthRecords',rs,false);
+}
 
 function setupMonthPicker(){
  const now=new Date(),months=[];for(let i=0;i<12;i++){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`)}
