@@ -1818,61 +1818,55 @@ SIDEBAR
 <button
 type="button"
 class="navitem active"
-data-page="overview"
+onclick="openSidebarPage('overview')"
 >
 🏠 我的总览
 </button>
 
-
 <button
 type="button"
 class="navitem"
-data-page="daily"
+onclick="openSidebarPage('daily')"
 >
 ✍️ 每日复盘
 </button>
 
-
 <button
 type="button"
 class="navitem"
-data-page="monthly"
+onclick="openSidebarPage('monthly')"
 >
 📊 月度复盘
 </button>
 
-
 <button
 type="button"
 class="navitem"
-data-page="history"
+onclick="openSidebarPage('history')"
 >
 📅 打卡历史
 </button>
 
-
 <button
 type="button"
 class="navitem"
-data-page="goals"
+onclick="openSidebarPage('goals')"
 >
 🎯 存钱目标
 </button>
 
-
 <button
 type="button"
 class="navitem"
-data-page="wallets"
+onclick="openSidebarPage('wallets')"
 >
 💳 账本
 </button>
 
-
 <button
 type="button"
 class="navitem"
-data-page="backup"
+onclick="openSidebarPage('backup')"
 >
 💾 数据备份
 </button>
@@ -3763,6 +3757,21 @@ function toggleMenu(force){
 
 }
 
+function openSidebarPage(id){
+
+  // 先关闭 Sidebar
+  document.body.classList.remove('menuOpen');
+
+  // 等 Sidebar 开始关闭后切换页面
+  setTimeout(function(){
+
+    showPage(id, true);
+
+    renderAll();
+
+  }, 80);
+
+}
 
 function showPage(
   id,
@@ -3812,27 +3821,7 @@ function showPage(
 }
 
 
-document
-  .querySelectorAll('.navitem')
-  .forEach(btn=>{
 
-    btn.addEventListener(
-      'click',
-      function(e){
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        showPage(
-          this.dataset.page
-        );
-
-        renderAll();
-
-      }
-    );
-
-  });
 
 
 /* =========================================================
