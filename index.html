@@ -13,7 +13,7 @@ content="width=device-width, initial-scale=1, viewport-fit=cover"
 <style>
 
 /* =========================
-字体设置
+字体
 ========================= */
 
 @font-face{
@@ -28,96 +28,32 @@ content="width=device-width, initial-scale=1, viewport-fit=cover"
   font-display:swap;
 }
 
-
-/* 中文字体 */
-
-.chineseFont,
-.brand,
-h1,h2,h3,
-.sideTitle,
-.navitem,
-.bigbtn,
-.softbtn,
-.backBtn,
-.closeBtn,
-.field label,
-.recordName,
-.quickRecordTitle,
-.todayCheckinText,
-.empty,
-.muted,
-.label,
-.small,
-.transferTargetHint,
-.checkinInfo,
-.checkinLegend,
-.hero p,
-textarea,
-input,
-select,
-button{
-  font-family:
-  "KangKang",
-  "PingFang SC",
-  "Microsoft YaHei",
-  sans-serif;
-}
-
-
-/* 英文和数字字体 */
-
-.englishFont,
-.amount,
-.value,
-.goalMoney,
-.goalNumbers,
-.number,
-.monthSelect,
-input[type="number"]{
-  font-family:
-  "TCAntiquated",
-  "KangKang",
-  -apple-system,
-  BlinkMacSystemFont,
-  sans-serif;
-}
-
-
 :root{
-
   --blue:#4ba7ca;
   --pink:#ffb6c1;
   --ink:#24424d;
   --muted:#6f8790;
   --line:#d9edf4;
   --green:#36a487;
-
 }
-
 
 *{
   box-sizing:border-box;
 }
 
-
 html{
   scroll-behavior:smooth;
 }
 
-
 body{
-
   margin:0;
   min-width:320px;
-
-  font-family:
-  "TCAntiquated",
-  "KangKang",
-  -apple-system,
-  BlinkMacSystemFont,
-  sans-serif;
-
   color:var(--ink);
+  font-family:
+  "KangKang",
+  "PingFang SC",
+  "Microsoft YaHei",
+  sans-serif;
 
   background-image:
   linear-gradient(
@@ -130,35 +66,11 @@ body{
   background-position:center;
   background-repeat:no-repeat;
   background-attachment:fixed;
-
 }
-
 
 body.menuOpen{
   overflow:hidden;
 }
-
-
-/* =========================
-App
-========================= */
-
-.app{
-
-  width:100%;
-  max-width:760px;
-  margin:auto;
-  min-height:100vh;
-
-  background:
-  rgba(255,255,255,.10);
-
-}
-
-
-/* =========================
-基础
-========================= */
 
 button,
 input,
@@ -167,36 +79,43 @@ textarea{
   font:inherit;
 }
 
-
 button{
   cursor:pointer;
   border:0;
 }
 
-
 button:disabled{
+  opacity:.5;
   cursor:not-allowed;
 }
 
 
 /* =========================
-Header
+APP
+========================= */
+
+.app{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  min-height:100vh;
+  background:rgba(255,255,255,.10);
+}
+
+
+/* =========================
+HEADER
 ========================= */
 
 header{
-
   position:sticky;
-
   top:0;
-
   z-index:30;
 
   height:76px;
 
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
 
   padding:0 20px;
@@ -206,24 +125,19 @@ header{
   rgba(217,237,244,.9);
 
   background:
-  rgba(255,255,255,.92);
+  rgba(255,255,255,.94);
 
+  backdrop-filter:blur(15px);
 }
-
 
 .brand{
-
   font-size:24px;
-
   font-weight:900;
-
+  text-align:center;
 }
 
-
 .iconBtn{
-
   width:48px;
-
   height:48px;
 
   border-radius:16px;
@@ -236,27 +150,22 @@ header{
   font-size:25px;
 
   display:grid;
-
   place-items:center;
-
 }
 
 
 /* =========================
-Page
+PAGE
 ========================= */
 
 .page{
-
   display:none;
 
   padding:
   20px
   18px
   36px;
-
 }
-
 
 .page.active{
   display:block;
@@ -264,11 +173,10 @@ Page
 
 
 /* =========================
-Hero
+HERO
 ========================= */
 
 .hero{
-
   border-radius:28px;
 
   padding:22px 20px;
@@ -289,55 +197,42 @@ Hero
   box-shadow:
   0 10px 28px
   rgba(100,130,140,.10);
-
 }
-
 
 .hero h1{
-
   margin:0 0 8px;
-
   font-size:28px;
-
 }
 
-
 .hero p{
-
   margin:0;
-
   color:var(--muted);
-
   font-weight:600;
-
 }
 
 
 /* =========================
-Grid
+GRID
 ========================= */
 
 .grid2,
 .actions{
-
   display:grid;
 
   grid-template-columns:
   1fr 1fr;
 
   gap:12px;
-
 }
 
 
 /* =========================
-Card
+CARD
 ========================= */
 
 .card{
-
   background:
-  rgba(255,255,255,.90);
+  rgba(255,255,255,.92);
 
   border:
   1px solid
@@ -350,55 +245,44 @@ Card
   box-shadow:
   0 8px 22px
   rgba(65,116,135,.08);
-
 }
 
-
 .card h3{
-
   margin:0 0 14px;
-
   font-size:17px;
-
 }
 
 
 /* =========================
-Statistics
+STATISTICS
 ========================= */
 
 .stat .label,
 .muted{
-
   color:var(--muted);
-
   font-size:13px;
-
   font-weight:700;
-
 }
 
-
-.stat .value{
-
+.stat .value,
+.value{
   margin-top:8px;
+  font-family:
+  "TCAntiquated",
+  "KangKang",
+  sans-serif;
 
   font-size:22px;
-
   font-weight:900;
-
 }
-
 
 .blue{
   color:var(--blue);
 }
 
-
 .pink{
   color:#dc7184;
 }
-
 
 .green{
   color:var(--green);
@@ -406,12 +290,11 @@ Statistics
 
 
 /* =========================
-Buttons
+BUTTON
 ========================= */
 
 .bigbtn,
 .softbtn{
-
   width:100%;
 
   border-radius:20px;
@@ -421,12 +304,9 @@ Buttons
   font-weight:900;
 
   margin-top:12px;
-
 }
 
-
 .bigbtn{
-
   background:
   linear-gradient(
     90deg,
@@ -435,12 +315,9 @@ Buttons
   );
 
   color:#fff;
-
 }
 
-
 .softbtn{
-
   background:
   rgba(239,248,252,.96);
 
@@ -449,214 +326,33 @@ Buttons
   border:
   1px solid
   #d8edf5;
-
 }
-
 
 .dangerBtn{
-
   background:#fff0f2;
-
   color:#c45d70;
-
 }
 
 
 /* =========================
-Progress
-========================= */
-
-.progressWrap{
-  margin-top:12px;
-}
-
-
-.progressBar{
-
-  height:13px;
-
-  background:#edf5f8;
-
-  border-radius:99px;
-
-  overflow:hidden;
-
-}
-
-
-.progressFill{
-
-  height:100%;
-
-  background:
-  linear-gradient(
-    90deg,
-    var(--blue),
-    var(--pink)
-  );
-
-  border-radius:99px;
-
-  transition:.4s;
-
-}
-
-
-/* =========================
-Row
+ROW
 ========================= */
 
 .row{
-
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
-
   gap:12px;
-
 }
 
 
 /* =========================
-Empty
-========================= */
-
-.empty{
-
-  color:var(--muted);
-
-  text-align:center;
-
-  padding:22px 10px;
-
-}
-
-
-/* =========================
-Record
-========================= */
-
-.recordItem,
-.goalItem,
-.historyItem{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:12px;
-
-  padding:14px 0;
-
-  border-bottom:
-  1px dashed
-  var(--line);
-
-}
-
-
-.recordItem:last-child,
-.goalItem:last-child,
-.historyItem:last-child{
-  border-bottom:0;
-}
-
-
-.recordLeft{
-
-  display:flex;
-
-  gap:12px;
-
-  align-items:center;
-
-  min-width:0;
-
-}
-
-
-.recordIcon{
-
-  width:42px;
-
-  height:42px;
-
-  border-radius:15px;
-
-  background:#eff8fc;
-
-  display:grid;
-
-  place-items:center;
-
-  font-size:20px;
-
-  flex:0 0 auto;
-
-}
-
-
-.recordName{
-
-  font-weight:850;
-
-  white-space:nowrap;
-
-  overflow:hidden;
-
-  text-overflow:ellipsis;
-
-}
-
-
-.amount,
-.goalMoney{
-
-  font-weight:900;
-
-  white-space:nowrap;
-
-}
-
-
-.goalMoney{
-  font-size:18px;
-}
-
-
-/* =========================
-Delete
-========================= */
-
-.deleteBtn{
-
-  background:#fff0f2;
-
-  color:#c45d70;
-
-  border-radius:12px;
-
-  padding:7px 9px;
-
-  font-size:12px;
-
-  margin-top:5px;
-
-}
-
-
-/* =========================
-Form
+FORM
 ========================= */
 
 textarea,
 input,
 select{
-
   width:100%;
 
   border:
@@ -673,72 +369,81 @@ select{
   color:var(--ink);
 
   outline:none;
-
 }
-
 
 textarea:focus,
 input:focus,
 select:focus{
-
   border-color:var(--blue);
 
   box-shadow:
   0 0 0 4px
   rgba(75,167,202,.12);
-
 }
-
 
 .field{
   margin-bottom:14px;
 }
 
-
 .field label{
-
   display:block;
-
   font-weight:850;
-
   margin:0 0 8px;
-
 }
-
 
 .noteBox{
   min-height:140px;
 }
 
-
 .monthSelect{
-
   width:auto;
-
   padding:10px 12px;
-
 }
 
 
 /* =========================
-Donut
+PROGRESS
 ========================= */
 
-.donutWrap{
+.progressWrap{
+  margin-top:12px;
+}
 
-  display:flex;
+.progressBar{
+  height:13px;
+  background:#edf5f8;
+  border-radius:99px;
+  overflow:hidden;
+}
 
-  align-items:center;
+.progressFill{
+  height:100%;
 
-  gap:18px;
+  background:
+  linear-gradient(
+    90deg,
+    var(--blue),
+    var(--pink)
+  );
 
+  border-radius:99px;
+
+  transition:.4s;
 }
 
 
+/* =========================
+DONUT
+========================= */
+
+.donutWrap{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
 .donut{
-
   width:112px;
-
   height:112px;
 
   border-radius:50%;
@@ -751,18 +456,13 @@ Donut
   );
 
   position:relative;
-
   flex:0 0 auto;
-
 }
 
-
 .donut:after{
-
   content:"本月";
 
   position:absolute;
-
   inset:22px;
 
   background:#fff;
@@ -770,63 +470,143 @@ Donut
   border-radius:50%;
 
   display:grid;
-
   place-items:center;
 
   font-size:13px;
-
   font-weight:900;
-
-  font-family:
-  "KangKang",
-  "PingFang SC",
-  sans-serif;
-
 }
 
 
-/* ========================================
-Sidebar - 已修复手机版不能点击的问题
-======================================== */
+/* =========================
+RECORD
+========================= */
+
+.recordItem,
+.goalItem,
+.historyItem{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:12px;
+
+  padding:14px 0;
+
+  border-bottom:
+  1px dashed
+  var(--line);
+}
+
+.recordItem:last-child,
+.goalItem:last-child,
+.historyItem:last-child{
+  border-bottom:0;
+}
+
+.recordLeft{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  min-width:0;
+}
+
+.recordIcon{
+  width:42px;
+  height:42px;
+
+  border-radius:15px;
+
+  background:#eff8fc;
+
+  display:grid;
+  place-items:center;
+
+  font-size:20px;
+  flex:0 0 auto;
+}
+
+.recordName{
+  font-weight:850;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.amount,
+.goalMoney{
+  font-family:
+  "TCAntiquated",
+  "KangKang",
+  sans-serif;
+
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.goalMoney{
+  font-size:18px;
+}
+
+.deleteBtn{
+  background:#fff0f2;
+  color:#c45d70;
+
+  border-radius:12px;
+
+  padding:7px 9px;
+
+  font-size:12px;
+  margin-top:5px;
+}
+
+.empty{
+  color:var(--muted);
+  text-align:center;
+  padding:22px 10px;
+}
+
+
+/* =========================
+SIDEBAR
+重要修复版本
+========================= */
 
 .sidebarMask{
-
   position:fixed;
-
   inset:0;
 
   background:
-  rgba(30,48,56,.25);
+  rgba(30,48,56,.32);
 
   z-index:9998;
 
   opacity:0;
-
   visibility:hidden;
-
   pointer-events:none;
 
   transition:
   opacity .25s,
   visibility .25s;
-
 }
 
+.sidebarMask.show{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
 
 .sidebar{
-
   position:fixed;
 
-  z-index:9999;
-
   left:0;
-
   top:0;
 
-  bottom:0;
+  width:min(82vw,350px);
+  height:100dvh;
 
-  width:
-  min(82vw,350px);
+  z-index:9999;
 
   padding:
   calc(24px + env(safe-area-inset-top))
@@ -837,69 +617,34 @@ Sidebar - 已修复手机版不能点击的问题
 
   box-shadow:
   16px 0 50px
-  rgba(36,66,77,.16);
+  rgba(36,66,77,.18);
 
   transform:
-  translateX(-105%);
+  translate3d(-110%,0,0);
 
-  transition:.28s;
-
-  visibility:hidden;
-
-  pointer-events:none;
+  transition:
+  transform .28s ease;
 
   overflow-y:auto;
 
-  -webkit-overflow-scrolling:touch;
-
-  touch-action:pan-y;
-
-}
-
-
-body.menuOpen .sidebar{
-
-  transform:translateX(0);
-
-  visibility:visible;
-
   pointer-events:auto;
-
 }
 
-
-body.menuOpen .sidebarMask{
-
-  opacity:1;
-
-  visibility:visible;
-
-  pointer-events:auto;
-
+.sidebar.open{
+  transform:
+  translate3d(0,0,0);
 }
-
 
 .sideTitle{
-
   font-size:28px;
-
   font-weight:950;
-
   margin:18px 0 22px;
-
 }
 
-
 .navitem{
-
-  position:relative;
-
-  z-index:10000;
-
   width:100%;
 
   display:flex;
-
   align-items:center;
 
   gap:12px;
@@ -917,75 +662,54 @@ body.menuOpen .sidebarMask{
   border-radius:20px;
 
   font-size:18px;
-
   font-weight:900;
 
-  pointer-events:auto !important;
-
-  touch-action:manipulation;
-
-  -webkit-tap-highlight-color:
-  transparent;
-
+  position:relative;
+  z-index:10000;
 }
-
 
 .navitem:active{
-
   transform:scale(.98);
-
 }
 
-
 .navitem.active{
-
   background:
   linear-gradient(
     90deg,
     rgba(75,167,202,.16),
     rgba(255,182,193,.18)
   );
-
 }
 
 
 /* =========================
-Modal
+MODAL
 ========================= */
 
 .overlay{
-
   position:fixed;
-
   inset:0;
 
   background:
   rgba(36,66,77,.28);
 
-  z-index:8000;
+  z-index:800;
 
   display:none;
-
   align-items:flex-end;
-
 }
-
 
 .overlay.show{
   display:flex;
 }
 
-
 .sheet{
-
   width:100%;
-
   max-width:760px;
 
   margin:auto;
 
   max-height:91vh;
-
   overflow:auto;
 
   background:#fff;
@@ -1001,28 +725,19 @@ Modal
   box-shadow:
   0 -12px 40px
   rgba(0,0,0,.15);
-
 }
 
-
 .sheetTop{
-
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
 
   margin-bottom:14px;
-
 }
-
 
 .closeBtn,
 .backBtn{
-
   background:#edf6fa;
-
   color:var(--blue);
 
   border-radius:15px;
@@ -1030,16 +745,14 @@ Modal
   padding:10px 14px;
 
   font-weight:900;
-
 }
 
 
 /* =========================
-Record Type
+RECORD TYPE
 ========================= */
 
 .typePills{
-
   display:grid;
 
   grid-template-columns:
@@ -1048,12 +761,9 @@ Record Type
   gap:8px;
 
   margin-bottom:16px;
-
 }
 
-
 .typePill{
-
   padding:13px 8px;
 
   border-radius:16px;
@@ -1063,12 +773,9 @@ Record Type
   color:var(--muted);
 
   font-weight:900;
-
 }
 
-
 .typePill.active{
-
   background:
   linear-gradient(
     90deg,
@@ -1077,27 +784,20 @@ Record Type
   );
 
   color:white;
-
 }
 
 
 /* =========================
-Goal Detail
+GOAL DETAIL
 ========================= */
 
 .goalHero{
-
   text-align:center;
-
   padding:24px 18px;
-
 }
 
-
 .goalHeroIcon{
-
   width:72px;
-
   height:72px;
 
   border-radius:24px;
@@ -1110,39 +810,31 @@ Goal Detail
   );
 
   display:grid;
-
   place-items:center;
 
   font-size:35px;
 
-  margin:
-  0 auto 12px;
-
+  margin:0 auto 12px;
 }
-
 
 .goalHero h2{
-
   margin:0 0 8px;
-
   font-size:26px;
-
 }
 
-
 .goalNumbers{
+  font-family:
+  "TCAntiquated",
+  "KangKang",
+  sans-serif;
 
   font-size:24px;
-
   font-weight:950;
 
   margin-top:10px;
-
 }
 
-
 .goalDetailGrid{
-
   display:grid;
 
   grid-template-columns:
@@ -1151,43 +843,34 @@ Goal Detail
   gap:10px;
 
   margin-top:14px;
-
 }
 
-
 .goalDetailStat{
-
   padding:15px;
 
   background:
   rgba(247,252,254,.95);
 
   border-radius:18px;
-
 }
-
 
 .small{
-
   font-size:12px;
-
   color:var(--muted);
-
   font-weight:700;
-
 }
 
-
 .number{
+  font-family:
+  "TCAntiquated",
+  "KangKang",
+  sans-serif;
 
   font-size:19px;
-
   font-weight:900;
 
   margin-top:6px;
-
 }
-
 
 .goalClickArea{
   cursor:pointer;
@@ -1195,11 +878,10 @@ Goal Detail
 
 
 /* =========================
-Checkin
+CHECKIN
 ========================= */
 
 .checkinInfo{
-
   text-align:center;
 
   padding:16px;
@@ -1214,23 +896,15 @@ Checkin
   );
 
   margin-bottom:16px;
-
 }
-
 
 .checkinInfo strong{
-
   display:block;
-
   font-size:20px;
-
   margin:8px 0;
-
 }
 
-
 .checkinCalendar{
-
   display:grid;
 
   grid-template-columns:
@@ -1239,12 +913,9 @@ Checkin
   gap:9px;
 
   margin-top:16px;
-
 }
 
-
 .checkinDay{
-
   aspect-ratio:1;
 
   border-radius:50%;
@@ -1263,45 +934,31 @@ Checkin
   sans-serif;
 
   font-size:12px;
-
   font-weight:900;
 
   display:grid;
-
   place-items:center;
-
 }
-
 
 .checkinDay.checked{
-
   border-color:var(--green);
-
   background:var(--green);
-
   color:#fff;
-
 }
 
-
 .checkinDay.today{
-
   box-shadow:
   0 0 0 4px
   rgba(75,167,202,.14);
 
   border-color:var(--blue);
-
 }
-
 
 .checkinDay.future{
   opacity:.4;
 }
 
-
 .checkinLegend{
-
   display:flex;
 
   justify-content:center;
@@ -1311,29 +968,20 @@ Checkin
   flex-wrap:wrap;
 
   margin-top:16px;
-
 }
 
-
 .legendItem{
-
   display:flex;
-
   align-items:center;
 
   gap:6px;
 
   font-size:12px;
-
   color:var(--muted);
-
 }
 
-
 .legendDot{
-
   width:12px;
-
   height:12px;
 
   border-radius:50%;
@@ -1341,70 +989,50 @@ Checkin
   border:
   1px solid
   #d7eaf1;
-
 }
-
 
 .legendDot.checked{
-
   background:var(--green);
-
   border-color:var(--green);
-
 }
 
-
 .legendDot.today{
-
   border:
   2px solid
   var(--blue);
-
 }
 
-
 .checkinButton{
-
   background:
   linear-gradient(
     90deg,
     #36a487,
     #63bea4
   );
-
 }
 
 
 /* =========================
-Quick Record
+QUICK RECORD
 ========================= */
 
 .quickRecordCard{
-
   display:flex;
 
   align-items:center;
-
   justify-content:space-between;
 
   gap:14px;
 
   cursor:pointer;
-
-  transition:.2s;
-
 }
-
 
 .quickRecordCard:active{
   transform:scale(.99);
 }
 
-
 .quickRecordIcon{
-
   width:54px;
-
   height:54px;
 
   border-radius:18px;
@@ -1417,69 +1045,42 @@ Quick Record
   );
 
   display:grid;
-
   place-items:center;
 
   font-size:26px;
-
   flex:0 0 auto;
-
 }
-
 
 .quickRecordTitle{
-
   font-size:18px;
-
   font-weight:950;
-
 }
-
 
 .quickRecordText{
-
   margin-top:5px;
-
   color:var(--muted);
-
   font-size:13px;
-
   font-weight:700;
-
 }
-
 
 .arrowMark{
-
-  font-family:
-  "TCAntiquated",
-  "KangKang",
-  sans-serif;
-
   font-size:24px;
-
   color:var(--blue);
-
   font-weight:900;
-
 }
 
-
 .transferTargetHint{
-
   font-size:12px;
-
   color:var(--muted);
 
   margin-top:6px;
 
   font-weight:700;
-
 }
 
 
 /* =========================
-Mobile
+MOBILE
 ========================= */
 
 @media(max-width:420px){
@@ -1507,16 +1108,20 @@ Mobile
 }
 
 </style>
-
 </head>
-
 
 <body>
 
 
 <!-- =========================
-Sidebar
+SIDEBAR
+放在 APP 外面，避免层级问题
 ========================= -->
+
+<div
+class="sidebarMask"
+id="sidebarMask"
+></div>
 
 <aside
 class="sidebar"
@@ -1527,56 +1132,44 @@ id="sidebar"
 ☰ 工作台目录
 </div>
 
-
 <button
 class="navitem active"
 data-page="overview"
-onclick="showPage('overview'); renderAll();"
 >
 🏠 我的总览
 </button>
 
-
 <button
 class="navitem"
 data-page="daily"
-onclick="showPage('daily'); renderAll();"
 >
 ✍️ 每日复盘
 </button>
 
-
 <button
 class="navitem"
 data-page="monthly"
-onclick="showPage('monthly'); renderAll();"
 >
 📊 月度复盘
 </button>
 
-
 <button
 class="navitem"
 data-page="history"
-onclick="showPage('history'); renderAll();"
 >
 📅 打卡历史
 </button>
 
-
 <button
 class="navitem"
 data-page="goals"
-onclick="showPage('goals'); renderAll();"
 >
 🎯 存钱目标
 </button>
 
-
 <button
 class="navitem"
 data-page="wallets"
-onclick="showPage('wallets'); renderAll();"
 >
 💳 账本
 </button>
@@ -1584,39 +1177,27 @@ onclick="showPage('wallets'); renderAll();"
 </aside>
 
 
-<div
-class="sidebarMask"
-id="sidebarMask"
-onclick="toggleMenu(false)"
-></div>
-
-
-
 <div class="app">
-
 
 <header>
 
 <button
 class="iconBtn"
-onclick="toggleMenu(true)"
+id="menuButton"
+type="button"
 >
 ☰
 </button>
 
-
 <div class="brand">
-
 <span>💰</span>
-
 <span>我要成为富婆！</span>
-
 </div>
-
 
 <button
 class="iconBtn"
-onclick="openRecord()"
+id="quickRecordButton"
+type="button"
 >
 💗
 </button>
@@ -1627,7 +1208,7 @@ onclick="openRecord()"
 <main>
 
 
-<!-- Overview -->
+<!-- OVERVIEW -->
 
 <section
 class="page active"
@@ -1656,7 +1237,6 @@ RM 0.00
 </div>
 </div>
 
-
 <div class="card stat">
 <div class="label">本月支出</div>
 <div class="value pink" id="expenseStat">
@@ -1664,14 +1244,12 @@ RM 0.00
 </div>
 </div>
 
-
 <div class="card stat">
 <div class="label">本月存钱</div>
 <div class="value green" id="saveStat">
 RM 0.00
 </div>
 </div>
-
 
 <div class="card stat">
 <div class="label">本月净余额</div>
@@ -1683,7 +1261,10 @@ RM 0.00
 </div>
 
 
-<div class="card" style="margin-top:14px">
+<div
+class="card"
+style="margin-top:14px"
+>
 
 <div class="row">
 
@@ -1697,7 +1278,6 @@ id="monthLabel"
 ></span>
 
 </div>
-
 
 <div
 class="donutWrap"
@@ -1734,7 +1314,7 @@ style="margin-top:14px"
 
 <button
 class="bigbtn"
-onclick="openRecord()"
+id="overviewRecordButton"
 >
 ＋ 记一笔
 </button>
@@ -1744,15 +1324,14 @@ onclick="openRecord()"
 
 <button
 class="softbtn"
-onclick="openRecord('expense')"
+id="expenseQuickButton"
 >
 💸 消费分类
 </button>
 
-
 <button
 class="softbtn"
-onclick="openRecord('income')"
+id="incomeQuickButton"
 >
 💰 收入分类
 </button>
@@ -1762,8 +1341,7 @@ onclick="openRecord('income')"
 </section>
 
 
-
-<!-- Daily -->
+<!-- DAILY -->
 
 <section
 class="page"
@@ -1785,7 +1363,7 @@ id="daily"
 
 <div
 class="card quickRecordCard"
-onclick="openRecord()"
+id="dailyQuickRecord"
 >
 
 <div class="recordLeft">
@@ -1793,7 +1371,6 @@ onclick="openRecord()"
 <div class="quickRecordIcon">
 📝
 </div>
-
 
 <div>
 
@@ -1809,7 +1386,6 @@ onclick="openRecord()"
 
 </div>
 
-
 <div class="arrowMark">
 ›
 </div>
@@ -1824,15 +1400,14 @@ style="margin-top:14px"
 
 <button
 class="softbtn"
-onclick="openRecord('expense')"
+id="dailyExpenseButton"
 >
 💸 消费分类
 </button>
 
-
 <button
 class="softbtn"
-onclick="openRecord('income')"
+id="dailyIncomeButton"
 >
 💰 收入分类
 </button>
@@ -1842,7 +1417,7 @@ onclick="openRecord('income')"
 
 <button
 class="bigbtn"
-onclick="openTransfer()"
+id="transferButton"
 >
 🔄 转账
 </button>
@@ -1873,8 +1448,7 @@ id="dailyMonthLabel"
 </section>
 
 
-
-<!-- Monthly -->
+<!-- MONTHLY -->
 
 <section
 class="page"
@@ -1922,7 +1496,6 @@ RM 0.00
 </div>
 </div>
 
-
 <div class="stat">
 <div class="label">支出</div>
 <div class="value pink" id="monthlyExpense">
@@ -1930,14 +1503,12 @@ RM 0.00
 </div>
 </div>
 
-
 <div class="stat">
 <div class="label">存钱</div>
 <div class="value green" id="monthlySave">
 RM 0.00
 </div>
 </div>
-
 
 <div class="stat">
 <div class="label">净余额</div>
@@ -1960,17 +1531,15 @@ style="margin-top:14px"
 本月感想
 </h3>
 
-
 <textarea
 id="monthlyNote"
 class="noteBox"
 placeholder="这个月做得最好的地方是什么？下个月想怎样进步？"
 ></textarea>
 
-
 <button
 class="bigbtn"
-onclick="saveMonthlyNote()"
+id="saveMonthlyNoteButton"
 >
 保存月度复盘
 </button>
@@ -1980,8 +1549,7 @@ onclick="saveMonthlyNote()"
 </section>
 
 
-
-<!-- History -->
+<!-- HISTORY -->
 
 <section
 class="page"
@@ -2000,7 +1568,6 @@ id="history"
 
 </div>
 
-
 <div class="card">
 <div id="historyList"></div>
 </div>
@@ -2008,8 +1575,7 @@ id="history"
 </section>
 
 
-
-<!-- Goals -->
+<!-- GOALS -->
 
 <section
 class="page"
@@ -2081,7 +1647,7 @@ placeholder="例如：100"
 
 <button
 class="bigbtn"
-onclick="addGoal()"
+id="addGoalButton"
 >
 新增存钱目标
 </button>
@@ -2101,8 +1667,7 @@ style="margin-top:14px"
 </section>
 
 
-
-<!-- Goal Detail -->
+<!-- GOAL DETAIL -->
 
 <section
 class="page"
@@ -2111,7 +1676,7 @@ id="goalDetail"
 
 <button
 class="backBtn"
-onclick="goBackToGoals()"
+id="backGoalsButton"
 >
 ← 返回存钱目标
 </button>
@@ -2126,11 +1691,9 @@ style="margin-top:14px"
 🎯
 </div>
 
-
 <h2 id="detailGoalName">
 我的存钱目标
 </h2>
-
 
 <div
 class="muted"
@@ -2139,14 +1702,12 @@ id="detailGoalDate"
 还没有设置期限
 </div>
 
-
 <div
 class="goalNumbers"
 id="detailGoalMoney"
 >
 RM 0.00 / RM 0.00
 </div>
-
 
 <div class="progressWrap">
 
@@ -2160,7 +1721,6 @@ id="detailGoalProgress"
 </div>
 
 </div>
-
 
 <div
 class="muted"
@@ -2176,46 +1736,66 @@ id="detailGoalPercent"
 <div class="goalDetailGrid">
 
 <div class="card goalDetailStat">
-<div class="small">还差多少钱</div>
+
+<div class="small">
+还差多少钱
+</div>
+
 <div
 class="number pink"
 id="detailRemainingMoney"
 >
 RM 0.00
 </div>
+
 </div>
 
 
 <div class="card goalDetailStat">
-<div class="small">还剩多少天</div>
+
+<div class="small">
+还剩多少天
+</div>
+
 <div
 class="number blue"
 id="detailRemainingDays"
 >
 --
 </div>
+
 </div>
 
 
 <div class="card goalDetailStat">
-<div class="small">每天建议存</div>
+
+<div class="small">
+每天建议存
+</div>
+
 <div
 class="number green"
 id="detailDailyAmount"
 >
 RM 0.00
 </div>
+
 </div>
 
 
 <div class="card goalDetailStat">
-<div class="small">已经打卡</div>
+
+<div class="small">
+已经打卡
+</div>
+
 <div
 class="number"
 id="detailCheckinCount"
 >
 0 天
 </div>
+
 </div>
 
 </div>
@@ -2229,7 +1809,6 @@ style="margin-top:14px"
 <h3>
 📅 设置存钱期限
 </h3>
-
 
 <div class="field">
 
@@ -2246,10 +1825,9 @@ placeholder="请输入期限天数"
 
 </div>
 
-
 <button
 class="softbtn"
-onclick="saveGoalDays()"
+id="saveGoalDaysButton"
 >
 保存期限设置
 </button>
@@ -2266,7 +1844,6 @@ style="margin-top:14px"
 ⭕ 每日存钱打卡
 </h3>
 
-
 <div class="checkinInfo">
 
 <div class="muted">
@@ -2276,7 +1853,6 @@ style="margin-top:14px"
 <strong id="todayCheckinAmount">
 RM 0.00
 </strong>
-
 
 <div
 class="muted"
@@ -2301,12 +1877,10 @@ id="checkinCalendar"
 已经完成
 </div>
 
-
 <div class="legendItem">
 <div class="legendDot today"></div>
 今天
 </div>
-
 
 <div class="legendItem">
 <div class="legendDot"></div>
@@ -2319,7 +1893,6 @@ id="checkinCalendar"
 <button
 class="bigbtn checkinButton"
 id="todayCheckinButton"
-onclick="toggleTodayCheckin()"
 >
 ✓ 今天成功存钱
 </button>
@@ -2343,7 +1916,7 @@ style="margin-top:14px"
 
 <button
 class="softbtn dangerBtn"
-onclick="deleteCurrentGoal()"
+id="deleteGoalButton"
 >
 删除这个存钱目标
 </button>
@@ -2351,8 +1924,7 @@ onclick="deleteCurrentGoal()"
 </section>
 
 
-
-<!-- Wallets -->
+<!-- WALLETS -->
 
 <section
 class="page"
@@ -2415,7 +1987,7 @@ placeholder="RM 0.00"
 
 <button
 class="bigbtn"
-onclick="addWallet()"
+id="addWalletButton"
 >
 新增账本
 </button>
@@ -2434,14 +2006,14 @@ style="margin-top:14px"
 
 </section>
 
-
 </main>
 
 </div>
 
 
-
-<!-- Record Modal -->
+<!-- =========================
+RECORD MODAL
+========================= -->
 
 <div
 class="overlay"
@@ -2456,10 +2028,9 @@ id="modal"
 记一笔
 </h2>
 
-
 <button
 class="closeBtn"
-onclick="closeModal()"
+id="closeRecordButton"
 >
 关闭
 </button>
@@ -2472,25 +2043,20 @@ onclick="closeModal()"
 <button
 class="typePill active"
 data-type="income"
-onclick="setRecordType('income')"
 >
 💰 收入
 </button>
 
-
 <button
 class="typePill"
 data-type="expense"
-onclick="setRecordType('expense')"
 >
 💸 支出
 </button>
 
-
 <button
 class="typePill"
 data-type="save"
-onclick="setRecordType('save')"
 >
 🎯 存钱
 </button>
@@ -2504,10 +2070,7 @@ onclick="setRecordType('save')"
 收支类型
 </label>
 
-<select
-id="type"
-onchange="updateCategoryOptions()"
->
+<select id="type">
 
 <option value="income">
 收入
@@ -2596,7 +2159,7 @@ placeholder="写下今天的小记录…"
 
 <button
 class="bigbtn"
-onclick="saveRecord()"
+id="saveRecordButton"
 >
 保存记录
 </button>
@@ -2606,8 +2169,9 @@ onclick="saveRecord()"
 </div>
 
 
-
-<!-- Transfer Modal -->
+<!-- =========================
+TRANSFER MODAL
+========================= -->
 
 <div
 class="overlay"
@@ -2622,10 +2186,9 @@ id="transferModal"
 🔄 转账
 </h2>
 
-
 <button
 class="closeBtn"
-onclick="closeTransfer()"
+id="closeTransferButton"
 >
 关闭
 </button>
@@ -2650,10 +2213,7 @@ onclick="closeTransfer()"
 转入哪里
 </label>
 
-<select
-id="transferToType"
-onchange="updateTransferDestination()"
->
+<select id="transferToType">
 
 <option value="wallet">
 其它账本
@@ -2676,10 +2236,11 @@ onchange="updateTransferDestination()"
 
 <select id="transferDestination"></select>
 
-<div class="transferTargetHint">
-
-转入存钱目标后，会自动同步目标进度。
-
+<div
+class="transferTargetHint"
+id="transferTargetHint"
+>
+账本之间转账会同时记录转出和转入。
 </div>
 
 </div>
@@ -2718,7 +2279,7 @@ placeholder="例如：本周旅行基金"
 
 <button
 class="bigbtn"
-onclick="saveTransfer()"
+id="saveTransferButton"
 >
 确认转账
 </button>
@@ -2728,2780 +2289,2576 @@ onclick="saveTransfer()"
 </div>
 
 
-
 <script>
 
 /* =========================
-Basic
+BASIC
 ========================= */
 
 const $=id=>document.getElementById(id);
 
-const storageKey='im-a-rich-girl-v4';
-
+const storageKey="im-a-rich-girl-v5";
 
 const expenseCategories=[
-'饮食',
-'购物',
-'水费',
-'电费',
-'电话费',
-'车油费',
-'Grocery',
-'妈妈',
-'儿子'
+  "饮食",
+  "购物",
+  "水费",
+  "电费",
+  "电话费",
+  "车油费",
+  "Grocery",
+  "妈妈",
+  "儿子"
 ];
-
 
 const incomeCategories=[
-'薪水',
-'bonus',
-'老公给'
+  "薪水",
+  "bonus",
+  "老公给"
 ];
 
-
 let state={
-records:[],
-goals:[],
-wallets:[
-{
-name:'现金钱包',
-openingBalance:0
-}
-],
-dailyNotes:{},
-monthlyNotes:{}
+  records:[],
+  goals:[],
+  wallets:[
+    {
+      name:"现金钱包",
+      openingBalance:0
+    }
+  ],
+  dailyNotes:{},
+  monthlyNotes:{}
 };
-
 
 let currentGoalId=null;
 
 
 /* =========================
-Utility
+HELPER
 ========================= */
 
 function uid(){
-
-return crypto.randomUUID
-?crypto.randomUUID()
-:Date.now()+''+Math.random();
-
+  return crypto.randomUUID
+    ?crypto.randomUUID()
+    :Date.now()+""+Math.random();
 }
-
 
 function money(n){
-
-return `RM ${Number(n||0).toFixed(2)`;
-
+  return `RM ${Number(n||0).toFixed(2)}`;
 }
-
 
 function dateKey(d=new Date()){
-
-return `${d.getFullYear()}-${String(
-d.getMonth()+1
-).padStart(2,'0')}-${String(
-d.getDate()
-).padStart(2,'0')}`;
-
+  return `${d.getFullYear()}-${String(
+    d.getMonth()+1
+  ).padStart(2,"0")}-${String(
+    d.getDate()
+  ).padStart(2,"0")}`;
 }
-
 
 function monthKey(d=new Date()){
-
-return dateKey(d).slice(0,7);
-
+  return dateKey(d).slice(0,7);
 }
-
 
 function localDate(key){
+  const [y,m,d]=String(key)
+    .split("-")
+    .map(Number);
 
-const [y,m,d]=String(key)
-.split('-')
-.map(Number);
-
-return new Date(
-y,
-m-1,
-d
-);
-
+  return new Date(y,m-1,d);
 }
-
 
 function dayDiff(a,b){
-
-return Math.floor(
-(
-localDate(b)
--
-localDate(a)
-)
-/86400000
-);
-
+  return Math.floor(
+    (
+      localDate(b)-localDate(a)
+    )/86400000
+  );
 }
 
-
 function esc(v){
-
-return String(v??'')
-
-.replace(
-/[&<>"']/g,
-
-c=>({
-
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#39;'
-
-}[c])
-
-);
-
+  return String(v??"")
+    .replace(
+      /[&<>"']/g,
+      c=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+      }[c])
+    );
 }
 
 
 /* =========================
-Normalize
+NORMALIZE
 ========================= */
 
 function normalizeWallets(wallets){
 
-const list=
+  const list=
+    Array.isArray(wallets)&&wallets.length
+      ?wallets
+      :[
+          {
+            name:"现金钱包",
+            openingBalance:0
+          }
+        ];
 
-Array.isArray(wallets)
-&&wallets.length
+  return list
+    .map(w=>{
 
-?wallets
+      if(typeof w==="string"){
+        return{
+          name:w,
+          openingBalance:0
+        };
+      }
 
-:[
-{
-name:'现金钱包',
-openingBalance:0
-}
-];
+      return{
+        name:String(
+          w?.name||"现金钱包"
+        ),
+        openingBalance:Number(
+          w?.openingBalance||0
+        )
+      };
 
-
-return list
-
-.map(w=>{
-
-if(typeof w==='string'){
-
-return{
-name:w,
-openingBalance:0
-};
-
-}
-
-
-return{
-
-name:
-String(
-w?.name||'现金钱包'
-),
-
-openingBalance:
-Number(
-w?.openingBalance||0
-)
-
-};
-
-})
-
-.filter(
-w=>w.name.trim()
-);
-
+    })
+    .filter(
+      w=>w.name.trim()
+    );
 }
 
 
 function normalizeGoals(goals){
 
-if(!Array.isArray(goals)){
-return [];
-}
+  if(!Array.isArray(goals)){
+    return [];
+  }
 
+  return goals
+    .map(g=>{
 
-return goals
+      const target=
+        Number(g?.target||0);
 
-.map(g=>{
+      if(
+        !g||
+        !g.name||
+        target<=0
+      ){
+        return null;
+      }
 
-const target=
-Number(g?.target||0);
+      return{
+        id:g.id||uid(),
+        name:String(g.name),
+        target,
+        days:Math.max(
+          0,
+          Math.floor(
+            Number(g.days)||0
+          )
+        ),
+        createdAt:
+          g.createdAt||dateKey(),
+        checkins:
+          Array.isArray(g.checkins)
+            ?g.checkins
+            :[]
+      };
 
-
-if(
-!g
-||
-!g.name
-||
-target<=0
-){
-return null;
-}
-
-
-return{
-
-id:g.id||uid(),
-
-name:String(g.name),
-
-target,
-
-days:
-Math.max(
-0,
-Math.floor(
-Number(g.days)||0
-)
-),
-
-createdAt:
-g.createdAt||dateKey(),
-
-checkins:
-Array.isArray(g.checkins)
-?g.checkins
-:[]
-
-};
-
-})
-
-.filter(Boolean);
-
-}
-
-
-function walletNames(){
-
-return state.wallets.map(
-w=>w.name
-);
-
-}
-
-
-function getWallet(name){
-
-return state.wallets.find(
-w=>w.name===name
-);
-
+    })
+    .filter(Boolean);
 }
 
 
 /* =========================
-Wallet Stats
-========================= */
-
-function walletStats(name){
-
-const rs=
-state.records.filter(
-r=>r.wallet===name
-);
-
-
-const opening=
-Number(
-getWallet(name)
-?.openingBalance
-||0
-);
-
-
-const income=
-
-rs
-.filter(r=>r.type==='income')
-.reduce(
-(s,r)=>s+Number(r.amount||0),
-0
-);
-
-
-const expense=
-
-rs
-.filter(r=>r.type==='expense')
-.reduce(
-(s,r)=>s+Number(r.amount||0),
-0
-);
-
-
-const save=
-
-rs
-.filter(r=>r.type==='save')
-.reduce(
-(s,r)=>s+Number(r.amount||0),
-0
-);
-
-
-return{
-
-opening,
-
-income,
-
-expense,
-
-save,
-
-balance:
-opening
-+
-income
--
-expense
--
-save,
-
-count:rs.length
-
-};
-
-}
-
-
-/* =========================
-Load State
+STATE
 ========================= */
 
 function loadState(){
 
-try{
+  try{
 
-let saved=
-localStorage.getItem(storageKey);
+    let saved=
+      localStorage.getItem(storageKey);
 
+    if(!saved){
+      saved=
+        localStorage.getItem(
+          "im-a-rich-girl-v4"
+        );
+    }
 
-if(!saved){
+    if(!saved){
+      saved=
+        localStorage.getItem(
+          "im-a-rich-girl-v3"
+        );
+    }
 
-saved=
-localStorage.getItem(
-'im-a-rich-girl-v3'
-);
+    if(saved){
 
-}
+      const old=
+        JSON.parse(saved);
 
+      state={
+        records:
+          Array.isArray(old.records)
+            ?old.records
+            :[],
 
-if(saved){
+        goals:
+          normalizeGoals(old.goals),
 
-const old=
-JSON.parse(saved);
+        wallets:
+          normalizeWallets(old.wallets),
 
+        dailyNotes:
+          old.dailyNotes||{},
 
-state={
+        monthlyNotes:
+          old.monthlyNotes||{}
+      };
 
-records:
-Array.isArray(old.records)
-?old.records
-:[],
+    }else{
 
-goals:
-normalizeGoals(old.goals),
+      state.wallets=
+        normalizeWallets(
+          state.wallets
+        );
 
-wallets:
-normalizeWallets(old.wallets),
+      state.goals=
+        normalizeGoals(
+          state.goals
+        );
+    }
 
-dailyNotes:
-old.dailyNotes||{},
+  }catch(e){
 
-monthlyNotes:
-old.monthlyNotes||{}
+    console.log(e);
 
-};
+    state.wallets=
+      normalizeWallets(
+        state.wallets
+      );
 
-}else{
-
-state.wallets=
-normalizeWallets(
-state.wallets
-);
-
-state.goals=
-normalizeGoals(
-state.goals
-);
-
-}
-
-}catch(e){
-
-console.log(e);
-
-state.wallets=
-normalizeWallets(
-state.wallets
-);
-
-state.goals=
-normalizeGoals(
-state.goals
-);
-
-}
-
+    state.goals=
+      normalizeGoals(
+        state.goals
+      );
+  }
 }
 
 
 function saveState(){
 
-localStorage.setItem(
-storageKey,
-JSON.stringify(state)
-);
-
+  localStorage.setItem(
+    storageKey,
+    JSON.stringify(state)
+  );
 }
 
 
 /* =========================
-Navigation
+SIDEBAR
+重点修复
 ========================= */
 
-function toggleMenu(force){
+function openMenu(){
 
-const open=
+  $("sidebar").classList.add("open");
 
-typeof force==='boolean'
-?force
-:!document.body.classList.contains('menuOpen');
+  $("sidebarMask")
+    .classList.add("show");
+
+  document.body
+    .classList.add("menuOpen");
+}
 
 
-document.body.classList.toggle(
-'menuOpen',
-open
-);
+function closeMenu(){
 
+  $("sidebar")
+    .classList.remove("open");
+
+  $("sidebarMask")
+    .classList.remove("show");
+
+  document.body
+    .classList.remove("menuOpen");
+}
+
+
+function toggleMenu(){
+
+  if(
+    $("sidebar")
+      .classList.contains("open")
+  ){
+    closeMenu();
+  }else{
+    openMenu();
+  }
 }
 
 
 /* =========================
-重点修复 Sidebar
+NAVIGATION
 ========================= */
 
 function showPage(id,nav=true){
 
-document
-.querySelectorAll('.page')
-.forEach(
-x=>x.classList.remove('active')
-);
+  const page=$(id);
 
+  if(!page){
+    console.error(
+      "找不到页面：",
+      id
+    );
+    return;
+  }
 
-const page=$(id);
+  document
+    .querySelectorAll(".page")
+    .forEach(
+      x=>x.classList.remove("active")
+    );
 
-if(page){
-page.classList.add('active');
-}
+  page.classList.add("active");
 
+  if(nav){
 
-if(nav){
+    document
+      .querySelectorAll(".navitem")
+      .forEach(
+        x=>x.classList.toggle(
+          "active",
+          x.dataset.page===id
+        )
+      );
+  }
 
-document
-.querySelectorAll('.navitem')
-.forEach(
-x=>
-x.classList.toggle(
-'active',
-x.dataset.page===id
-)
-);
+  closeMenu();
 
-}
-
-
-toggleMenu(false);
-
-
-window.scrollTo({
-top:0,
-behavior:'smooth'
-});
-
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
 
 /* =========================
-Record Options
+WALLET
+========================= */
+
+function walletNames(){
+  return state.wallets.map(
+    w=>w.name
+  );
+}
+
+function getWallet(name){
+  return state.wallets.find(
+    w=>w.name===name
+  );
+}
+
+function walletStats(name){
+
+  const rs=
+    state.records.filter(
+      r=>r.wallet===name
+    );
+
+  const opening=
+    Number(
+      getWallet(name)
+        ?.openingBalance||0
+    );
+
+  const income=
+    rs
+      .filter(
+        r=>r.type==="income"
+      )
+      .reduce(
+        (s,r)=>
+          s+Number(r.amount||0),
+        0
+      );
+
+  const expense=
+    rs
+      .filter(
+        r=>r.type==="expense"
+      )
+      .reduce(
+        (s,r)=>
+          s+Number(r.amount||0),
+        0
+      );
+
+  const save=
+    rs
+      .filter(
+        r=>r.type==="save"
+      )
+      .reduce(
+        (s,r)=>
+          s+Number(r.amount||0),
+        0
+      );
+
+  return{
+    opening,
+    income,
+    expense,
+    save,
+
+    balance:
+      opening+
+      income-
+      expense-
+      save,
+
+    count:rs.length
+  };
+}
+
+
+/* =========================
+RECORD OPTIONS
 ========================= */
 
 function renderWalletOptions(){
 
-$('walletSelect').innerHTML=
-
-state.wallets
-
-.map(
-w=>
-`<option value="${esc(w.name)}">
-${esc(w.name)}
-</option>`
-)
-
-.join('');
-
+  $("walletSelect").innerHTML=
+    state.wallets
+      .map(
+        w=>`
+        <option value="${esc(w.name)}">
+          ${esc(w.name)}
+        </option>
+        `
+      )
+      .join("");
 }
 
 
 function renderGoalOptions(){
 
-const goals=
-normalizeGoals(
-state.goals
-);
+  const goals=
+    normalizeGoals(
+      state.goals
+    );
 
-
-$('goalSelect').innerHTML=
-
-goals.length
-
-?goals
-
-.map(
-g=>
-`<option value="${esc(g.id)}">
-${esc(g.name)}
-</option>`
-)
-
-.join('')
-
-:'<option value="">暂无存钱目标</option>';
-
+  $("goalSelect").innerHTML=
+    goals.length
+      ?goals
+        .map(
+          g=>`
+          <option value="${esc(g.id)}">
+            ${esc(g.name)}
+          </option>
+          `
+        )
+        .join("")
+      :'<option value="">暂无存钱目标</option>';
 }
 
 
 function updateCategoryOptions(){
 
-const type=
-$('type').value;
+  const type=
+    $("type").value;
 
+  let cats=
+    incomeCategories;
 
-let cats=
-incomeCategories;
+  let label=
+    "收入分类";
 
+  if(type==="expense"){
+    cats=expenseCategories;
+    label="消费分类";
+  }
 
-let label=
-'收入分类';
+  if(type==="save"){
+    cats=["存入目标"];
+    label="存钱分类";
+  }
 
+  $("categoryLabel").textContent=
+    label;
 
-if(type==='expense'){
+  $("category").innerHTML=
+    cats
+      .map(
+        c=>`<option>${esc(c)}</option>`
+      )
+      .join("");
 
-cats=
-expenseCategories;
-
-label=
-'消费分类';
-
-}
-
-
-if(type==='save'){
-
-cats=
-['存入目标'];
-
-label=
-'存钱分类';
-
-}
-
-
-$('categoryLabel').textContent=
-label;
-
-
-$('category').innerHTML=
-
-cats
-
-.map(
-c=>
-`<option>
-${esc(c)}
-</option>`
-)
-
-.join('');
-
-
-$('goalField').style.display=
-
-type==='save'
-?'block'
-:'none';
-
+  $("goalField").style.display=
+    type==="save"
+      ?"block"
+      :"none";
 }
 
 
 function setRecordType(type){
 
-$('type').value=type;
+  $("type").value=type;
 
+  document
+    .querySelectorAll(".typePill")
+    .forEach(
+      x=>x.classList.toggle(
+        "active",
+        x.dataset.type===type
+      )
+    );
 
-document
-.querySelectorAll('.typePill')
-.forEach(
-x=>
-x.classList.toggle(
-'active',
-x.dataset.type===type
-)
-);
-
-
-updateCategoryOptions();
-
+  updateCategoryOptions();
 }
 
 
 /* =========================
-Record Modal
+RECORD MODAL
 ========================= */
 
-function openRecord(type='income'){
+function openRecord(type="income"){
 
-toggleMenu(false);
+  $("modal")
+    .classList.add("show");
 
-$('modal').classList.add('show');
+  $("amountInput").value="";
+  $("note").value="";
 
-$('amountInput').value='';
-$('note').value='';
+  renderWalletOptions();
+  renderGoalOptions();
 
-renderWalletOptions();
-
-renderGoalOptions();
-
-setRecordType(type);
-
+  setRecordType(type);
 }
 
 
 function closeModal(){
+  $("modal")
+    .classList.remove("show");
+}
 
-$('modal').classList.remove('show');
 
+function saveRecord(){
+
+  const amount=
+    Number(
+      $("amountInput").value
+    );
+
+  const type=
+    $("type").value;
+
+  const goalId=
+    type==="save"
+      ?$("goalSelect").value
+      :"";
+
+  if(
+    !amount||
+    amount<=0
+  ){
+    alert("请输入金额");
+    return;
+  }
+
+  if(
+    type==="save"&&
+    !goalId
+  ){
+    alert("请先新增一个存钱目标");
+    return;
+  }
+
+  state.records.unshift({
+    id:uid(),
+    date:dateKey(),
+    type,
+    amount,
+
+    category:
+      $("category").value,
+
+    note:
+      $("note").value.trim(),
+
+    wallet:
+      $("walletSelect").value,
+
+    goalId
+  });
+
+  saveState();
+
+  closeModal();
+
+  renderAll();
 }
 
 
 /* =========================
-Transfer
+DELETE RECORD
+========================= */
+
+function deleteRecord(id){
+
+  if(
+    !confirm("确定删除这笔记录吗？")
+  ){
+    return;
+  }
+
+  state.records=
+    state.records.filter(
+      r=>r.id!==id
+    );
+
+  saveState();
+
+  renderAll();
+}
+
+
+/* =========================
+TRANSFER
 ========================= */
 
 function openTransfer(){
 
-if(!state.wallets.length){
+  if(!state.wallets.length){
+    alert(
+      "请先新增至少一个账本"
+    );
+    return;
+  }
 
-alert(
-'请先新增至少一个账本'
-);
+  $("transferModal")
+    .classList.add("show");
 
-return;
+  $("transferAmount").value="";
+  $("transferNote").value="";
 
-}
+  $("transferFrom").innerHTML=
+    state.wallets
+      .map(
+        w=>`
+        <option value="${esc(w.name)}">
+          ${esc(w.name)}
+        </option>
+        `
+      )
+      .join("");
 
+  $("transferToType").value=
+    "wallet";
 
-toggleMenu(false);
-
-$('transferModal').classList.add('show');
-
-$('transferAmount').value='';
-$('transferNote').value='';
-
-
-$('transferFrom').innerHTML=
-
-state.wallets
-
-.map(
-w=>
-`<option value="${esc(w.name)}">
-${esc(w.name)}
-</option>`
-)
-
-.join('');
-
-
-$('transferToType').value='wallet';
-
-updateTransferDestination();
-
+  updateTransferDestination();
 }
 
 
 function closeTransfer(){
 
-$('transferModal').classList.remove('show');
-
+  $("transferModal")
+    .classList.remove("show");
 }
 
 
 function updateTransferDestination(){
 
-const type=
-$('transferToType').value;
+  const type=
+    $("transferToType").value;
 
+  const dest=
+    $("transferDestination");
 
-const dest=
-$('transferDestination');
+  const label=
+    $("transferDestinationLabel");
 
+  const hint=
+    $("transferTargetHint");
 
-const label=
-$('transferDestinationLabel');
+  if(type==="goal"){
 
+    label.textContent=
+      "选择存钱目标";
 
-const hint=
-document.querySelector(
-'#transferModal .transferTargetHint'
-);
+    dest.innerHTML=
+      state.goals.length
+        ?state.goals
+          .map(
+            g=>`
+            <option value="${esc(g.id)}">
+              ${esc(g.name)}
+            </option>
+            `
+          )
+          .join("")
+        :'<option value="">暂无存钱目标</option>';
 
+    hint.textContent=
+      "转入存钱目标后，会自动新增存钱记录并同步目标进度。";
 
-if(type==='goal'){
+  }else{
 
-label.textContent=
-'选择存钱目标';
+    label.textContent=
+      "转入账本";
 
+    dest.innerHTML=
+      state.wallets
+        .map(
+          w=>`
+          <option value="${esc(w.name)}">
+            ${esc(w.name)}
+          </option>
+          `
+        )
+        .join("");
 
-dest.innerHTML=
-
-state.goals.length
-
-?state.goals
-
-.map(
-g=>
-`<option value="${esc(g.id)}">
-${esc(g.name)}
-</option>`
-)
-
-.join('')
-
-:'<option value="">暂无存钱目标</option>';
-
-
-if(hint){
-
-hint.textContent=
-'转入存钱目标后，会自动新增存钱记录并同步目标进度。';
-
-}
-
-}else{
-
-
-label.textContent=
-'转入账本';
-
-
-dest.innerHTML=
-
-state.wallets
-
-.map(
-w=>
-`<option value="${esc(w.name)}">
-${esc(w.name)}
-</option>`
-)
-
-.join('');
-
-
-if(hint){
-
-hint.textContent=
-'账本之间转账会同时记录转出和转入。';
-
-}
-
-}
-
+    hint.textContent=
+      "账本之间转账会同时记录转出和转入。";
+  }
 }
 
 
 function saveTransfer(){
 
-const from=
-$('transferFrom').value;
+  const from=
+    $("transferFrom").value;
+
+  const type=
+    $("transferToType").value;
+
+  const destination=
+    $("transferDestination").value;
+
+  const amount=
+    Number(
+      $("transferAmount").value
+    );
+
+  const note=
+    $("transferNote")
+      .value
+      .trim();
+
+  if(
+    !amount||
+    amount<=0
+  ){
+    alert(
+      "请输入正确的转账金额"
+    );
+    return;
+  }
+
+  if(!destination){
+
+    alert(
+      type==="goal"
+        ?"请先新增并选择存钱目标"
+        :"请选择转入账本"
+    );
+
+    return;
+  }
+
+
+  if(type==="wallet"){
+
+    if(from===destination){
+      alert(
+        "转出和转入账本不能相同"
+      );
+      return;
+    }
+
+    state.records.unshift({
+      id:uid(),
+      date:dateKey(),
+      type:"expense",
+      amount,
+      category:"转账",
+
+      note:
+        `转入 ${destination}${
+          note
+            ?" · "+note
+            :""
+        }`,
+
+      wallet:from,
+      goalId:""
+    });
+
+
+    state.records.unshift({
+      id:uid(),
+      date:dateKey(),
+      type:"income",
+      amount,
+      category:"转账",
+
+      note:
+        `来自 ${from}${
+          note
+            ?" · "+note
+            :""
+        }`,
+
+      wallet:destination,
+      goalId:""
+    });
+
+  }else{
+
+    const goal=
+      state.goals.find(
+        g=>g.id===destination
+      );
+
+    if(!goal){
+      alert(
+        "没有找到这个存钱目标"
+      );
+      return;
+    }
+
+    state.records.unshift({
+      id:uid(),
+      date:dateKey(),
+      type:"save",
+      amount,
+      category:"转入存钱目标",
 
+      note:
+        `从 ${from} 转入${
+          note
+            ?" · "+note
+            :""
+        }`,
 
-const type=
-$('transferToType').value;
+      wallet:from,
+      goalId:goal.id
+    });
+  }
 
+  saveState();
 
-const destination=
-$('transferDestination').value;
+  closeTransfer();
 
+  renderAll();
 
-const amount=
-Number(
-$('transferAmount').value
-);
-
-
-const note=
-$('transferNote')
-.value
-.trim();
-
-
-if(!amount||amount<=0){
-
-alert(
-'请输入正确的转账金额'
-);
-
-return;
-
-}
-
-
-if(!destination){
-
-alert(
-type==='goal'
-?'请先新增并选择存钱目标'
-:'请选择转入账本'
-);
-
-return;
-
-}
-
-
-if(type==='wallet'){
-
-if(from===destination){
-
-alert(
-'转出和转入账本不能相同'
-);
-
-return;
-
-}
-
-
-state.records.unshift({
-
-id:uid(),
-
-date:dateKey(),
-
-type:'expense',
-
-amount,
-
-category:'转账',
-
-note:
-`转入 ${destination}${
-note
-?' · '+note
-:''
-}`,
-
-wallet:from,
-
-goalId:''
-
-});
-
-
-state.records.unshift({
-
-id:uid(),
-
-date:dateKey(),
-
-type:'income',
-
-amount,
-
-category:'转账',
-
-note:
-`来自 ${from}${
-note
-?' · '+note
-:''
-}`,
-
-wallet:destination,
-
-goalId:''
-
-});
-
-}else{
-
-
-const goal=
-
-state.goals.find(
-g=>g.id===destination
-);
-
-
-if(!goal){
-
-alert(
-'没有找到这个存钱目标'
-);
-
-return;
-
-}
-
-
-state.records.unshift({
-
-id:uid(),
-
-date:dateKey(),
-
-type:'save',
-
-amount,
-
-category:'转入存钱目标',
-
-note:
-`从 ${from} 转入${
-note
-?' · '+note
-:''
-}`,
-
-wallet:from,
-
-goalId:goal.id
-
-});
-
-}
-
-
-saveState();
-
-closeTransfer();
-
-renderAll();
-
-alert(
-'转账成功 💕'
-);
-
+  alert("转账成功 💕");
 }
 
 
 /* =========================
-Save Record
+RECORD STATS
 ========================= */
 
-function saveRecord(){
+function recordsForMonth(
+  m=monthKey()
+){
 
-const amount=
-Number(
-$('amountInput').value
-);
-
-
-const type=
-$('type').value;
-
-
-const goalId=
-type==='save'
-?$('goalSelect').value
-:'';
-
-
-if(!amount||amount<=0){
-
-alert(
-'请输入金额'
-);
-
-return;
-
+  return state.records.filter(
+    r=>String(r.date)
+      .startsWith(m)
+  );
 }
 
 
-if(type==='save'&&!goalId){
+function totals(
+  m=monthKey()
+){
 
-alert(
-'请先新增一个存钱目标'
-);
+  const rs=
+    recordsForMonth(m);
 
-return;
+  const sum=t=>
+    rs
+      .filter(
+        r=>r.type===t
+      )
+      .reduce(
+        (s,r)=>
+          s+Number(r.amount||0),
+        0
+      );
 
-}
+  const income=sum("income");
+  const expense=sum("expense");
+  const save=sum("save");
 
+  return{
+    income,
+    expense,
+    save,
 
-state.records.unshift({
-
-id:uid(),
-
-date:dateKey(),
-
-type,
-
-amount,
-
-category:
-$('category').value,
-
-note:
-$('note')
-.value
-.trim(),
-
-wallet:
-$('walletSelect').value,
-
-goalId
-
-});
-
-
-saveState();
-
-closeModal();
-
-renderAll();
-
-}
-
-
-/* =========================
-Delete Record
-========================= */
-
-function deleteRecord(id){
-
-if(
-!confirm(
-'确定删除这笔记录吗？'
-)
-)return;
-
-
-state.records=
-state.records.filter(
-r=>r.id!==id
-);
-
-
-saveState();
-
-renderAll();
-
-}
-
-
-/* =========================
-Records
-========================= */
-
-function recordsForMonth(m=monthKey()){
-
-return state.records.filter(
-r=>String(r.date).startsWith(m)
-);
-
-}
-
-
-function totals(m=monthKey()){
-
-const rs=
-recordsForMonth(m);
-
-
-const sum=t=>
-
-rs
-
-.filter(r=>r.type===t)
-
-.reduce(
-(s,r)=>s+Number(r.amount||0),
-0
-);
-
-
-const income=sum('income');
-const expense=sum('expense');
-const save=sum('save');
-
-
-return{
-
-income,
-
-expense,
-
-save,
-
-balance:
-income
--
-expense
--
-save
-
-};
-
+    balance:
+      income-
+      expense-
+      save
+  };
 }
 
 
 function recordIcon(t){
 
-return
+  if(t==="income"){
+    return "💰";
+  }
 
-t==='income'
-?'💰'
-:t==='expense'
-?'💸'
-:'🎯';
+  if(t==="expense"){
+    return "💸";
+  }
 
+  return "🎯";
 }
 
 
 function renderRecordList(
-id,
-records,
-compact=false
+  id,
+  records,
+  compact=false
 ){
 
-const el=$(id);
+  const el=$(id);
 
-if(!el)return;
+  if(!el){
+    return;
+  }
 
+  if(!records.length){
 
-if(!records.length){
+    el.innerHTML=
+      '<div class="empty">还没有记录，快去记第一笔吧 💕</div>';
 
-el.innerHTML=
-'<div class="empty">还没有记录，快去记第一笔吧 💕</div>';
+    return;
+  }
 
-return;
+  el.innerHTML=
+    records
+      .map(r=>`
 
-}
+      <div class="recordItem">
 
+      <div class="recordLeft">
 
-el.innerHTML=
+      <div class="recordIcon">
+      ${recordIcon(r.type)}
+      </div>
 
-records
+      <div>
 
-.map(
-r=>
+      <div class="recordName">
+      ${esc(r.category||"未分类")}
+      </div>
 
-`<div class="recordItem">
+      <div class="muted">
 
-<div class="recordLeft">
+      ${esc(r.date)}
 
-<div class="recordIcon">
-${recordIcon(r.type)}
-</div>
+      ${
+        r.note
+          ?" · "+esc(r.note)
+          :""
+      }
 
+      </div>
 
-<div>
+      </div>
 
-<div class="recordName">
-${esc(r.category||'未分类')}
-</div>
-
-
-<div class="muted">
-
-${esc(r.date)}
-
-${
-r.note
-?' · '+esc(r.note)
-:''
-}
-
-</div>
-
-</div>
-
-</div>
+      </div>
 
 
-<div style="text-align:right">
+      <div style="text-align:right">
 
-<div class="amount ${
-r.type==='income'
-?'blue'
-:r.type==='expense'
-?'pink'
-:'green'
-}">
+      <div class="amount ${
+        r.type==="income"
+          ?"blue"
+          :r.type==="expense"
+            ?"pink"
+            :"green"
+      }">
 
-${
-r.type==='expense'
-?'-'
-:'+'
-}
+      ${
+        r.type==="expense"
+          ?"-"
+          :"+"
+      }
 
-${money(r.amount)}
+      ${money(r.amount)}
 
-</div>
+      </div>
 
+      ${
+        compact
+          ?""
+          :`
+          <button
+          class="deleteBtn"
+          data-delete-record="${esc(r.id)}"
+          >
+          删除
+          </button>
+          `
+      }
 
-${
-compact
-?''
-:`<button
-class="deleteBtn"
-onclick="deleteRecord('${r.id}')"
->
-删除
-</button>`
-}
+      </div>
 
-</div>
+      </div>
 
-</div>`
-
-)
-
-.join('');
-
+      `)
+      .join("");
 }
 
 
 /* =========================
-Overview
+OVERVIEW
 ========================= */
 
 function renderOverview(){
 
-const t=
-totals();
+  const t=totals();
 
+  $("incomeStat").textContent=
+    money(t.income);
 
-$('incomeStat').textContent=
-money(t.income);
+  $("expenseStat").textContent=
+    money(t.expense);
 
+  $("saveStat").textContent=
+    money(t.save);
 
-$('expenseStat').textContent=
-money(t.expense);
+  $("balanceStat").textContent=
+    money(t.balance);
 
+  $("monthLabel").textContent=
+    monthKey();
 
-$('saveStat').textContent=
-money(t.save);
+  $("todayText").textContent=
+    `今天 ${
+      new Date()
+        .toLocaleDateString(
+          "zh-CN",
+          {
+            month:"long",
+            day:"numeric"
+          }
+        )
+    } · 每天存一点，未来富一点`;
 
+  const total=
+    t.income+
+    t.expense+
+    t.save;
 
-$('balanceStat').textContent=
-money(t.balance);
+  $("chartText").textContent=
+    total
+      ?`本月收入 ${money(t.income)} · 支出 ${money(t.expense)} · 存钱 ${money(t.save)}`
+      :"开始记下第一笔账吧，你的富婆之路从今天开始 💕";
 
-
-$('monthLabel').textContent=
-monthKey();
-
-
-$('todayText').textContent=
-
-`今天 ${
-new Date()
-.toLocaleDateString(
-'zh-CN',
-{
-month:'long',
-day:'numeric'
-}
-)
-} · 每天存一点，未来富一点`;
-
-
-const total=
-t.income+
-t.expense+
-t.save;
-
-
-$('chartText').textContent=
-
-total
-?`本月收入 ${money(t.income)} · 支出 ${money(t.expense)} · 存钱 ${money(t.save)}`
-:'开始记下第一笔账吧，你的富婆之路从今天开始 💕';
-
-
-renderRecordList(
-'recentRecords',
-state.records.slice(0,6),
-true
-);
-
+  renderRecordList(
+    "recentRecords",
+    state.records.slice(0,6),
+    true
+  );
 }
 
 
 /* =========================
-Daily
+DAILY
 ========================= */
 
 function renderDaily(){
 
-const today=
-new Date();
+  const today=
+    new Date();
 
+  $("dailyDateText").textContent=
+    today.toLocaleDateString(
+      "zh-CN",
+      {
+        year:"numeric",
+        month:"long",
+        day:"numeric",
+        weekday:"long"
+      }
+    );
 
-const dateText=
+  $("dailyMonthLabel").textContent=
+    monthKey();
 
-today.toLocaleDateString(
-'zh-CN',
-{
-year:'numeric',
-month:'long',
-day:'numeric',
-weekday:'long'
-}
-);
+  const rs=
+    recordsForMonth()
+      .slice()
+      .sort(
+        (a,b)=>
+          String(b.date)
+            .localeCompare(
+              String(a.date)
+            )
+      );
 
-
-$('dailyDateText').textContent=
-dateText;
-
-
-$('dailyMonthLabel').textContent=
-monthKey();
-
-
-const rs=
-
-recordsForMonth()
-.slice()
-.sort(
-(a,b)=>
-String(b.date).localeCompare(
-String(a.date)
-)
-);
-
-
-renderRecordList(
-'dailyMonthRecords',
-rs,
-false
-);
-
+  renderRecordList(
+    "dailyMonthRecords",
+    rs,
+    false
+  );
 }
 
 
 /* =========================
-Monthly
+MONTHLY
 ========================= */
 
 function setupMonthPicker(){
 
-const now=
-new Date();
+  const now=
+    new Date();
 
+  const months=[];
 
-const months=[];
+  for(
+    let i=0;
+    i<12;
+    i++
+  ){
 
+    const d=
+      new Date(
+        now.getFullYear(),
+        now.getMonth()-i,
+        1
+      );
 
-for(
-let i=0;
-i<12;
-i++
-){
+    months.push(
+      `${d.getFullYear()}-${String(
+        d.getMonth()+1
+      ).padStart(2,"0")}`
+    );
+  }
 
-const d=
-new Date(
-now.getFullYear(),
-now.getMonth()-i,
-1
-);
+  const old=
+    $("monthlyPicker").value||
+    monthKey();
 
+  $("monthlyPicker").innerHTML=
+    months
+      .map(
+        m=>`
+        <option value="${m}">
+        ${m}
+        </option>
+        `
+      )
+      .join("");
 
-months.push(
-`${d.getFullYear()}-${String(
-d.getMonth()+1
-).padStart(2,'0')}`
-);
-
-}
-
-
-const old=
-$('monthlyPicker').value
-||monthKey();
-
-
-$('monthlyPicker').innerHTML=
-
-months
-
-.map(
-m=>
-`<option value="${m}">
-${m}
-</option>`
-)
-
-.join('');
-
-
-$('monthlyPicker').value=
-
-months.includes(old)
-?old
-:monthKey();
-
-
-$('monthlyPicker').onchange=
-renderMonthly;
-
+  $("monthlyPicker").value=
+    months.includes(old)
+      ?old
+      :monthKey();
 }
 
 
 function renderMonthly(){
 
-const m=
-$('monthlyPicker').value
-||monthKey();
+  const m=
+    $("monthlyPicker").value||
+    monthKey();
 
+  const t=
+    totals(m);
 
-const t=
-totals(m);
+  $("monthlyIncome").textContent=
+    money(t.income);
 
+  $("monthlyExpense").textContent=
+    money(t.expense);
 
-$('monthlyIncome').textContent=
-money(t.income);
+  $("monthlySave").textContent=
+    money(t.save);
 
+  $("monthlyBalance").textContent=
+    money(t.balance);
 
-$('monthlyExpense').textContent=
-money(t.expense);
-
-
-$('monthlySave').textContent=
-money(t.save);
-
-
-$('monthlyBalance').textContent=
-money(t.balance);
-
-
-$('monthlyNote').value=
-state.monthlyNotes[m]
-||'';
-
+  $("monthlyNote").value=
+    state.monthlyNotes[m]||"";
 }
 
 
 function saveMonthlyNote(){
 
-state.monthlyNotes[
-$('monthlyPicker').value
-]=
-$('monthlyNote')
-.value
-.trim();
+  state.monthlyNotes[
+    $("monthlyPicker").value
+  ]=
+    $("monthlyNote")
+      .value
+      .trim();
 
+  saveState();
 
-saveState();
-
-
-alert(
-'月度复盘已保存 💕'
-);
-
+  alert(
+    "月度复盘已保存 💕"
+  );
 }
 
 
 /* =========================
-History
+HISTORY
 ========================= */
 
 function renderHistory(){
 
-const grouped={};
+  const grouped={};
 
+  state.records.forEach(r=>{
 
-state.records.forEach(
-r=>
-(
-grouped[r.date]
-||(
-grouped[r.date]=[]
-)
-)
-.push(r)
-);
+    if(!grouped[r.date]){
+      grouped[r.date]=[];
+    }
 
+    grouped[r.date].push(r);
 
-const dates=
-Object.keys(grouped)
-.sort(
-(a,b)=>b.localeCompare(a)
-);
+  });
 
+  const dates=
+    Object.keys(grouped)
+      .sort(
+        (a,b)=>b.localeCompare(a)
+      );
 
-$('historyList').innerHTML=
+  $("historyList").innerHTML=
+    dates.length
+      ?dates
+        .map(d=>{
 
-dates.length
+          const rs=
+            grouped[d];
 
-?dates
+          const net=
+            rs.reduce(
+              (s,r)=>
+                s+(
+                  r.type==="expense"
+                    ?-Number(r.amount)
+                    :Number(r.amount)
+                ),
+              0
+            );
 
-.map(d=>{
+          return`
 
-const rs=
-grouped[d];
+          <div class="historyItem">
 
+          <div>
 
-const net=
+          <strong>
+          ${d}
+          </strong>
 
-rs.reduce(
-(s,r)=>
-s+(
-r.type==='expense'
-?-Number(r.amount)
-:Number(r.amount)
-),
-0
-);
+          <div class="muted">
+          ${rs.length} 笔记录
+          </div>
 
+          </div>
 
-return
+          <div class="goalMoney">
+          ${money(net)}
+          </div>
 
-`<div class="historyItem">
+          </div>
 
-<div>
+          `;
 
-<strong>
-${d}
-</strong>
-
-<div class="muted">
-${rs.length} 笔记录
-</div>
-
-</div>
-
-
-<div class="goalMoney">
-${money(net)}
-</div>
-
-</div>`;
-
-})
-
-.join('')
-
-:'<div class="empty">还没有打卡历史</div>';
-
+        })
+        .join("")
+      :'<div class="empty">还没有打卡历史</div>';
 }
 
 
 /* =========================
-Goals
+GOALS
 ========================= */
 
 function addGoal(){
 
-const name=
-$('goalName')
-.value
-.trim();
+  const name=
+    $("goalName")
+      .value
+      .trim();
 
+  const target=
+    Number(
+      $("goalAmount").value
+    );
 
-const target=
-Number(
-$('goalAmount').value
-);
+  const days=
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          $("goalDays").value
+        )||0
+      )
+    );
 
+  if(
+    !name||
+    !target||
+    target<=0
+  ){
+    alert(
+      "请填写目标名称和目标金额"
+    );
+    return;
+  }
 
-const days=
+  const newGoal={
+    id:uid(),
+    name,
+    target,
+    days,
+    createdAt:dateKey(),
+    checkins:[]
+  };
 
-Math.max(
-0,
-Math.floor(
-Number(
-$('goalDays').value
-)
-||0
-)
-);
+  state.goals.unshift(
+    newGoal
+  );
 
+  saveState();
 
-if(
-!name
-||
-!target
-||
-target<=0
-){
+  $("goalName").value="";
+  $("goalAmount").value="";
+  $("goalDays").value="";
 
-alert(
-'请填写目标名称和目标金额'
-);
+  renderAll();
 
-return;
-
-}
-
-
-const newGoal={
-
-id:uid(),
-
-name,
-
-target,
-
-days,
-
-createdAt:
-dateKey(),
-
-checkins:[]
-
-};
-
-
-state.goals.unshift(
-newGoal
-);
-
-
-saveState();
-
-
-$('goalName').value='';
-$('goalAmount').value='';
-$('goalDays').value='';
-
-
-renderGoals();
-renderGoalOptions();
-renderAll();
-
-
-alert(
-`「${name}」新增成功 🎯`
-);
-
+  alert(
+    `「${name}」新增成功 🎯`
+  );
 }
 
 
 function goalSaved(g){
 
-return state.records
-
-.filter(
-r=>
-r.type==='save'
-&&
-r.goalId===g.id
-)
-
-.reduce(
-(s,r)=>s+Number(r.amount||0),
-0
-);
-
+  return state.records
+    .filter(
+      r=>
+        r.type==="save"&&
+        r.goalId===g.id
+    )
+    .reduce(
+      (s,r)=>
+        s+Number(r.amount||0),
+      0
+    );
 }
 
 
 function passedDays(g){
 
-return g.days
-
-?Math.max(
-0,
-Math.min(
-g.days,
-dayDiff(
-g.createdAt,
-dateKey()
-)
-+1
-)
-)
-
-:0;
-
+  return g.days
+    ?Math.max(
+      0,
+      Math.min(
+        g.days,
+        dayDiff(
+          g.createdAt,
+          dateKey()
+        )+1
+      )
+    )
+    :0;
 }
 
 
 function remainingDays(g){
 
-return g.days
-
-?Math.max(
-0,
-g.days-
-passedDays(g)
-)
-
-:null;
-
+  return g.days
+    ?Math.max(
+      0,
+      g.days-passedDays(g)
+    )
+    :null;
 }
 
 
 function dailyAmount(g){
 
-const remain=
-Math.max(
-0,
-g.target-goalSaved(g)
-);
+  const remain=
+    Math.max(
+      0,
+      g.target-goalSaved(g)
+    );
 
+  if(!g.days){
+    return 0;
+  }
 
-if(!g.days){
-return 0;
-}
+  const days=
+    remainingDays(g);
 
-
-const days=
-remainingDays(g);
-
-
-return days>0
-?remain/days
-:remain;
-
+  return days>0
+    ?remain/days
+    :remain;
 }
 
 
 function checkDates(g){
 
-return (
-g.checkins||[]
-)
-
-.map(
-x=>
-typeof x==='string'
-?x
-:x.date
-)
-
-.filter(Boolean);
-
+  return(
+    g.checkins||[]
+  )
+    .map(
+      x=>
+        typeof x==="string"
+          ?x
+          :x.date
+    )
+    .filter(Boolean);
 }
 
 
 function renderGoals(){
 
-const el=
-$('goalList');
+  const el=
+    $("goalList");
+
+  state.goals=
+    normalizeGoals(
+      state.goals
+    );
+
+  if(!state.goals.length){
+
+    el.innerHTML=
+      '<div class="empty">还没有存钱目标，先新增一个梦想吧 🎯</div>';
+
+    return;
+  }
+
+  el.innerHTML=
+    state.goals
+      .map(g=>{
+
+        const saved=
+          goalSaved(g);
+
+        const pct=
+          Math.min(
+            100,
+            saved/g.target*100
+          );
+
+        return`
+
+        <div
+        class="goalItem goalClickArea"
+        style="
+        display:block;
+        padding:18px 0
+        "
+        data-goal-id="${esc(g.id)}"
+        >
+
+        <div class="row">
+
+        <strong>
+        ${esc(g.name)}
+        </strong>
+
+        <span class="goalMoney">
+        ${money(saved)}
+        /
+        ${money(g.target)}
+        </span>
+
+        </div>
 
 
-if(!el)return;
+        <div class="progressWrap">
+
+        <div class="progressBar">
+
+        <div
+        class="progressFill"
+        style="width:${pct}%"
+        ></div>
+
+        </div>
+
+        </div>
 
 
-state.goals=
-normalizeGoals(
-state.goals
-);
+        <div
+        class="row"
+        style="margin-top:10px"
+        >
 
+        <span class="muted">
 
-if(!state.goals.length){
+        ${
+          g.days
+            ?`每天建议存 ${money(
+              dailyAmount(g)
+            )}`
+            :"点击进入设置期限"
+        }
 
-el.innerHTML=
-'<div class="empty">还没有存钱目标，先新增一个梦想吧 🎯</div>';
+        </span>
 
-return;
+        <span class="muted">
+        ${pct.toFixed(0)}% 完成 →
+        </span>
 
-}
+        </div>
 
+        </div>
 
-el.innerHTML=
+        `;
 
-state.goals
-
-.map(g=>{
-
-const saved=
-goalSaved(g);
-
-
-const pct=
-Math.min(
-100,
-saved/g.target*100
-);
-
-
-return
-
-`<div
-class="goalItem goalClickArea"
-style="
-display:block;
-padding:18px 0
-"
-onclick="openGoalDetail('${g.id}')"
->
-
-<div class="row">
-
-<strong>
-${esc(g.name)}
-</strong>
-
-<span class="goalMoney">
-${money(saved)}
-/
-${money(g.target)}
-</span>
-
-</div>
-
-
-<div class="progressWrap">
-
-<div class="progressBar">
-
-<div
-class="progressFill"
-style="width:${pct}%"
-></div>
-
-</div>
-
-</div>
-
-
-<div
-class="row"
-style="margin-top:10px"
->
-
-<span class="muted">
-
-${
-g.days
-?`每天建议存 ${money(
-dailyAmount(g)
-)}`
-:'点击进入设置期限'
-}
-
-</span>
-
-
-<span class="muted">
-${pct.toFixed(0)}% 完成 →
-</span>
-
-</div>
-
-</div>`;
-
-})
-
-.join('');
-
+      })
+      .join("");
 }
 
 
 /* =========================
-Goal Detail
+GOAL DETAIL
 ========================= */
 
 function openGoalDetail(id){
 
-const goal=
-state.goals.find(
-g=>g.id===id
-);
+  const goal=
+    state.goals.find(
+      g=>g.id===id
+    );
 
+  if(!goal){
+    alert(
+      "找不到这个存钱目标"
+    );
+    renderGoals();
+    return;
+  }
 
-if(!goal){
+  currentGoalId=id;
 
-alert(
-'找不到这个存钱目标'
-);
+  showPage(
+    "goalDetail",
+    false
+  );
 
-renderGoals();
-
-return;
-
-}
-
-
-currentGoalId=id;
-
-
-showPage(
-'goalDetail',
-false
-);
-
-
-renderGoalDetail();
-
+  renderGoalDetail();
 }
 
 
 function goBackToGoals(){
 
-currentGoalId=null;
+  currentGoalId=null;
 
+  showPage(
+    "goals",
+    true
+  );
 
-showPage(
-'goals',
-true
-);
-
-
-renderGoals();
-
+  renderGoals();
 }
 
 
 function currentGoal(){
 
-return state.goals.find(
-g=>g.id===currentGoalId
-);
-
+  return state.goals.find(
+    g=>g.id===currentGoalId
+  );
 }
 
 
 function saveGoalDays(){
 
-const g=
-currentGoal();
+  const g=
+    currentGoal();
 
+  if(!g){
+    return;
+  }
 
-const days=
-Math.floor(
-Number(
-$('detailGoalDays').value
-)
-);
+  const days=
+    Math.floor(
+      Number(
+        $("detailGoalDays").value
+      )
+    );
 
+  if(
+    !days||
+    days<1
+  ){
+    alert(
+      "请输入正确的期限天数"
+    );
+    return;
+  }
 
-if(!g)return;
+  g.days=days;
 
+  g.createdAt=
+    dateKey();
 
-if(
-!days
-||
-days<1
-){
+  g.checkins=[];
 
-alert(
-'请输入正确的期限天数'
-);
+  saveState();
 
-return;
+  renderAll();
 
-}
-
-
-g.days=days;
-g.createdAt=dateKey();
-g.checkins=[];
-
-
-saveState();
-
-
-renderGoalDetail();
-renderGoals();
-renderAll();
-
-
-alert(
-'期限已设置成功 📅'
-);
-
+  alert(
+    "期限已设置成功 📅"
+  );
 }
 
 
 function toggleTodayCheckin(){
 
-const g=
-currentGoal();
+  const g=
+    currentGoal();
 
-
-if(g){
-
-toggleGoalCheckin(
-g.id,
-dateKey()
-);
-
-}
-
+  if(g){
+    toggleGoalCheckin(
+      g.id,
+      dateKey()
+    );
+  }
 }
 
 
 function toggleGoalCheckin(
-id,
-key
+  id,
+  key
 ){
 
-const g=
-state.goals.find(
-x=>x.id===id
-);
+  const g=
+    state.goals.find(
+      x=>x.id===id
+    );
 
+  if(
+    !g||
+    !g.days
+  ){
+    alert(
+      "请先设置期限天数"
+    );
+    return;
+  }
 
-if(
-!g
-||
-!g.days
-){
+  const index=
+    dayDiff(
+      g.createdAt,
+      key
+    );
 
-alert(
-'请先设置期限天数'
-);
+  const todayIndex=
+    dayDiff(
+      g.createdAt,
+      dateKey()
+    );
 
-return;
+  if(
+    index<0||
+    index>=g.days||
+    index>todayIndex
+  ){
+    return;
+  }
 
-}
+  if(
+    !Array.isArray(g.checkins)
+  ){
+    g.checkins=[];
+  }
 
+  const ex=
+    g.checkins.findIndex(
+      x=>
+        (
+          typeof x==="string"
+            ?x
+            :x.date
+        )===key
+    );
 
-const index=
-dayDiff(
-g.createdAt,
-key
-);
+  if(ex>=0){
 
+    const item=
+      g.checkins[ex];
 
-const todayIndex=
-dayDiff(
-g.createdAt,
-dateKey()
-);
+    if(
+      typeof item==="object"&&
+      item.recordId
+    ){
 
+      state.records=
+        state.records.filter(
+          r=>r.id!==item.recordId
+        );
+    }
 
-if(
-index<0
-||
-index>=g.days
-||
-index>todayIndex
-)return;
+    g.checkins.splice(
+      ex,
+      1
+    );
 
+  }else{
 
-if(
-!Array.isArray(
-g.checkins
-)
-){
-g.checkins=[];
-}
+    const amount=
+      dailyAmount(g);
 
+    const recordId=
+      uid();
 
-const ex=
-g.checkins.findIndex(
-x=>
-(
-typeof x==='string'
-?x
-:x.date
-)===key
-);
+    state.records.unshift({
 
+      id:recordId,
 
-if(ex>=0){
+      date:key,
 
-const item=
-g.checkins[ex];
+      type:"save",
 
+      amount,
 
-if(
-typeof item==='object'
-&&
-item.recordId
-){
+      category:
+        "每日存钱打卡",
 
-state.records=
-state.records.filter(
-r=>r.id!==item.recordId
-);
+      note:
+        `${g.name} · 第 ${index+1} 天`,
 
-}
+      wallet:
+        state.wallets[0]?.name||
+        "现金钱包",
 
+      goalId:g.id
 
-g.checkins.splice(
-ex,
-1
-);
+    });
 
-}else{
+    g.checkins.push({
+      date:key,
+      recordId
+    });
+  }
 
+  saveState();
 
-const amount=
-dailyAmount(g);
+  renderAll();
 
-
-const recordId=
-uid();
-
-
-state.records.unshift({
-
-id:recordId,
-
-date:key,
-
-type:'save',
-
-amount,
-
-category:'每日存钱打卡',
-
-note:
-`${g.name} · 第 ${index+1} 天`,
-
-wallet:
-state.wallets[0]?.name
-||'现金钱包',
-
-goalId:g.id
-
-});
-
-
-g.checkins.push({
-
-date:key,
-
-recordId
-
-});
-
-}
-
-
-saveState();
-
-renderAll();
-
-renderGoalDetail();
-
+  renderGoalDetail();
 }
 
 
 function renderGoalDetail(){
 
-const g=
-currentGoal();
+  const g=
+    currentGoal();
 
+  if(!g){
+    goBackToGoals();
+    return;
+  }
 
-if(!g){
+  const saved=
+    goalSaved(g);
 
-goBackToGoals();
+  const remain=
+    Math.max(
+      0,
+      g.target-saved
+    );
 
-return;
+  const pct=
+    Math.min(
+      100,
+      saved/g.target*100
+    );
 
-}
+  const dates=
+    checkDates(g);
+
+  const today=
+    dateKey();
 
+  $("detailGoalName").textContent=
+    g.name;
 
-const saved=
-goalSaved(g);
+  $("detailGoalDate").textContent=
+    g.days
+      ?`开始：${g.createdAt} · 计划 ${g.days} 天`
+      :"还没有设置期限";
 
+  $("detailGoalMoney").textContent=
+    `${money(saved)} / ${money(g.target)}`;
 
-const remain=
-Math.max(
-0,
-g.target-saved
-);
+  $("detailGoalProgress").style.width=
+    pct+"%";
 
+  $("detailGoalPercent").textContent=
+    pct.toFixed(0)+"% 完成";
 
-const pct=
-Math.min(
-100,
-saved/g.target*100
-);
+  $("detailRemainingMoney").textContent=
+    money(remain);
 
+  $("detailRemainingDays").textContent=
+    g.days
+      ?remainingDays(g)+" 天"
+      :"--";
+
+  $("detailDailyAmount").textContent=
+    g.days
+      ?money(dailyAmount(g))
+      :"未设置";
 
-const dates=
-checkDates(g);
+  $("detailCheckinCount").textContent=
+    dates.length+" 天";
 
+  $("detailGoalDays").value=
+    g.days||"";
 
-const today=
-dateKey();
+  $("todayCheckinAmount").textContent=
+    g.days
+      ?money(dailyAmount(g))
+      :"请先设置期限";
 
+  const checked=
+    dates.includes(today);
 
-$('detailGoalName').textContent=
-g.name;
+  $("todayCheckinText").textContent=
+    g.days
+      ?(
+        checked
+          ?"今天已经成功存钱啦 💕"
+          :"点击今天的圆圈完成打卡"
+      )
+      :"请先设置期限天数";
 
+  $("todayCheckinButton").textContent=
+    checked
+      ?"↩ 取消今天打卡"
+      :"✓ 今天成功存钱";
 
-$('detailGoalDate').textContent=
+  $("todayCheckinButton").disabled=
+    !g.days;
 
-g.days
-?`开始：${g.createdAt} · 计划 ${g.days} 天`
-:'还没有设置期限';
+  const cal=
+    $("checkinCalendar");
 
+  if(!g.days){
 
-$('detailGoalMoney').textContent=
-`${money(saved)} / ${money(g.target)}`;
+    cal.innerHTML=
+      '<div class="empty" style="grid-column:1/-1">设置期限后，就会出现每日打卡圆圈 ⭕</div>';
 
+    renderRecordList(
+      "goalRecordList",
 
-$('detailGoalProgress').style.width=
-pct+'%';
+      state.records.filter(
+        r=>
+          r.type==="save"&&
+          r.goalId===g.id
+      ),
 
+      false
+    );
 
-$('detailGoalPercent').textContent=
-pct.toFixed(0)
-+'% 完成';
+    return;
+  }
 
+  cal.innerHTML=
+    Array.from(
+      {
+        length:g.days
+      },
 
-$('detailRemainingMoney').textContent=
-money(remain);
+      (_,i)=>{
 
+        const d=
+          localDate(
+            g.createdAt
+          );
 
-$('detailRemainingDays').textContent=
-g.days
-?remainingDays(g)+' 天'
-:'--';
+        d.setDate(
+          d.getDate()+i
+        );
 
+        const key=
+          dateKey(d);
 
-$('detailDailyAmount').textContent=
-g.days
-?money(
-dailyAmount(g)
-)
-:'未设置';
+        const done=
+          dates.includes(key);
 
+        const future=
+          key>today;
 
-$('detailCheckinCount').textContent=
-dates.length+' 天';
+        const isToday=
+          key===today;
 
+        return`
 
-$('detailGoalDays').value=
-g.days||'';
+        <button
+        class="checkinDay
+        ${done?"checked":""}
+        ${isToday?"today":""}
+        ${future?"future":""}"
+        data-checkin-goal="${esc(g.id)}"
+        data-checkin-date="${key}"
+        ${future?"disabled":""}
+        >
 
+        ${done?"✓":i+1}
 
-$('todayCheckinAmount').textContent=
-g.days
-?money(
-dailyAmount(g)
-)
-:'请先设置期限';
+        </button>
 
+        `;
 
-const checked=
-dates.includes(today);
+      }
+    )
+    .join("");
 
+  renderRecordList(
+    "goalRecordList",
 
-$('todayCheckinText').textContent=
+    state.records.filter(
+      r=>
+        r.type==="save"&&
+        r.goalId===g.id
+    ),
 
-g.days
-?(
-checked
-?'今天已经成功存钱啦 💕'
-:'点击今天的圆圈完成打卡'
-)
-:'请先设置期限天数';
-
-
-$('todayCheckinButton').textContent=
-
-checked
-?'↩ 取消今天打卡'
-:'✓ 今天成功存钱';
-
-
-$('todayCheckinButton').disabled=
-!g.days;
-
-
-const cal=
-$('checkinCalendar');
-
-
-if(!g.days){
-
-cal.innerHTML=
-'<div class="empty" style="grid-column:1/-1">设置期限后，就会出现每日打卡圆圈 ⭕</div>';
-
-
-renderRecordList(
-'goalRecordList',
-state.records.filter(
-r=>
-r.type==='save'
-&&
-r.goalId===g.id
-),
-false
-);
-
-return;
-
-}
-
-
-cal.innerHTML=
-
-Array.from(
-{
-length:g.days
-},
-(_,i)=>{
-
-const d=
-localDate(
-g.createdAt
-);
-
-
-d.setDate(
-d.getDate()+i
-);
-
-
-const key=
-dateKey(d);
-
-
-const done=
-dates.includes(key);
-
-
-const future=
-key>today;
-
-
-const isToday=
-key===today;
-
-
-return
-
-`<button
-class="checkinDay
-${done?'checked':''}
-${isToday?'today':''}
-${future?'future':''}"
-${future?'disabled':''}
-onclick="toggleGoalCheckin('${g.id}','${key}')"
->
-${done?'✓':i+1}
-</button>`;
-
-}
-
-)
-
-.join('');
-
-
-renderRecordList(
-'goalRecordList',
-state.records.filter(
-r=>
-r.type==='save'
-&&
-r.goalId===g.id
-),
-false
-);
-
+    false
+  );
 }
 
 
 function deleteCurrentGoal(){
 
-const g=
-currentGoal();
+  const g=
+    currentGoal();
 
+  if(!g){
+    return;
+  }
 
-if(!g)return;
-
-
-if(
-!confirm(
-`确定删除「${g.name}」吗？
+  if(
+    !confirm(
+      `确定删除「${g.name}」吗？
 
 已有的存钱记录不会自动删除。`
-)
-)return;
+    )
+  ){
+    return;
+  }
 
+  state.goals=
+    state.goals.filter(
+      x=>x.id!==g.id
+    );
 
-state.goals=
-state.goals.filter(
-x=>x.id!==g.id
-);
+  saveState();
 
+  currentGoalId=null;
 
-saveState();
+  showPage(
+    "goals",
+    true
+  );
 
-
-currentGoalId=null;
-
-
-showPage(
-'goals',
-true
-);
-
-
-renderAll();
-
+  renderAll();
 }
 
 
 /* =========================
-Wallet
+WALLETS
 ========================= */
 
 function addWallet(){
 
-const name=
-$('walletName')
-.value
-.trim();
+  const name=
+    $("walletName")
+      .value
+      .trim();
 
+  const opening=
+    Number(
+      $("walletOpeningBalance").value
+    )||0;
 
-const opening=
-Number(
-$('walletOpeningBalance').value
-)
-||0;
+  if(!name){
+    alert(
+      "请输入账本名称"
+    );
+    return;
+  }
 
+  if(
+    walletNames()
+      .includes(name)
+  ){
+    alert(
+      "这个账本已经存在"
+    );
+    return;
+  }
 
-if(!name){
+  if(opening<0){
+    alert(
+      "初始金额不能小于 0"
+    );
+    return;
+  }
 
-alert(
-'请输入账本名称'
-);
+  state.wallets.push({
+    name,
+    openingBalance:opening
+  });
 
-return;
+  $("walletName").value="";
+  $("walletOpeningBalance").value="";
 
-}
+  saveState();
 
-
-if(
-walletNames()
-.includes(name)
-){
-
-alert(
-'这个账本已经存在'
-);
-
-return;
-
-}
-
-
-if(opening<0){
-
-alert(
-'初始金额不能小于 0'
-);
-
-return;
-
-}
-
-
-state.wallets.push({
-
-name,
-
-openingBalance:opening
-
-});
-
-
-$('walletName').value='';
-$('walletOpeningBalance').value='';
-
-
-saveState();
-
-renderWallets();
-
+  renderWallets();
 }
 
 
 function deleteWallet(name){
 
-if(
-state.wallets.length<=1
-){
+  if(
+    state.wallets.length<=1
+  ){
+    alert(
+      "至少保留一个账本"
+    );
+    return;
+  }
 
-alert(
-'至少保留一个账本'
-);
+  const stats=
+    walletStats(name);
 
-return;
+  const extra=
+    stats.count
+      ?`这个账本目前有 ${stats.count} 笔历史记录，删除账本不会删除这些历史记录。`
+      :"";
 
-}
-
-
-const stats=
-walletStats(name);
-
-
-const extra=
-
-stats.count
-?`这个账本目前有 ${stats.count} 笔历史记录，删除账本不会删除这些历史记录。`
-:'';
-
-
-if(
-!confirm(
-`确定删除账本「${name}」吗？
+  if(
+    !confirm(
+      `确定删除账本「${name}」吗？
 
 ${extra}`
-)
-)return;
+    )
+  ){
+    return;
+  }
 
+  state.wallets=
+    state.wallets.filter(
+      w=>w.name!==name
+    );
 
-state.wallets=
-state.wallets.filter(
-w=>w.name!==name
-);
+  saveState();
 
-
-saveState();
-
-renderWallets();
-
+  renderWallets();
 }
 
 
 function renderWallets(){
 
-const el=
-$('walletList');
+  const el=
+    $("walletList");
+
+  if(!state.wallets.length){
+
+    el.innerHTML=
+      '<div class="empty">还没有账本，先新增一个吧 💳</div>';
+
+    return;
+  }
+
+  el.innerHTML=
+    state.wallets
+      .map(w=>{
+
+        const st=
+          walletStats(w.name);
+
+        return`
+
+        <div
+        class="card"
+        style="
+        margin:12px 0;
+        padding:16px;
+        background:rgba(255,255,255,.95)
+        "
+        >
+
+        <div class="row">
+
+        <div class="recordLeft">
+
+        <div class="recordIcon">
+        💳
+        </div>
+
+        <div>
+
+        <div class="recordName">
+        ${esc(w.name)}
+        </div>
+
+        <div class="muted">
+        初始金额
+        ${money(st.opening)}
+        </div>
+
+        </div>
+
+        </div>
+
+        <button
+        class="deleteBtn"
+        data-delete-wallet="${esc(w.name)}"
+        >
+        删除
+        </button>
+
+        </div>
 
 
-if(!state.wallets.length){
+        <div
+        style="
+        margin-top:16px;
+        padding:16px;
+        border-radius:18px;
+        background:linear-gradient(
+        90deg,
+        rgba(75,167,202,.12),
+        rgba(255,182,193,.14)
+        )
+        "
+        >
 
-el.innerHTML=
-'<div class="empty">还没有账本，先新增一个吧 💳</div>';
+        <div class="muted">
+        当前余额
+        </div>
 
-return;
+        <div
+        class="value ${
+          st.balance>=0
+            ?"green"
+            :"pink"
+        }"
+        style="margin-top:6px"
+        >
 
-}
+        ${money(st.balance)}
 
+        </div>
 
-el.innerHTML=
-
-state.wallets
-
-.map(w=>{
-
-const st=
-walletStats(
-w.name
-);
-
-
-const safeName=
-esc(w.name);
-
-
-const safeJsName=
-w.name
-.replace(/\\/g,'\\\\')
-.replace(/'/g,"\\'");
-
-
-return
-
-`<div
-class="card"
-style="
-margin:12px 0;
-padding:16px;
-background:rgba(255,255,255,.95)
-"
->
-
-<div class="row">
-
-<div class="recordLeft">
-
-<div class="recordIcon">
-💳
-</div>
+        </div>
 
 
-<div>
+        <div
+        class="goalDetailGrid"
+        style="margin-top:12px"
+        >
 
-<div class="recordName">
-${safeName}
-</div>
+        <div class="goalDetailStat">
 
+        <div class="small">
+        收入
+        </div>
 
-<div class="muted">
-初始金额
-${money(st.opening)}
-</div>
+        <div class="number blue">
+        +${money(st.income)}
+        </div>
 
-</div>
-
-</div>
-
-
-<button
-class="deleteBtn"
-onclick="deleteWallet('${safeJsName}')"
->
-删除
-</button>
-
-</div>
+        </div>
 
 
-<div
-style="
-margin-top:16px;
-padding:16px;
-border-radius:18px;
-background:linear-gradient(
-90deg,
-rgba(75,167,202,.12),
-rgba(255,182,193,.14)
-)
-"
->
+        <div class="goalDetailStat">
 
-<div class="muted">
-当前余额
-</div>
+        <div class="small">
+        支出
+        </div>
+
+        <div class="number pink">
+        -${money(st.expense)}
+        </div>
+
+        </div>
 
 
-<div
-class="value ${
-st.balance>=0
-?'green'
-:'pink'
-}"
-style="margin-top:6px"
->
+        <div class="goalDetailStat">
 
-${money(st.balance)}
+        <div class="small">
+        存入目标
+        </div>
 
-</div>
+        <div class="number green">
+        -${money(st.save)}
+        </div>
 
-</div>
+        </div>
 
 
-<div
-class="goalDetailGrid"
-style="margin-top:12px"
->
+        <div class="goalDetailStat">
 
-<div class="goalDetailStat">
-<div class="small">
-收入
-</div>
+        <div class="small">
+        记录数量
+        </div>
 
-<div class="number blue">
-+${money(st.income)}
-</div>
-</div>
+        <div class="number">
+        ${st.count} 笔
+        </div>
 
+        </div>
 
-<div class="goalDetailStat">
-<div class="small">
-支出
-</div>
+        </div>
 
-<div class="number pink">
--${money(st.expense)}
-</div>
-</div>
+        </div>
 
+        `;
 
-<div class="goalDetailStat">
-<div class="small">
-存入目标
-</div>
-
-<div class="number green">
--${money(st.save)}
-</div>
-</div>
-
-
-<div class="goalDetailStat">
-<div class="small">
-记录数量
-</div>
-
-<div class="number">
-${st.count} 笔
-</div>
-</div>
-
-</div>
-
-</div>`;
-
-})
-
-.join('');
-
+      })
+      .join("");
 }
 
 
 /* =========================
-Render All
+RENDER ALL
 ========================= */
 
 function renderAll(){
 
-renderOverview();
+  renderOverview();
 
-renderDaily();
+  renderDaily();
 
-setupMonthPicker();
+  setupMonthPicker();
 
-renderMonthly();
+  renderMonthly();
 
-renderHistory();
+  renderHistory();
 
-renderGoals();
+  renderGoals();
 
-renderWallets();
+  renderWallets();
 
-
-if(
-currentGoalId
-&&
-$('goalDetail')
-.classList
-.contains('active')
-){
-
-renderGoalDetail();
-
-}
-
+  if(
+    currentGoalId&&
+    $("goalDetail")
+      .classList.contains("active")
+  ){
+    renderGoalDetail();
+  }
 }
 
 
 /* =========================
-Start
+EVENT LISTENERS
+========================= */
+
+/* Sidebar */
+
+$("menuButton")
+  .addEventListener(
+    "click",
+    toggleMenu
+  );
+
+$("sidebarMask")
+  .addEventListener(
+    "click",
+    closeMenu
+  );
+
+$("sidebar")
+  .addEventListener(
+    "click",
+    e=>e.stopPropagation()
+  );
+
+
+document
+  .querySelectorAll(".navitem")
+  .forEach(btn=>{
+
+    btn.addEventListener(
+      "click",
+      ()=>{
+
+        const page=
+          btn.dataset.page;
+
+        if(!page){
+          return;
+        }
+
+        showPage(page,true);
+
+        renderAll();
+      }
+    );
+
+  });
+
+
+/* Record */
+
+$("quickRecordButton")
+  .addEventListener(
+    "click",
+    ()=>openRecord()
+  );
+
+$("overviewRecordButton")
+  .addEventListener(
+    "click",
+    ()=>openRecord()
+  );
+
+$("expenseQuickButton")
+  .addEventListener(
+    "click",
+    ()=>openRecord("expense")
+  );
+
+$("incomeQuickButton")
+  .addEventListener(
+    "click",
+    ()=>openRecord("income")
+  );
+
+$("dailyQuickRecord")
+  .addEventListener(
+    "click",
+    ()=>openRecord()
+  );
+
+$("dailyExpenseButton")
+  .addEventListener(
+    "click",
+    ()=>openRecord("expense")
+  );
+
+$("dailyIncomeButton")
+  .addEventListener(
+    "click",
+    ()=>openRecord("income")
+  );
+
+$("closeRecordButton")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("saveRecordButton")
+  .addEventListener(
+    "click",
+    saveRecord
+  );
+
+$("type")
+  .addEventListener(
+    "change",
+    updateCategoryOptions
+  );
+
+document
+  .querySelectorAll(".typePill")
+  .forEach(btn=>{
+
+    btn.addEventListener(
+      "click",
+      ()=>setRecordType(
+        btn.dataset.type
+      )
+    );
+
+  });
+
+
+/* Transfer */
+
+$("transferButton")
+  .addEventListener(
+    "click",
+    openTransfer
+  );
+
+$("closeTransferButton")
+  .addEventListener(
+    "click",
+    closeTransfer
+  );
+
+$("transferToType")
+  .addEventListener(
+    "change",
+    updateTransferDestination
+  );
+
+$("saveTransferButton")
+  .addEventListener(
+    "click",
+    saveTransfer
+  );
+
+
+/* Monthly */
+
+$("monthlyPicker")
+  .addEventListener(
+    "change",
+    renderMonthly
+  );
+
+$("saveMonthlyNoteButton")
+  .addEventListener(
+    "click",
+    saveMonthlyNote
+  );
+
+
+/* Goal */
+
+$("addGoalButton")
+  .addEventListener(
+    "click",
+    addGoal
+  );
+
+$("backGoalsButton")
+  .addEventListener(
+    "click",
+    goBackToGoals
+  );
+
+$("saveGoalDaysButton")
+  .addEventListener(
+    "click",
+    saveGoalDays
+  );
+
+$("todayCheckinButton")
+  .addEventListener(
+    "click",
+    toggleTodayCheckin
+  );
+
+$("deleteGoalButton")
+  .addEventListener(
+    "click",
+    deleteCurrentGoal
+  );
+
+
+/* Wallet */
+
+$("addWalletButton")
+  .addEventListener(
+    "click",
+    addWallet
+  );
+
+
+/* =========================
+DYNAMIC CLICK EVENTS
+========================= */
+
+document
+  .addEventListener(
+    "click",
+    e=>{
+
+      const recordButton=
+        e.target.closest(
+          "[data-delete-record]"
+        );
+
+      if(recordButton){
+
+        deleteRecord(
+          recordButton.dataset.deleteRecord
+        );
+
+        return;
+      }
+
+
+      const goalItem=
+        e.target.closest(
+          "[data-goal-id]"
+        );
+
+      if(goalItem){
+
+        openGoalDetail(
+          goalItem.dataset.goalId
+        );
+
+        return;
+      }
+
+
+      const checkin=
+        e.target.closest(
+          "[data-checkin-goal]"
+        );
+
+      if(checkin){
+
+        if(checkin.disabled){
+          return;
+        }
+
+        toggleGoalCheckin(
+          checkin.dataset.checkinGoal,
+          checkin.dataset.checkinDate
+        );
+
+        return;
+      }
+
+
+      const walletButton=
+        e.target.closest(
+          "[data-delete-wallet]"
+        );
+
+      if(walletButton){
+
+        deleteWallet(
+          walletButton.dataset.deleteWallet
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================
+START
 ========================= */
 
 loadState();
