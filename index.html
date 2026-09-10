@@ -244,9 +244,9 @@ body.menuOpen{overflow:hidden}.sidebar{visibility:hidden}.sidebarMask{visibility
 
 <script>
 const $=id=>document.getElementById(id);
-const storageKey='im-a-rich-girl-v4';
-const legacyStorageKey='im-a-rich-girl-v3';
-const expenseCategories=['饮食','购物','水费','电费','电话费','车油费','Grocery','Others','妈妈','儿子'];
+const storageKey='im-a-rich-girl-v5';
+const legacyStorageKey='im-a-rich-girl-v4';
+const expenseCategories=['饮食','购物','水费','电费','电话费','车油费','Grocery','妈妈','儿子'];
 const incomeCategories=['薪水','bonus','老公给'];
 let state={records:[],goals:[],wallets:[{name:'现金钱包',openingBalance:0}],dailyNotes:{},monthlyNotes:{}};
 let currentGoalId=null;
@@ -282,7 +282,7 @@ function loadState(){
   if(saved){
    const old=JSON.parse(saved);
    state={records:Array.isArray(old.records)?old.records:[],goals:Array.isArray(old.goals)?old.goals:[],wallets:normalizeWallets(old.wallets),dailyNotes:old.dailyNotes||{},monthlyNotes:old.monthlyNotes||{}};
-   state.goals.forEach(g=>{if(!Array.isArray(g.checkins))g.checkins=[];if(!g.createdAt)g.createdAt=dateKey()})
+   state.goals.forEach(g=>{if(!Array.isArray(g.checkins))g.checkins=[];if(!g.createdAt)g.createdAt=dateKey();if(g.days&&!Number(g.dailyAmount))g.dailyAmount=Number(g.target||0)/Number(g.days)})
   }else{
    state.wallets=normalizeWallets(state.wallets);
   }
@@ -366,17 +366,33 @@ function saveTransfer(){
  }else{
    const goal=state.goals.find(g=>g.id===destination);
    if(!goal){alert('没有找到这个存钱目标');return}
-   state.records.unshift({id:uid(),date:dateKey(),type:'save',amount,category:'转入存钱目标',note:`从 ${from} 转入${note?' · '+note:''}`,wallet:from,goalId:goal.id});
+
+   // 从账本转入存钱目标：转入后自动检查今天累计是否达到「每日必存金额」。
+   const today=dateKey();
+   const recordId=uid();
+   state.records.unshift({
+     id:recordId,
+     date:today,
+     type:'save',
+     amount,
+     category:'转入存钱目标',
+     note:`从 ${from} 转入${note?' · '+note:''}`,
+     wallet:from,
+     goalId:goal.id
+   });
+   syncGoalCheckin(goal,today);
  }
  saveState();closeTransfer();renderAll();alert('转账成功 💕');
 }
 function saveRecord(){
  const amount=Number($('amountInput').value),type=$('type').value,goalId=type==='save'?$('goalSelect').value:'';
  if(!amount||amount<=0){alert('请输入金额');return}if(type==='save'&&!goalId){alert('请先新增一个存钱目标');return}
- state.records.unshift({id:uid(),date:dateKey(),type,amount,category:$('category').value,note:$('note').value.trim(),wallet:$('walletSelect').value,goalId});
+ const recordId=uid();
+ state.records.unshift({id:recordId,date:dateKey(),type,amount,category:$('category').value,note:$('note').value.trim(),wallet:$('walletSelect').value,goalId});
+ if(type==='save'&&goalId){const g=state.goals.find(x=>x.id===goalId);if(g)syncGoalCheckin(g,dateKey())}
  saveState();closeModal();renderAll();
 }
-function deleteRecord(id){if(!confirm('确定删除这笔记录吗？'))return;state.records=state.records.filter(r=>r.id!==id);saveState();renderAll()}
+function deleteRecord(id){if(!confirm('确定删除这笔记录吗？'))return;const old=state.records.find(r=>r.id===id);state.records=state.records.filter(r=>r.id!==id);if(old?.goalId){const g=state.goals.find(x=>x.id===old.goalId);if(g)syncGoalCheckin(g,old.date)}saveState();renderAll()}
 function recordsForMonth(m=monthKey()){return state.records.filter(r=>String(r.date).startsWith(m))}
 function totals(m=monthKey()){
  const rs=recordsForMonth(m),sum=t=>rs.filter(r=>r.type===t).reduce((s,r)=>s+Number(r.amount||0),0);
@@ -442,12 +458,13 @@ function renderHistory(){
 function addGoal(){
  const name=$('goalName').value.trim(),target=Number($('goalAmount').value),days=Number($('goalDays').value)||0;
  if(!name||!target||target<=0){alert('请填写目标名称和目标金额');return}
- state.goals.push({id:uid(),name,target,days,createdAt:dateKey(),checkins:[]});$('goalName').value='';$('goalAmount').value='';$('goalDays').value='';saveState();renderGoals();alert('存钱目标新增成功 🎯');
+ state.goals.push({id:uid(),name,target,days,createdAt:dateKey(),dailyAmount:days?target/days:0,checkins:[]});$('goalName').value='';$('goalAmount').value='';$('goalDays').value='';saveState();renderGoals();alert('存钱目标新增成功 🎯');
 }
 function goalSaved(g){return state.records.filter(r=>r.type==='save'&&r.goalId===g.id).reduce((s,r)=>s+Number(r.amount||0),0)}
 function passedDays(g){return g.days?Math.max(0,Math.min(g.days,dayDiff(g.createdAt,dateKey())+1)):0}
 function remainingDays(g){return g.days?Math.max(0,g.days-passedDays(g)):null}
-function dailyAmount(g){const remain=Math.max(0,g.target-goalSaved(g));if(!g.days)return 0;const days=remainingDays(g);return days>0?remain/days:remain}
+function dailyAmount(g){if(!g.days)return 0;return Number(g.dailyAmount)||Number(g.target||0)/Number(g.days)}
+function syncGoalCheckin(g,key){if(!g||!g.days)return;const index=dayDiff(g.createdAt,key);const todayIndex=dayDiff(g.createdAt,dateKey());if(index<0||index>=g.days||index>todayIndex)return;if(!Array.isArray(g.checkins))g.checkins=[];const required=dailyAmount(g);const total=state.records.filter(r=>r.type==='save'&&r.goalId===g.id&&r.date===key).reduce((sum,r)=>sum+Number(r.amount||0),0);const at=g.checkins.findIndex(x=>(typeof x==='string'?x:x.date)===key);if(total+1e-9>=required){if(at<0){const latest=state.records.find(r=>r.type==='save'&&r.goalId===g.id&&r.date===key);g.checkins.push({date:key,recordId:latest?.id||''})}}else if(at>=0){g.checkins.splice(at,1)}}
 function checkDates(g){return (g.checkins||[]).map(x=>typeof x==='string'?x:x.date).filter(Boolean)}
 function renderGoals(){
  const el=$('goalList');if(!state.goals.length){el.innerHTML='<div class="empty">还没有存钱目标，先新增一个梦想吧 🎯</div>';return}
@@ -459,7 +476,7 @@ function goBackToGoals(){currentGoalId=null;showPage('goals',true);renderGoals()
 function currentGoal(){return state.goals.find(g=>g.id===currentGoalId)}
 function saveGoalDays(){
  const g=currentGoal(),days=Math.floor(Number($('detailGoalDays').value));if(!g)return;if(!days||days<1){alert('请输入正确的期限天数');return}
- g.days=days;g.createdAt=dateKey();g.checkins=[];saveState();renderGoalDetail();renderGoals();alert('期限已设置成功 📅');
+ g.days=days;g.dailyAmount=Number(g.target||0)/days;g.createdAt=dateKey();g.checkins=[];saveState();renderGoalDetail();renderGoals();alert('期限已设置成功 📅');
 }
 function toggleTodayCheckin(){const g=currentGoal();if(g)toggleGoalCheckin(g.id,dateKey())}
 function toggleGoalCheckin(id,key){
@@ -476,12 +493,12 @@ function toggleGoalCheckin(id,key){
  saveState();renderGoalDetail();renderGoals();renderOverview();
 }
 function renderGoalDetail(){
- const g=currentGoal();if(!g){goBackToGoals();return}
+ const g=currentGoal();if(!g){goBackToGoals();return}syncGoalCheckin(g,dateKey());
  const saved=goalSaved(g),remain=Math.max(0,g.target-saved),pct=Math.min(100,saved/g.target*100),dates=checkDates(g),today=dateKey();
  $('detailGoalName').textContent=g.name;$('detailGoalDate').textContent=g.days?`开始：${g.createdAt} · 计划 ${g.days} 天`:'还没有设置期限';$('detailGoalMoney').textContent=`${money(saved)} / ${money(g.target)}`;$('detailGoalProgress').style.width=pct+'%';$('detailGoalPercent').textContent=pct.toFixed(0)+'% 完成';
  $('detailRemainingMoney').textContent=money(remain);$('detailRemainingDays').textContent=g.days?remainingDays(g)+' 天':'--';$('detailDailyAmount').textContent=g.days?money(dailyAmount(g)):'未设置';$('detailCheckinCount').textContent=dates.length+' 天';$('detailGoalDays').value=g.days||'';
  $('todayCheckinAmount').textContent=g.days?money(dailyAmount(g)):'请先设置期限';
- const checked=dates.includes(today);$('todayCheckinText').textContent=g.days?(checked?'今天已经成功存钱啦 💕':'点击今天的圆圈完成打卡'):'请先设置期限天数';$('todayCheckinButton').textContent=checked?'↩ 取消今天打卡':'✓ 今天成功存钱';$('todayCheckinButton').disabled=!g.days;
+ const checked=dates.includes(today);$('todayCheckinText').textContent=g.days?(checked?'今天已经成功存钱啦 💕':'从账本转入达到每日金额后会自动打卡'):'请先设置期限天数';$('todayCheckinButton').textContent=checked?'↩ 取消今天打卡':'💸 转账达到每日金额后自动打卡';$('todayCheckinButton').disabled=true;
  const cal=$('checkinCalendar');
  if(!g.days){cal.innerHTML='<div class="empty" style="grid-column:1/-1">设置期限后，就会出现每日打卡圆圈 ⭕</div>';return}
  cal.innerHTML=Array.from({length:g.days},(_,i)=>{const d=localDate(g.createdAt);d.setDate(d.getDate()+i);const key=dateKey(d),done=dates.includes(key),future=key>today,isToday=key===today;return`<button class="checkinDay ${done?'checked':''} ${isToday?'today':''} ${future?'future':''}" ${future?'disabled':''} onclick="toggleGoalCheckin('${g.id}','${key}')">${done?'✓':i+1}</button>`}).join('');
@@ -538,7 +555,7 @@ function renderBackup(){
  $('backupMonths').textContent=months.size;
 }
 function exportBackup(){
- const payload={version:4,exportedAt:new Date().toISOString(),records:state.records,goals:state.goals,wallets:state.wallets,dailyNotes:state.dailyNotes,monthlyNotes:state.monthlyNotes};
+ const payload={version:5,exportedAt:new Date().toISOString(),records:state.records,goals:state.goals,wallets:state.wallets,dailyNotes:state.dailyNotes,monthlyNotes:state.monthlyNotes};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
  const url=URL.createObjectURL(blob);
  const a=document.createElement('a');a.href=url;a.download=`我要成为富婆-备份-${dateKey()}.json`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
@@ -559,7 +576,7 @@ function importBackup(event){
  };
  reader.readAsText(file);
 }
-function renderAll(){renderOverview();renderDaily();setupMonthPicker();renderMonthly();renderHistory();renderGoals();renderWallets();renderBackup();if(currentGoalId&&$('goalDetail').classList.contains('active'))renderGoalDetail()}
+function renderAll(){state.goals.forEach(g=>syncGoalCheckin(g,dateKey()));saveState();renderOverview();renderDaily();setupMonthPicker();renderMonthly();renderHistory();renderGoals();renderWallets();renderBackup();if(currentGoalId&&$('goalDetail').classList.contains('active'))renderGoalDetail()}
 loadState();saveState();renderAll();
 </script>
 </body>
